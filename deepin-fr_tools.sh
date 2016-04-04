@@ -6,6 +6,7 @@
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget http://vps127210.ovh.net/deepin-fr_tools.sh -O -)
+# Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
 ###############
@@ -238,9 +239,11 @@ echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
 echo ""
+echo "- Distribution: $(cat /etc/issue |awk '{print $1  $3}')"
+echo "- Noyaux: $(uname -r)"
+echo "- Arch : $(uname -m)"  
 echo ""
 echo "Nous vous proposons les taches suivantes :"
-echo ""
 echo ""
 PS3='=> Choix : '
 options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Quitter")
@@ -272,6 +275,7 @@ do
             VERR_NUM_BOOT
             ;;
         "Quitter")
+	    echo ""
 	    echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
             ;;
         *) echo option invalide;;
