@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.3
-# Date : 24/03/2016
+# Vers : 2.4
+# Date : 04/04/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget http://vps127210.ovh.net/deepin-fr_tools.sh -O -)
@@ -43,7 +43,7 @@ function TEST_BIN() {
     echo "Installation en cours, veuillez patienter..."
     echo ""; sleep 1
     CHECK_SERVICE apt-get
-    sudo apt-get install -y $1 &> /dev/null
+    sudo apt-get install -y $1
     echo ""; sleep 1
     echo "Intallation de $1 terminé"
   fi
@@ -158,8 +158,8 @@ function CLEAN_SYSTEME {
   echo -e "${blanc}-- Nettoyage des locales:${fin}"
   sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
   sudo locale-gen; ERROR
-  localepurge --help &> /dev/null; TEST_BIN localepurge; ERROR
-  localepurge; ERROR
+  sudo localepurge --help &> /dev/null; TEST_BIN localepurge; ERROR
+  sudo localepurge; ERROR
   echo ""
   echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
   rm -Rf $HOME/.thumbnails/*; ERROR
