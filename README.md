@@ -1,4 +1,4 @@
-# deepin-tools
+# DEEPIN-TOOLS
 Plateforme de scripts pour la communauté Deepin-fr.org
 
 Vous trouverez ici, les sources necessaires à l'utilisation de l'outil "Deepin-tools".
