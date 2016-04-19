@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.7
-# Date : 19/04/2016
+# Vers : 2.6
+# Date : 17/04/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -278,7 +278,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fond d'écran sur InterfaceLIFT.com" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -305,9 +305,6 @@ do
 	    ;;
         "Activer la touche \"verrouillage numérique\" au démarrage")
             VERR_NUM_BOOT
-            ;;
-        "Telecharger des fond d'écran sur InterfaceLIFT.com")
-            DL_WALLPAPER
             ;;
         "Quitter")
 	    echo ""
