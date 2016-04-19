@@ -241,11 +241,11 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo -e "${blanc}-- Debut du telechargement:${fin}"
   echo ""
-  wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}')
+  wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
   find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
   echo ""
   echo -e "${blanc}-- Rechargement du centre de control:${fin}"
-  pkill -9 dde-control-cen
+  pkill -9 dde-control-cen; ERROR
   echo ""
   echo ""
   echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
@@ -305,7 +305,7 @@ do
             VERR_NUM_BOOT
             ;;
         "Telecharger des fond d\'écran sur InterfaceLIFT.com")
-            VERR_NUM_BOOT
+            DL_WALLPAPER
             ;;
         "Quitter")
 	    echo ""
