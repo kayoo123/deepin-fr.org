@@ -257,7 +257,6 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
 }
 
 
-
 ##########
 ## MAIN ##
 ##########
