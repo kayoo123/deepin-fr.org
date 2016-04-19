@@ -229,8 +229,10 @@ RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
 DIR=$HOME/Images/Wallpapers
 URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTION/
   echo ""
-  echo -e "${titre}9: Telechargement de fond d\'ecran : \"InterfaceLIFT.com\":${fin}"
+  echo -e "${titre}9: Telechargement de fond d'ecran : \"InterfaceLIFT.com\":${fin}"
   echo ""
+  echo "Nous allons a présent télécharger 10 fond d'écran aléatoires"
+  echo "nous nous "
   echo -e "${blanc}-- Detection de vos écrans:${fin}"
   sleep 1; echo "Nous avons détecté une resolution pour votre ecran de : $RESOLUTION"
   echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
@@ -276,7 +278,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fond d\'écran sur InterfaceLIFT.com" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fond d'écran sur InterfaceLIFT.com" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -304,7 +306,7 @@ do
         "Activer la touche \"verrouillage numérique\" au démarrage")
             VERR_NUM_BOOT
             ;;
-        "Telecharger des fond d\'écran sur InterfaceLIFT.com")
+        "Telecharger des fond d'écran sur InterfaceLIFT.com")
             DL_WALLPAPER
             ;;
         "Quitter")
