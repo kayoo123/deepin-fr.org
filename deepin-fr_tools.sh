@@ -249,7 +249,7 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo -e "${blanc}-- Rechargement du centre de control:${fin}"
   pkill -9 dde-control-cen; ERROR
-  /usr/bin/dde-control-center &; ERROR
+  /usr/bin/dde-control-center &
   echo ""
   echo ""
   echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
