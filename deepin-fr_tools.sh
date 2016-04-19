@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.4
-# Date : 04/04/2016
+# Vers : 2.7
+# Date : 19/04/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget http://vps127210.ovh.net/deepin-fr_tools.sh -O -)
@@ -50,7 +50,7 @@ function TEST_BIN() {
   fi
 }
 
-## Vérifie qu'aucun processus ne soit lancé
+## Vérifie qu'aucun processus ne soit déjà lancé
 function CHECK_SERVICE() {
   ps -edf |grep $1 |grep -v grep &> /dev/null
   if [ $? -eq 0 ]; then
@@ -198,6 +198,7 @@ function DICO_FR_WPS {
   wget -P /tmp http://wps-community.org/download/dicts/fr_FR.zip; ERROR
   echo ""
   echo -e "${blanc}-- Décompression de l'archive:${fin}"
+  unzip -v &> /dev/null; TEST_BIN unzip; ERROR
   sudo unzip /tmp/fr_FR.zip -d /opt/kingsoft/wps-office/office6/dicts/; ERROR
   rm -f /tmp/fr_FR.zip; ERROR
   echo ""
@@ -222,6 +223,35 @@ function VERR_NUM_BOOT {
   echo -e "=> La touche \"Verrouillage Numérique\" a été activé au démarrage avec ${vert}SUCCES${fin}."
 }
 
+## 9: Telechargement wallpaper : InterfaceLIFT.com
+function DL_WALLPAPER {
+RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
+DIR=$HOME/Images/Wallpapers
+URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTION/
+  echo ""
+  echo -e "${titre}9: Telechargement de fond d\'ecran : \"InterfaceLIFT.com\":${fin}"
+  echo ""
+  echo -e "${blanc}-- Detection de vos ecran:${fin}"
+  sleep 1; echo "Nous avons détecté une resolution pour votre ecran de : $RESOLUTION"
+  echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
+  read
+  if [ $? -eq O ]; then
+  dpkg -l |grep lynx &> /dev/null; TEST_BIN lynx; ERROR
+  wget -V &> /dev/null; TEST_BIN wget; ERROR
+  echo ""
+  echo -e "${blanc}-- Debut du telechargement:${fin}"
+  echo ""
+  wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}')
+  find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
+  echo ""
+  echo -e "${blanc}-- Rechargement du centre de control:${fin}"
+  pkill -9 dde-control-cen
+  echo ""
+  echo ""
+  echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
+  fi
+}
+
 
 
 ##########
@@ -239,14 +269,14 @@ echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
 echo ""
-echo "- Distribution: $(cat /etc/issue |awk '{print $1  $3}')"
 echo "- Noyaux: $(uname -r)"
-echo "- Arch : $(uname -m)"  
+echo "- OS : $(source /etc/lsb-release; echo $DISTRIB_DESCRIPTION)"
+echo "- Arch : $(uname -m)"
 echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fond d\'écran sur InterfaceLIFT.com" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -272,6 +302,9 @@ do
 	    DICO_FR_WPS
 	    ;;
         "Activer la touche \"verrouillage numérique\" au démarrage")
+            VERR_NUM_BOOT
+            ;;
+        "Telecharger des fond d\'écran sur InterfaceLIFT.com")
             VERR_NUM_BOOT
             ;;
         "Quitter")
