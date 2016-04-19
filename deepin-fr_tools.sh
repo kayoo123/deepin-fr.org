@@ -5,7 +5,7 @@
 # Date : 19/04/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
-# Utilisation : bash <(wget http://vps127210.ovh.net/deepin-fr_tools.sh -O -)
+# Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
@@ -231,11 +231,11 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo -e "${titre}9: Telechargement de fond d\'ecran : \"InterfaceLIFT.com\":${fin}"
   echo ""
-  echo -e "${blanc}-- Detection de vos ecran:${fin}"
+  echo -e "${blanc}-- Detection de vos écrans:${fin}"
   sleep 1; echo "Nous avons détecté une resolution pour votre ecran de : $RESOLUTION"
   echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
-  read
-  if [ $? -eq O ]; then
+  read REP
+  if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
   dpkg -l |grep lynx &> /dev/null; TEST_BIN lynx; ERROR
   wget -V &> /dev/null; TEST_BIN wget; ERROR
   echo ""
