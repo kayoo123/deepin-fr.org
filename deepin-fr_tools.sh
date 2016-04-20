@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.7
-# Date : 19/04/2016
+# Vers : 2.8
+# Date : 20/04/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -37,6 +37,7 @@ function ERROR {
 
 ## Vérifie et install le paquet manquant (Check a faire avant appel du script)
 function TEST_BIN() {
+dpkg -l |grep -w $1 &> /dev/null; ERROR
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
@@ -52,7 +53,7 @@ function TEST_BIN() {
 
 ## Vérifie qu'aucun processus ne soit déjà lancé
 function CHECK_SERVICE() {
-  ps -edf |grep $1 |grep -v grep &> /dev/null
+  ps -edf |grep -w $1 |grep -v grep &> /dev/null
   if [ $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
@@ -78,7 +79,7 @@ function DEPOT_LIST {
   echo ""
   echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponible et vous affiche les débits de téléchargement associés${fin}"
   echo ""
-  curl -V > /dev/null; TEST_BIN curl; ERROR
+  TEST_BIN curl; ERROR
   echo -e "${blanc}-- Liste :${fin}"
   curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}'; ERROR
 }
@@ -88,7 +89,7 @@ function DEPOT_REMPLACE {
   echo ""
   echo -e "${titre}3: Remplace le dépot de votre systeme par le plus performant${fin}"
   echo ""
-  curl -V > /dev/null; TEST_BIN curl; ERROR
+  TEST_BIN curl; ERROR
   echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."
   BEST_REPO=$(curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}' |sort -gr |head -1 |awk '{print $2}'); ERROR
   sudo sh -c 'echo "## Generer par Deepin-fr" > /etc/apt/sources.list'; ERROR
@@ -152,14 +153,14 @@ function CLEAN_SYSTEME {
   dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
   echo ""
   echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
-  deborphan -v > /dev/null; TEST_BIN deborphan; ERROR
+  TEST_BIN deborphan; ERROR
   sudo deborphan; ERROR
   sudo dpkg --purge $(deborphan) &> /dev/null
   echo ""
   echo -e "${blanc}-- Nettoyage des locales:${fin}"
   sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
   sudo locale-gen; ERROR
-  sudo localepurge --help &> /dev/null; TEST_BIN localepurge; ERROR
+  TEST_BIN localepurge; ERROR
   sudo localepurge; ERROR
   echo ""
   echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
@@ -198,7 +199,7 @@ function DICO_FR_WPS {
   wget -P /tmp http://wps-community.org/download/dicts/fr_FR.zip; ERROR
   echo ""
   echo -e "${blanc}-- Décompression de l'archive:${fin}"
-  unzip -v &> /dev/null; TEST_BIN unzip; ERROR
+  TEST_BIN unzip; ERROR
   sudo unzip /tmp/fr_FR.zip -d /opt/kingsoft/wps-office/office6/dicts/; ERROR
   rm -f /tmp/fr_FR.zip; ERROR
   echo ""
@@ -214,7 +215,7 @@ function VERR_NUM_BOOT {
   echo -e "${titre}8: Activation de la touche \"Verrouillage Numérique\" au démarrage:${fin}"
   echo ""
   echo -e "${blanc}-- Téléchargement de numlockx:${fin}"
-  numlockx status &> /dev/null; TEST_BIN numlockx; ERROR
+  TEST_BIN numlockx; ERROR
   echo ""
   echo -e "${blanc}-- Activation dans la configuration \"lightdm\":${fin}"
   sudo sed -i -e "s#\#greeter-setup-script=#greeter-setup-script=/usr/bin/numlockx\ on#g" /etc/lightdm/lightdm.conf; ERROR
@@ -239,8 +240,8 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
-  dpkg -l |grep lynx &> /dev/null; TEST_BIN lynx; ERROR
-  wget -V &> /dev/null; TEST_BIN wget; ERROR
+  TEST_BIN lynx; ERROR
+  TEST_BIN wget; ERROR
   echo ""
   echo -e "${blanc}-- Debut du telechargement:${fin}"
   echo ""
