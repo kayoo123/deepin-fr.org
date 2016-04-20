@@ -8,6 +8,7 @@
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
+set -x
 sleep 1
 ###############
 ## FONCTIONS ##
@@ -37,7 +38,7 @@ function ERROR {
 
 ## Vérifie et install le paquet manquant (Check a faire avant appel du script)
 function TEST_BIN() {
-dpkg -l |grep -w $1 &> /dev/null; ERROR
+dpkg -l |grep -w $1 &> /dev/null
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
