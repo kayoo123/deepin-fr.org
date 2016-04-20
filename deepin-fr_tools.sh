@@ -37,7 +37,7 @@ function ERROR {
 
 ## Vérifie et install le paquet manquant (Check a faire avant appel du script)
 function TEST_BIN() {
-dpkg -l |grep -w $1 
+dpkg -l |grep -w $1 |grep -v ^ii
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
