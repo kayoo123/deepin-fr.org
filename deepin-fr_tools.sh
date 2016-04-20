@@ -37,7 +37,7 @@ function ERROR {
 
 ## Vérifie et install le paquet manquant (Check a faire avant appel du script)
 function TEST_BIN() {
-dpkg -l |grep -w $1 > /dev/null
+dpkg -l |grep -w $1 
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
@@ -79,7 +79,7 @@ function DEPOT_LIST {
   echo ""
   echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponible et vous affiche les débits de téléchargement associés${fin}"
   echo ""
-  TEST_BIN curl; ERROR
+  TEST_BIN curl
   echo -e "${blanc}-- Liste :${fin}"
   curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}'; ERROR
 }
