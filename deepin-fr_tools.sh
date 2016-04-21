@@ -50,7 +50,6 @@ dpkg -l |grep -w ' $1 ' |grep ^ii > /dev/null
       echo "Installation en cours, veuillez patienter..."
       echo ""
       CHECK_SERVICE apt-get
-      echo ""
       sudo apt-get install -y $1
       echo ""
       echo "Intallation de $1 terminé"
