@@ -42,18 +42,26 @@ dpkg -l |grep -w ' $1 ' |grep ^ii > /dev/null
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
     echo "ce script nécessite : $1"
-    echo "Installation en cours, veuillez patienter..."
-    echo ""; sleep 1
-    CHECK_SERVICE apt-get
-    sudo apt-get install -y $1
-    echo ""; sleep 1
-    echo "Intallation de $1 terminé"
+    echo ""
+    echo -e "Souhaitez-vous l'installer ${jaune}[O/n]${fin} ?"
+    read REP
+    if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+      echo ""
+      echo "Installation en cours, veuillez patienter..."
+      echo ""
+      CHECK_SERVICE apt-get
+      echo ""
+      sudo apt-get install -y $1
+      echo ""
+      echo "Intallation de $1 terminé"
+      sleep 1
+    fi
   fi
 }
 
 ## Vérifie qu'aucun processus ne soit déjà lancé
 function CHECK_SERVICE() {
-  ps -edf |grep -w $1 |grep -v grep &> /dev/null
+  ps -edf |grep -w $1 |grep -v grep > /dev/null
   if [ $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
