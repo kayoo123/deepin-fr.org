@@ -79,7 +79,7 @@ function DEPOT_LIST {
   echo ""
   echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponible et vous affiche les débits de téléchargement associés${fin}"
   echo ""
-  TEST_BIN curl
+  TEST_BIN curl; ERROR
   echo -e "${blanc}-- Liste :${fin}"
   curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}'; ERROR
 }
