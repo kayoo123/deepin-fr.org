@@ -247,11 +247,11 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
-  TEST_BIN lynx; ERROR
-  TEST_BIN wget; ERROR
   echo ""
   echo -e "${blanc}-- Debut du telechargement:${fin}"
   echo ""
+  TEST_BIN lynx; ERROR
+  TEST_BIN wget; ERROR
   wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
   find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
   echo ""
