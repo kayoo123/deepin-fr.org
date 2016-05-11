@@ -269,8 +269,8 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
   echo ""
   echo -e "${blanc}-- Rechargement du centre de control:${fin}"
-  /usr/bin/dde-control-center
-  pkill -9 dde-control-cen; ERROR
+  PID=$(pgrep -l dde-control-cen|awk '{ print $1 }')
+  kill -9 $PID; ERROR
   /usr/bin/dde-control-center --show &
   echo ""
   echo ""
