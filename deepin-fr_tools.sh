@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.8
-# Date : 20/04/2016
+# Vers : 3.0
+# Date : 11/05/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -37,7 +37,7 @@ function ERROR {
 
 ## Vérifie et install le paquet manquant 
 function TEST_BIN() {
-dpkg -l |grep -w ' $1 ' |grep ^ii > /dev/null
+dpkg -l |grep -w " $1 " |grep ^ii > /dev/null
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
@@ -54,6 +54,11 @@ dpkg -l |grep -w ' $1 ' |grep ^ii > /dev/null
       echo ""
       echo "Intallation de $1 terminé"
       sleep 1
+    else
+      echo ""
+      echo "Installation annulé..."
+      echo ""
+      exit 1
     fi
   fi
 }
@@ -84,11 +89,18 @@ function DEPOT_CHECK {
 ## 2: Liste les dépots en afficheant les débits de téléchargement
 function DEPOT_LIST {
   echo ""
-  echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponible et vous affiche les débits de téléchargement associés${fin}"
+  echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponibles:${fin}"
   echo ""
-  TEST_BIN curl; ERROR
+  echo "Chaque dépot sera noté via un [score], cette valeur sera déterminé sur les criteres suivants :"
+  echo "- le temps de réponse"
+  echo "- le nombre de saut" 
+  echo "- le nombre de paquets recus (test sur 50)"
+  TEST_BIN netselect; ERROR
+  echo
+  echo "veuillez patienter..."; sleep 2
+  echo ""
   echo -e "${blanc}-- Liste :${fin}"
-  curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}'; ERROR
+  netselect -vv -t 50 $(curl -L http://mirrors.deepin-fr.org/); ERROR
 }
 
 ## 3: Remplace votre dépot par le plus rapide
@@ -96,9 +108,10 @@ function DEPOT_REMPLACE {
   echo ""
   echo -e "${titre}3: Remplace le dépot de votre systeme par le plus performant${fin}"
   echo ""
-  TEST_BIN curl; ERROR
-  echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."
-  BEST_REPO=$(curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}' |sort -gr |head -1 |awk '{print $2}'); ERROR
+  TEST_BIN netselect; ERROR
+  echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."; sleep 2
+  echo ""
+  BEST_REPO=$(netselect -t 50 $(curl -L http://mirrors.deepin-fr.org/) |awk '{print $NF}'); ERROR
   sudo sh -c 'echo "## Auto-genere par Deepin-fr" > /etc/apt/sources.list'; ERROR
   sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
   echo ""
@@ -329,3 +342,4 @@ break
 done
 
 exit 0
+
