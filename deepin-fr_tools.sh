@@ -96,6 +96,7 @@ function DEPOT_LIST {
   echo "- le nombre de saut" 
   echo "- le nombre de paquets recus (test sur 50)"
   TEST_BIN netselect; ERROR
+  TEST_BIN curl; ERROR
   echo
   echo "veuillez patienter..."; sleep 2
   echo ""
