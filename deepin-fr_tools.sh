@@ -99,7 +99,7 @@ function DEPOT_REMPLACE {
   TEST_BIN curl; ERROR
   echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."
   BEST_REPO=$(curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}' |sort -gr |head -1 |awk '{print $2}'); ERROR
-  sudo sh -c 'echo "## Generer par Deepin-fr" > /etc/apt/sources.list'; ERROR
+  sudo sh -c 'echo "## Auto-genere par Deepin-fr" > /etc/apt/sources.list'; ERROR
   sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
   echo ""
   echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
