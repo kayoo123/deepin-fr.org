@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 2.6
-# Date : 17/04/2016
+# Vers : 3.0
+# Date : 11/05/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -35,24 +35,37 @@ function ERROR {
   fi
 }
 
-## Vérifie et install le paquet manquant (Check a faire avant appel du script)
+## Vérifie et install le paquet manquant 
 function TEST_BIN() {
+dpkg -l |grep -w " $1 " |grep ^ii > /dev/null
   if [ ! $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
     echo "ce script nécessite : $1"
-    echo "Installation en cours, veuillez patienter..."
-    echo ""; sleep 1
-    CHECK_SERVICE apt-get
-    sudo apt-get install -y $1
-    echo ""; sleep 1
-    echo "Intallation de $1 terminé"
+    echo ""
+    echo -e "Souhaitez-vous l'installer ${jaune}[O/n]${fin} ?"
+    read REP
+    if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+      echo ""
+      echo "Installation en cours, veuillez patienter..."
+      echo ""
+      CHECK_SERVICE apt-get
+      sudo apt-get install -y $1
+      echo ""
+      echo "Intallation de $1 terminé"
+      sleep 1
+    else
+      echo ""
+      echo "Installation annulé..."
+      echo ""
+      exit 1
+    fi
   fi
 }
 
 ## Vérifie qu'aucun processus ne soit déjà lancé
 function CHECK_SERVICE() {
-  ps -edf |grep $1 |grep -v grep &> /dev/null
+  ps -edf |grep -w $1 |grep -v grep > /dev/null
   if [ $? -eq 0 ]; then
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
@@ -76,11 +89,18 @@ function DEPOT_CHECK {
 ## 2: Liste les dépots en afficheant les débits de téléchargement
 function DEPOT_LIST {
   echo ""
-  echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponible et vous affiche les débits de téléchargement associés${fin}"
+  echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponibles:${fin}"
   echo ""
-  curl -V > /dev/null; TEST_BIN curl; ERROR
+  echo "Chaque dépot sera noté via un [score], cette valeur sera déterminé sur les criteres suivants :"
+  echo "- le temps de réponse"
+  echo "- le nombre de saut" 
+  echo "- le nombre de paquets recus (test sur 50)"
+  TEST_BIN netselect; ERROR
+  echo
+  echo "veuillez patienter..."; sleep 2
+  echo ""
   echo -e "${blanc}-- Liste :${fin}"
-  curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}'; ERROR
+  netselect -vv -t 50 $(curl -L http://mirrors.deepin-fr.org/); ERROR
 }
 
 ## 3: Remplace votre dépot par le plus rapide
@@ -88,10 +108,11 @@ function DEPOT_REMPLACE {
   echo ""
   echo -e "${titre}3: Remplace le dépot de votre systeme par le plus performant${fin}"
   echo ""
-  curl -V > /dev/null; TEST_BIN curl; ERROR
-  echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."
-  BEST_REPO=$(curl -s http://mirrors.deepin-fr.org/ | xargs -n1 -I {} sh -c 'echo `curl -r 0-102400 -s -w %{speed_download} -o /dev/null {}/ls-lR.gz` {}' |sort -gr |head -1 |awk '{print $2}'); ERROR
-  sudo sh -c 'echo "## Generer par Deepin-fr" > /etc/apt/sources.list'; ERROR
+  TEST_BIN netselect; ERROR
+  echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."; sleep 2
+  echo ""
+  BEST_REPO=$(netselect -t 50 $(curl -L http://mirrors.deepin-fr.org/) |awk '{print $NF}'); ERROR
+  sudo sh -c 'echo "## Auto-genere par Deepin-fr" > /etc/apt/sources.list'; ERROR
   sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
   echo ""
   echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
@@ -152,14 +173,14 @@ function CLEAN_SYSTEME {
   dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
   echo ""
   echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
-  deborphan -v > /dev/null; TEST_BIN deborphan; ERROR
+  TEST_BIN deborphan; ERROR
   sudo deborphan; ERROR
   sudo dpkg --purge $(deborphan) &> /dev/null
   echo ""
   echo -e "${blanc}-- Nettoyage des locales:${fin}"
   sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
   sudo locale-gen; ERROR
-  sudo localepurge --help &> /dev/null; TEST_BIN localepurge; ERROR
+  TEST_BIN localepurge; ERROR
   sudo localepurge; ERROR
   echo ""
   echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
@@ -198,7 +219,7 @@ function DICO_FR_WPS {
   wget -P /tmp http://wps-community.org/download/dicts/fr_FR.zip; ERROR
   echo ""
   echo -e "${blanc}-- Décompression de l'archive:${fin}"
-  unzip -v &> /dev/null; TEST_BIN unzip; ERROR
+  TEST_BIN unzip; ERROR
   sudo unzip /tmp/fr_FR.zip -d /opt/kingsoft/wps-office/office6/dicts/; ERROR
   rm -f /tmp/fr_FR.zip; ERROR
   echo ""
@@ -214,7 +235,7 @@ function VERR_NUM_BOOT {
   echo -e "${titre}8: Activation de la touche \"Verrouillage Numérique\" au démarrage:${fin}"
   echo ""
   echo -e "${blanc}-- Téléchargement de numlockx:${fin}"
-  numlockx status &> /dev/null; TEST_BIN numlockx; ERROR
+  TEST_BIN numlockx; ERROR
   echo ""
   echo -e "${blanc}-- Activation dans la configuration \"lightdm\":${fin}"
   sudo sed -i -e "s#\#greeter-setup-script=#greeter-setup-script=/usr/bin/numlockx\ on#g" /etc/lightdm/lightdm.conf; ERROR
@@ -231,29 +252,31 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo -e "${titre}9: Telechargement de fond d'ecran : \"InterfaceLIFT.com\":${fin}"
   echo ""
-  echo "Nous allons a présent télécharger 10 fond d'écran aléatoires"
-  echo "nous nous "
+  echo "Nous allons télécharger 10 fonds d'écran aléatoires"
+  echo ""
+  echo ""
   echo -e "${blanc}-- Detection de vos écrans:${fin}"
-  sleep 1; echo "Nous avons détecté une resolution pour votre ecran de : $RESOLUTION"
+  sleep 1; echo -e "Nous avons détecté une resolution pour votre ecran de : ${blanc}$RESOLUTION${fin}"
   echo -e "Confirmez-vous cette résolution ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
-  dpkg -l |grep lynx &> /dev/null; TEST_BIN lynx; ERROR
-  wget -V &> /dev/null; TEST_BIN wget; ERROR
   echo ""
   echo -e "${blanc}-- Debut du telechargement:${fin}"
   echo ""
+  TEST_BIN lynx; ERROR
+  TEST_BIN wget; ERROR
   wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
   find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
   echo ""
   echo -e "${blanc}-- Rechargement du centre de control:${fin}"
+  /usr/bin/dde-control-center
   pkill -9 dde-control-cen; ERROR
+  /usr/bin/dde-control-center --show &
   echo ""
   echo ""
   echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
   fi
 }
-
 
 
 ##########
@@ -278,7 +301,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -306,6 +329,9 @@ do
         "Activer la touche \"verrouillage numérique\" au démarrage")
             VERR_NUM_BOOT
             ;;
+        "Telecharger des fonds d'écran sur InterfaceLIFT.com")
+            DL_WALLPAPER
+            ;;
         "Quitter")
 	    echo ""
 	    echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
@@ -316,3 +342,4 @@ break
 done
 
 exit 0
+
