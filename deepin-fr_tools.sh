@@ -109,6 +109,7 @@ function DEPOT_REMPLACE {
   echo -e "${titre}3: Remplace le dépot de votre systeme par le plus performant${fin}"
   echo ""
   TEST_BIN netselect; ERROR
+  TEST_BIN curl; ERROR
   echo "Veuillez patienter pendant que nous determinons le meilleur dépot pour vous..."; sleep 2
   echo ""
   BEST_REPO=$(netselect -t 50 $(curl -L http://mirrors.deepin-fr.org/) |awk '{print $NF}'); ERROR
