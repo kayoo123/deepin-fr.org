@@ -270,7 +270,7 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo -e "${blanc}-- Rechargement du centre de control:${fin}"
   PID=$(pgrep -l dde-control-cen|awk '{ print $1 }')
-  kill -9 $PID > /dev/null
+  kill -9 $PID > /dev/null 2>&1
   /usr/bin/dde-control-center --show &
   echo ""
   echo ""
