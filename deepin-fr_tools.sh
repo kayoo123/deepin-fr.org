@@ -299,7 +299,8 @@ FILE_AUDIT=/tmp/hardinfo.txt
   hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
   echo ""
   echo ""
-  sleep 1; echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne ? ${blanc}Ex: paste.debian.net{fin}"
+  sleep 1
+  echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
   echo -e "Acceptez-vous cet envoi ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
