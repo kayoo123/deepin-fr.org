@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 3.0
-# Date : 11/05/2016
+# Vers : 3.2
+# Date : 22/05/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -337,7 +337,7 @@ function ENV_DEEPIN_TOOLS {
     ENV_USER="$HOME/.zshrc"
   fi
   grep "deepin-tools" $ENV_USER > /dev/null
-  if [! $? -eq 0 ]; then
+  if [ ! $? -eq 0 ]; then
     echo "" >> $ENV_USER
     echo "## Deepin-fr Tools" >> $ENV_USER
     echo "alias deepin-tools=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
