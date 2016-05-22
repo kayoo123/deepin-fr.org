@@ -76,6 +76,7 @@ function CHECK_SERVICE() {
   fi
 }
 
+
 ## 1: Vérifie le dépot déclarer dans le "sources.list"
 function DEPOT_CHECK {
   echo ""
@@ -322,6 +323,37 @@ FILE_AUDIT=/tmp/hardinfo.txt
   fi
 }
 
+
+## 11: Installer l'outil "Deepin-tools" nativement
+function ENV_DEEPIN_TOOLS {
+  echo ""
+  echo -e "${titre}11: Installer les commandes \"Deepin-tools\" nativement :${fin}"
+  echo ""
+  # test BASH
+  if[ $SHELL = '/bin/bash' ] ; then
+    ENV_USER="$HOME/.bashrc"
+  fi
+  if[ $SHELL = '/usr/bin/zsh' ] ; then
+    ENV_USER="$HOME/.zshrc"
+  fi
+  grep "deepin-tools" $ENV_USER > /dev/null
+  if [! $? -eq 0 ]; then
+    echo "" >> $ENV_USER
+    echo "## Deepin-fr Tools" >> $ENV_USER
+    echo "alias deepin-tools=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+    echo "alias deepin-tools-dev=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+    echo ""
+    echo -e "Les commandes de l'outil \"deepin-tools\" ont été installées avec ${vert}SUCCES${fin}."
+  else
+    echo ""
+    echo "Les commandes de l'outil \"deepin-tools\" sont déjà installées sur votre environement".  
+  fi
+  echo ""
+  echo "Vous pouvez a présent utiliser les commandes suivantes :"
+  echo "- deepin-tools     : Pack d'outils (stable) pour distribution DEEPIN-FR"
+  echo "- deepin-tools-dev : Pack d'outils en developpement (dev) pour distribution DEEPIN-FR "
+}
+
 ##########
 ## MAIN ##
 ##########
@@ -344,7 +376,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Installer l'outil \"Deepin-tools\" nativement" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -377,6 +409,9 @@ do
             ;;
         "Generation d'un rapport SYSTEME")
             AUDIT
+            ;;
+        "Installer l'outil \"Deepin-tools\" nativement")
+            ENV_DEEPIN_TOOLS
             ;;
         "Quitter")
 	    echo ""
