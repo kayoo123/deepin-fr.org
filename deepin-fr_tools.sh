@@ -293,10 +293,12 @@ FILE_AUDIT=/tmp/hardinfo.txt
   echo -e "${blanc}-- Génération de l'audit SYSTEME:${fin}"
   echo ""
   TEST_BIN hardinfo; ERROR
-  hardinfo --generate-report > $FILE_AUDIT
+  sleep 2
+  hardinfo --generate-report > $FILE_AUDIT; ERROR
   #hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
   echo ""
-  sleep 1; echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne ? ${blanc}Ex. http://paste.debian.net{fin}"
+  echo ""
+  sleep 1; echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne ? ${blanc}Ex: paste.debian.net{fin}"
   echo -e "Acceptez-vous cet envoi ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
@@ -304,19 +306,19 @@ FILE_AUDIT=/tmp/hardinfo.txt
     echo -e "${blanc}-- Envoie du rapport en ligne :${fin}"
     echo ""
     TEST_BIN pastebinit; ERROR
-    echo Le lien va être générer...
+    echo Le lien va être généré...
     echo ""
-    pastebinit -P -i $FILE_AUDIT
-    rm -f $FILE_AUDIT
+    pastebinit -P -i $FILE_AUDIT; ERROR
+    rm -f $FILE_AUDIT; ERROR
     echo ""
-    echo " - Votre fichier n'est accessible qu'a partir du lien ci-dessus."
+    echo " - Votre fichier n'est accessible qu'à partir du lien ci-dessus."
     echo " - Votre fichier restera disponible pendant 7 jours."
     echo ""
     echo ""
     echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
   else
     echo ""
-    echo "Le rapport de votre systeme a été généré sur : $FILE_AUDIT"
+    echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
   fi
 }
 
@@ -342,7 +344,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -373,7 +375,7 @@ do
         "Telecharger des fonds d'écran sur InterfaceLIFT.com")
             DL_WALLPAPER
             ;;
-        "Generation d'un rapport")
+        "Generation d'un rapport SYSTEME")
             AUDIT
             ;;
         "Quitter")
