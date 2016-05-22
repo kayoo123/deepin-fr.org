@@ -349,7 +349,7 @@ function ENV_DEEPIN_TOOLS {
     echo "Les commandes de l'outil \"deepin-tools\" sont déjà installées sur votre environement".  
   fi
   echo ""
-  echo "Vous pouvez a présent utiliser les commandes suivantes :"
+  echo "Vous pouvez utiliser les commandes suivantes :"
   echo "- deepin-tools     : Pack d'outils (stable) pour distribution DEEPIN-FR"
   echo "- deepin-tools-dev : Pack d'outils en developpement (dev) pour distribution DEEPIN-FR "
   source $ENV_USER > /dev/null
