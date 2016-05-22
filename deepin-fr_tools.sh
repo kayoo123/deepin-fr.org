@@ -294,8 +294,8 @@ FILE_AUDIT=/tmp/hardinfo.txt
   echo ""
   TEST_BIN hardinfo; ERROR
   sleep 2
-  hardinfo --generate-report > $FILE_AUDIT; ERROR
-  #hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
+  #hardinfo --generate-report > $FILE_AUDIT; ERROR
+  hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
   echo ""
   echo ""
   sleep 1; echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne ? ${blanc}Ex: paste.debian.net{fin}"
@@ -306,7 +306,7 @@ FILE_AUDIT=/tmp/hardinfo.txt
     echo -e "${blanc}-- Envoie du rapport en ligne :${fin}"
     echo ""
     TEST_BIN pastebinit; ERROR
-    echo Le lien va être généré...
+    echo Le lien va être généré...Merci de le conserver:
     echo ""
     pastebinit -P -i $FILE_AUDIT; ERROR
     rm -f $FILE_AUDIT; ERROR
