@@ -329,7 +329,7 @@ function ENV_DEEPIN_TOOLS {
   echo ""
   echo -e "${titre}11: Installer les commandes \"Deepin-tools\" nativement :${fin}"
   echo ""
-  # test BASH
+  # test SHELL
   if [ $SHELL = '/bin/bash' ]; then
     ENV_USER="$HOME/.bashrc"
   fi
