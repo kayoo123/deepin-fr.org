@@ -330,10 +330,10 @@ function ENV_DEEPIN_TOOLS {
   echo -e "${titre}11: Installer les commandes \"Deepin-tools\" nativement :${fin}"
   echo ""
   # test BASH
-  if[ $SHELL = '/bin/bash' ] ; then
+  if[ echo $SHELL = '/bin/bash' ] ; then
     ENV_USER="$HOME/.bashrc"
   fi
-  if[ $SHELL = '/usr/bin/zsh' ] ; then
+  if[ echo $SHELL = '/usr/bin/zsh' ] ; then
     ENV_USER="$HOME/.zshrc"
   fi
   grep "deepin-tools" $ENV_USER > /dev/null
