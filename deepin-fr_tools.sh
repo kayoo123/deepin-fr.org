@@ -332,7 +332,7 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo -e "${titre}10: Copie des logs journaliers :${fin}"
   echo ""
   echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
-  echo "\t $(date +'%A %d %B')"; ERROR
+  echo " -  $(date +'%A %d %B')"; ERROR
   sleep 2
   echo ""
   echo ""
