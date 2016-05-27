@@ -332,10 +332,11 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo -e "${titre}10: Copie des logs journaliers :${fin}"
   echo ""
   echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
+  echo "\t $(date +'%A %d %B')"; ERROR
   sleep 2
   echo ""
   echo ""
-  echo -e "${blanc}-- Génération de l'archivage:${fin}"
+  echo -e "${blanc}-- Génération de l'archive:${fin}"
   echo ""
   sleep 1
   sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -; ERROR
@@ -344,6 +345,7 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo ""
   sleep 1
   echo -e "=> L'archive a été généré avec ${vert}SUCCES${fin}."
+  echo ""
   echo "Il est disponible localement sur :"
   du -sh $FILE_LOG; ERROR
   echo ""
