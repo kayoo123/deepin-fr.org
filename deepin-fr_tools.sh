@@ -300,7 +300,7 @@ FILE_AUDIT=/tmp/hardinfo.txt
   echo ""
   echo ""
   sleep 1
-  echo -e "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
+  echo "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
   echo -e "Acceptez-vous cet envoi ${jaune}[O/n]${fin} ?"
   read REP
   if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
@@ -325,7 +325,33 @@ FILE_AUDIT=/tmp/hardinfo.txt
 }
 
 
-## 11: Installer l'outil "Deepin-tools" nativement
+## 11: Arciveage des LOGS JOURNALIER
+function LOG {
+FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
+  echo ""
+  echo -e "${titre}10: Copie des logs journaliers :${fin}"
+  echo ""
+  echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
+  sleep 2
+  echo ""
+  echo ""
+  echo -e "${blanc}-- Génération de l'archivage:${fin}"
+  echo ""
+  sleep 1
+  sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -; ERROR
+  sudo chown $USER $FILE_LOG; ERROR
+  echo ""
+  echo ""
+  sleep 1
+  echo -e "=> L'archive a été généré avec ${vert}SUCCES${fin}."
+  echo "Il est disponible localement sur :"
+  du -sh $FILE_LOG; ERROR
+  echo ""
+  echo ""
+}
+
+
+## XXXX: Installer l'outil "Deepin-tools" nativement
 function ENV_DEEPIN_TOOLS {
   echo ""
   echo -e "${titre}11: Installer les commandes \"Deepin-tools\" nativement :${fin}"
@@ -378,7 +404,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Installer l'outil \"Deepin-tools\" nativement" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Copie des logs journaliers" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -412,8 +438,8 @@ do
         "Generation d'un rapport SYSTEME")
             AUDIT
             ;;
-        "Installer l'outil \"Deepin-tools\" nativement")
-            ENV_DEEPIN_TOOLS
+        "Copie des logs journaliers")
+            LOG
             ;;
         "Quitter")
 	    echo ""
