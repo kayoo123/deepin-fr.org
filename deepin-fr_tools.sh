@@ -329,7 +329,7 @@ FILE_AUDIT=/tmp/hardinfo.txt
 function LOG {
 FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo ""
-  echo -e "${titre}10: Copie des logs journaliers :${fin}"
+  echo -e "${titre}11: Copie des logs journaliers :${fin}"
   echo ""
   echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
   echo " -  $(date +'%A %d %B')"; ERROR
@@ -352,6 +352,18 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo ""
 }
 
+## 12: Desactiver sons démarrage
+function SYS_SOUND {
+DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
+  echo ""
+  echo -e "${titre}12: Désactivation les sons au démarrage :${fin}"
+  echo ""
+  sleep 2
+  sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_old \;
+  
+  echo ""
+  echo -e "Les sons systemes de session ont été désactivé avec ${vert}SUCCES${fin}."
+ }
 
 ## XXXX: Installer l'outil "Deepin-tools" nativement
 function ENV_DEEPIN_TOOLS {
