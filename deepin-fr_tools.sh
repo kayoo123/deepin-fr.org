@@ -383,17 +383,29 @@ DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
   	echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
         ;;
         
-     "Annuler")
+     "Quitter")
      	echo ""
 	echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
 	;;
 	
-    *) echo option invalide;;
+    *) echo Option invalide;;
     esac
 break
 done
-  
  }
+ 
+ 
+ 
+ 
+ ##########################################################################
+ 
+ ## 13: Nettoyer les applications 
+function LOGICIEL_PROPRIO {
+  echo ""
+  echo -e "${titre}13: Remplacement de Logiciel  :${fin}"
+  echo ""
+  sleep 1
+}
 
 ## XXXX: Installer l'outil "Deepin-tools" nativement
 function ENV_DEEPIN_TOOLS {
@@ -425,6 +437,7 @@ function ENV_DEEPIN_TOOLS {
   echo "- deepin-tools-dev : Pack d'outils en developpement (dev) pour distribution DEEPIN-FR "
   source $ENV_USER > /dev/null
 }
+##################################################################
 
 ##########
 ## MAIN ##
@@ -492,7 +505,7 @@ do
 	    echo ""
 	    echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
             ;;
-        *) echo option invalide;;
+        *) echo Option invalide;;
     esac
 break
 done
