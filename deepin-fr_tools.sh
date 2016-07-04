@@ -356,13 +356,40 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
 function SYS_SOUND {
 DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
   echo ""
-  echo -e "${titre}12: Désactivation les sons au démarrage :${fin}"
+  echo -e "${titre}12: MENU SON :${fin}"
   echo ""
-  sleep 2
-  sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_old \;
+  sleep 1
+  PS3='=> Choix : '
+  options=("Désactiver les sons au démarrage de la session" "Activer les sons au démarrage de la session" "Quitter")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+     "Désactiver les sons au démarrage de la session")
+        echo -e "${blanc}-- Désactiver les sons au démarrage de la session:${fin}"
+        sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_disable \; ;ERROR
+        sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
+        sleep 1
+  	echo ""
+  	echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
+        ;;
+        
+     "Activer les sons au démarrage de la session")
+        echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
+        sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg; ERROR
+        sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg; ERROR
+        sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR
+        sleep 1
+  	echo ""
+  	echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
+        ;;
+        
+     "Annuler")
+     	echo ""
+	echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
+	;;
+	
+    *) echo option invalide;;
   
-  echo ""
-  echo -e "Les sons systemes de session ont été désactivé avec ${vert}SUCCES${fin}."
  }
 
 ## XXXX: Installer l'outil "Deepin-tools" nativement
