@@ -389,6 +389,9 @@ DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	;;
 	
     *) echo option invalide;;
+    esac
+break
+done
   
  }
 
