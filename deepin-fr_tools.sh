@@ -356,7 +356,7 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
 function SYS_SOUND {
 DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
   echo ""
-  echo -e "${titre}12: MENU SON :${fin}"
+  echo -e "${titre}12: Desactiver/Activer les sons de démarrage :${fin}"
   echo ""
   sleep 1
   PS3='=> Choix : '
@@ -448,7 +448,7 @@ echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
 PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Copie des logs journaliers" "Quitter")
+options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Generation d'un rapport SYSTEME" "Copie des logs journaliers" "Desactiver/Activer les sons de démarrage" "Quitter")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -484,6 +484,9 @@ do
             ;;
         "Copie des logs journaliers")
             LOG
+            ;;
+        "Desactiver/Activer les sons de démarrage")
+            SYS_SOUND
             ;;
         "Quitter")
 	    echo ""
