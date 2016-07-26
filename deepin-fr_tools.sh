@@ -553,6 +553,6 @@ read -p "=> Selection : "
 				bash ;;
     esac
   echo ""
-  sleep 1
+  sleep 2
   break
 done
