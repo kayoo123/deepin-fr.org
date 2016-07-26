@@ -124,7 +124,7 @@ EOF
     sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc 
     echo "" >> $ENV_USER
     echo "## DEEPIN-FR.org: deepin-tools" >> $ENV_USER
-    echo "alias deepin-tools=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+    echo "alias deepin-tools=/usr/share/deepin-tools/deepin-fr_tools.sh " >> $ENV_USER
     echo "alias deepin-tools-dev=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
     
   echo ""
