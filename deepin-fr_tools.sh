@@ -520,6 +520,10 @@ MENU: "Audit"
 13) Generation d'un rapport SYSTEME
 14) Copie des logs journaliers
 
+MENU: "Logiciel Propriétaire"
+15) ...
+16) ...
+
 ---
 Q) Quitter      D) Mode développeur
 
