@@ -88,14 +88,15 @@ function SETUP_UPDATE {
   echo ""
   echo -e "${blanc}-- Installation des soures:${fin}"
   sleep 1
-  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org
-  git -C /tmp clone https://github.com/kayoo123/deepin-fr.org.git
-  chmod +x /tmp/deepin-fr.org/deepin-fr_tools.sh
-  sudo mv /tmp/deepin-fr.org /usr/share/deepin-tools
+  TEST_BIN git; ERROR
+  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
+  git -C /tmp clone https://github.com/kayoo123/deepin-fr.org.git; ERROR
+  chmod +x /tmp/deepin-fr.org/deepin-fr_tools.sh; ERROR
+  sudo mv /tmp/deepin-fr.org /usr/share/deepin-tools; ERROR
   echo ""
   echo -e "${blanc}-- Installation du raccourci:${fin}"
   sleep 1
-  rm -f $HOME/.local/share/applications/deepin-tools.desktop
+  rm -f $HOME/.local/share/applications/deepin-tools.desktop; ERROR
   cat > $HOME/.local/share/applications/deepin-tools.desktop << "EOF"
   [Desktop Entry]
   Version=1.0
@@ -136,15 +137,15 @@ function REMOVE {
   echo ""
   echo -e "${blanc}-- Supression des alias:${fin}"
   sleep 1
-  sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc
+  sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc; ERROR
   echo ""
   echo -e "${blanc}-- Supression du raccourci:${fin}"
   sleep 1
-  rm -f $HOME/.local/share/applications/deepin-tools.desktop
+  rm -f $HOME/.local/share/applications/deepin-tools.desktop; ERROR
   echo ""
   echo -e "${blanc}-- Supression des sources:${fin}"
   sleep 1
-  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org
+  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
   
   echo ""
   echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
