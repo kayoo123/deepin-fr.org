@@ -354,6 +354,7 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo ""
   echo ""
   echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
+  echo "Vous les trouverez depuis le \"Centre de controle > Personnalisation > Fond d'écran\" "
   fi
 }
 ###############################################################################################
