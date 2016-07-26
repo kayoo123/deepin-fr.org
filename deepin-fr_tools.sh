@@ -15,6 +15,7 @@ sleep 1
 
 ## VERSION
 VERSION=4.0
+MOD_DEV=0
 
 ## COULEUR 
 blanc='\e[1;37m'
@@ -481,6 +482,7 @@ echo -e "${bleu}  ██║  ██║██╔══╝  ██╔══╝  �
 echo -e "${bleu}  ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║${fin}"
 echo -e "${bleu}  ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝${fin}"
 echo "version: $VERSION"
+if [ $MODE_DEV = '1']; then echo -e "${jaune}mode: DEVELOPPEUR${fin}"; fi
 echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
