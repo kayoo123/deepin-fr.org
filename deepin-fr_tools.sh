@@ -1,17 +1,20 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 3.0
-# Date : 11/05/2016
-# Auth : Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
+# Vers : 4.0
+# Date : 26/07/2016
+# Auth : Kayoo (http://hub.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
-###############
-## FONCTIONS ##
-###############
+############################
+## VARIABLES ET FONCTIONS ##
+############################
+
+## VERSION
+VERSION=4.0
 
 ## COULEUR 
 blanc='\e[1;37m'
@@ -29,7 +32,7 @@ function ERROR {
     echo -e "${rouge}/!\ Erreur:${fin}"
     echo ""
     echo "Une erreure est intervenu dans le script, merci de le signaler directement sur notre forum :"
-    echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
+    echo -e "=> ${blanc}http://hub.deepin-fr.org${fin}"
     echo ""
     exit 1
   fi
@@ -76,20 +79,92 @@ function CHECK_SERVICE() {
   fi
 }
 
-## 1: Vérifie le dépot déclarer dans le "sources.list"
+
+###############################################################################################
+## 1: Installation et mise-à-jour de l'outil Deepin-tools
+function SETUP_UPDATE {
+  echo ""
+  echo -e "${titre}1: Installation et mise-à-jour de l'outil Deepin-tools${fin}"
+  echo ""
+  echo -e "${blanc}-- Installation des soures:${fin}"
+  sleep 1
+  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org
+  git -C /tmp clone https://github.com/kayoo123/deepin-fr.org.git
+  chmod +x /tmp/deepin-fr.org/deepin-fr_tools.sh
+  sudo mv /tmp/deepin-fr.org /usr/share/deepin-tools
+  echo ""
+  echo -e "${blanc}-- Installation du raccourci:${fin}"
+  sleep 1
+  rm -f $HOME/.local/share/applications/deepin-tools.desktop
+  cat > $HOME/.local/share/applications/deepin-tools.desktop << "EOF"
+  [Desktop Entry]
+  Version=1.0
+  Type=Application
+  Name=Deepin-tools
+  Name[fr_FR.UTF-8]=Deepin-tools
+  Comment="Outils aide deepin-fr.org"
+  Path=/usr/share/deepin-tools
+  Exec=/usr/share/deepin-tools/deepin-fr_tools.sh
+  Icon=logo.png
+  Terminal=true
+  StartupNotify=false
+  Categories=others;
+EOF
+  echo ""
+  echo -e "${blanc}-- Installation des alias:${fin}"
+  sleep 1
+  if [ $SHELL = '/bin/bash' ]; then
+    ENV_USER="$HOME/.bashrc"
+  fi
+  if [ $SHELL = '/usr/bin/zsh' ]; then
+    ENV_USER="$HOME/.zshrc"
+  fi
+    sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc 
+    echo "" >> $ENV_USER
+    echo "## DEEPIN-FR.org: deepin-tools" >> $ENV_USER
+    echo "alias deepin-tools=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+    echo "alias deepin-tools-dev=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+    
+  echo ""
+  echo -e "=> L'outil \"deepin-tools\" a été installé avec ${vert}SUCCES${fin}."
+}
+###############################################################################################
+## 2: Suppression de l'outil deepin-tools
+function REMOVE {
+  echo ""
+  echo -e "${titre}2: Suppression de l'outil deepin-tools${fin}"
+  echo ""
+  echo -e "${blanc}-- Supression des alias:${fin}"
+  sleep 1
+  sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc
+  echo ""
+  echo -e "${blanc}-- Supression du raccourci:${fin}"
+  sleep 1
+  rm -f $HOME/.local/share/applications/deepin-tools.desktop
+  echo ""
+  echo -e "${blanc}-- Supression des sources:${fin}"
+  sleep 1
+  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org
+  
+  echo ""
+  echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
+  
+}
+###############################################################################################
+## 3: Vérifie le dépot déclarer dans le "sources.list"
 function DEPOT_CHECK {
   echo ""
-  echo -e "${titre}1: Affiche votre serveur de dépot actuellement utilisé${fin}"
+  echo -e "${titre}3: Affiche votre serveur de dépot actuellement utilisé${fin}"
   echo ""
   echo -e "${blanc}-- Votre dépot actuel:${fin}"
   sleep 1
   cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq; ERROR
 }
-
-## 2: Liste les dépots en afficheant les débits de téléchargement
+###############################################################################################
+## 4: Liste les dépots en afficheant les débits de téléchargement
 function DEPOT_LIST {
   echo ""
-  echo -e "${titre}2: Fait la liste de l'ensemble des dépots disponibles:${fin}"
+  echo -e "${titre}4: Fait la liste de l'ensemble des dépots disponibles:${fin}"
   echo ""
   echo "Chaque dépot sera noté via un [score], cette valeur sera déterminé sur les criteres suivants :"
   echo "- le temps de réponse"
@@ -103,11 +178,11 @@ function DEPOT_LIST {
   echo -e "${blanc}-- Liste :${fin}"
   netselect -vv -t 50 $(curl -L http://mirrors.deepin-fr.org/); ERROR
 }
-
-## 3: Remplace votre dépot par le plus rapide
+###############################################################################################
+## 5: Remplace votre dépot par le plus rapide
 function DEPOT_REMPLACE {
   echo ""
-  echo -e "${titre}3: Remplace le dépot de votre systeme par le plus performant${fin}"
+  echo -e "${titre}5: Remplace le dépot de votre systeme par le plus performant${fin}"
   echo ""
   TEST_BIN netselect; ERROR
   TEST_BIN curl; ERROR
@@ -119,11 +194,11 @@ function DEPOT_REMPLACE {
   echo ""
   echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 }
-
-## 4: Remplace votre dépot par l'officiel ( seveur en chine)
+###############################################################################################
+## 6: Remplace votre dépot par l'officiel ( seveur en chine)
 function DEPOT_RETOUR {
   echo ""
-  echo -e "${titre}4: Si vous souhaitez revenir au dépot original : http://packages.deepin.com${fin}"
+  echo -e "${titre}6: Si vous souhaitez revenir au dépot original : http://packages.deepin.com${fin}"
   echo ""
   echo "Retour sur le dépot original (sans modification)"
   echo "Veuillez patienter..."
@@ -134,11 +209,11 @@ function DEPOT_RETOUR {
   echo ""
   echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 }
-
-## 5: Met a jour du systeme avec correction des dépendances
+###############################################################################################
+## 7: Met a jour du systeme avec correction des dépendances
 function MAJ_SYSTEME {
   echo ""
-  echo -e "${titre}5: Mise-à-jour de votre systeme Deepin COMPLET${fin}"
+  echo -e "${titre}7: Mise-à-jour de votre systeme Deepin COMPLET${fin}"
   echo ""
   echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
   CHECK_SERVICE apt-get
@@ -157,11 +232,11 @@ function MAJ_SYSTEME {
   echo ""
   echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
 }
-
-## 6: Nettoie votre systeme en profondeur
+###############################################################################################
+## 8: Nettoie votre systeme en profondeur
 function CLEAN_SYSTEME {
   echo ""
-  echo -e "${titre}6: Nettoyage de votre systeme Deepin COMPLET${fin}"
+  echo -e "${titre}8: Nettoyage de votre systeme Deepin COMPLET${fin}"
   echo ""
   echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
   CHECK_SERVICE apt-get
@@ -210,11 +285,11 @@ function CLEAN_SYSTEME {
   echo ""
   echo -e "=> Votre systeme a été nettoyé avec ${vert}SUCCES${fin}."
 }
-
-## 7: Installation du dictionnaire de la suite WPS-Office
+###############################################################################################
+## 9: Installation du dictionnaire de la suite WPS-Office
 function DICO_FR_WPS {
   echo ""
-  echo -e "${titre}7: Installation du dictionnaire Francais pour WPS-Office:${fin}"
+  echo -e "${titre}9: Installation du dictionnaire Francais pour WPS-Office:${fin}"
   echo ""
   echo -e "${blanc}-- Téléchargement de l'archive:${fin}"
   sudo rm -rf /opt/kingsoft/wps-office/office6/dicts/fr_FR
@@ -230,11 +305,11 @@ function DICO_FR_WPS {
   echo "Il vous suffit de sélectionner dirrectement depuis la suite WPS-Office:"
   echo "Outils > Options > Vérifier l'orthographe > Dictionnaire personnel > Ajouter"
 }
-
-## 8: Activation de la touche verr.num au boot
+###############################################################################################
+## 10: Activation de la touche verr.num au boot
 function VERR_NUM_BOOT {
   echo ""
-  echo -e "${titre}8: Activation de la touche \"Verrouillage Numérique\" au démarrage:${fin}"
+  echo -e "${titre}10: Activation de la touche \"Verrouillage Numérique\" au démarrage:${fin}"
   echo ""
   echo -e "${blanc}-- Téléchargement de numlockx:${fin}"
   TEST_BIN numlockx; ERROR
@@ -245,14 +320,14 @@ function VERR_NUM_BOOT {
   echo ""
   echo -e "=> La touche \"Verrouillage Numérique\" a été activé au démarrage avec ${vert}SUCCES${fin}."
 }
-
-## 9: Telechargement wallpaper : InterfaceLIFT.com
+###############################################################################################
+## 11: Telechargement wallpaper : InterfaceLIFT.com
 function DL_WALLPAPER {
 RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
 DIR=$HOME/Images/Wallpapers
 URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTION/
   echo ""
-  echo -e "${titre}9: Telechargement de fond d'ecran : \"InterfaceLIFT.com\":${fin}"
+  echo -e "${titre}11: Telechargement de fond d'ecran : \"InterfaceLIFT.com\":${fin}"
   echo ""
   echo "Nous allons télécharger 10 fonds d'écran aléatoires"
   echo ""
@@ -279,6 +354,118 @@ URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTI
   echo -e "=> Les nouveaux fond d'écrans ont été telechargé avec ${vert}SUCCES${fin}."
   fi
 }
+###############################################################################################
+## 12: Desactiver sons démarrage
+function SYS_SOUND {
+DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
+  echo ""
+  echo -e "${titre}12: Desactiver/Activer les sons de démarrage :${fin}"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Désactiver les sons au démarrage de la session" "Activer les sons au démarrage de la session" "Quitter")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+     "Désactiver les sons au démarrage de la session")
+        echo -e "${blanc}-- Désactiver les sons au démarrage de la session:${fin}"
+        sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_disable \; ;ERROR
+        sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
+        sleep 1
+		echo ""
+		echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
+        ;;
+        
+     "Activer les sons au démarrage de la session")
+        echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
+        sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg; ERROR
+        sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg; ERROR
+        sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR
+        sleep 1
+		echo ""
+		echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
+        ;;
+        
+     "Quitter")
+     	echo ""
+		echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
+	;;
+	
+    *) echo Option invalide;;
+    esac
+  break
+done
+}
+############################################################################################### 
+## 13: Génération d'un rapport
+function AUDIT {
+FILE_AUDIT=/tmp/hardinfo.txt
+  echo ""
+  echo -e "${titre}13: Génération d'un rapport :${fin}"
+  echo ""
+  echo "Nous allons générer et mettre a disposition un audit complet de votre systeme."
+  echo ""
+  echo ""
+  echo -e "${blanc}-- Génération de l'audit SYSTEME:${fin}"
+  echo ""
+  TEST_BIN hardinfo; ERROR
+  sleep 2
+  #hardinfo --generate-report > $FILE_AUDIT; ERROR
+  hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
+  echo ""
+  echo ""
+  sleep 1
+  echo "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
+  echo -e "Acceptez-vous cet envoi ${jaune}[O/n]${fin} ?"
+  read REP
+  if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then
+    echo ""
+    echo -e "${blanc}-- Envoie du rapport en ligne :${fin}"
+    echo ""
+    TEST_BIN pastebinit; ERROR
+    echo Le lien va être généré...Merci de le conserver:
+    echo ""
+    pastebinit -P -i $FILE_AUDIT; ERROR
+    rm -f $FILE_AUDIT; ERROR
+    echo ""
+    echo " - Votre fichier n'est accessible qu'à partir du lien ci-dessus."
+    echo " - Votre fichier restera disponible pendant 7 jours."
+    echo ""
+    echo ""
+    echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
+  else
+    echo ""
+    echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
+  fi
+}
+###############################################################################################
+## 14: Arciveage des LOGS JOURNALIER
+function LOG {
+FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
+  echo ""
+  echo -e "${titre}14: Copie des logs journaliers :${fin}"
+  echo ""
+  echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
+  echo " -  $(date +'%A %d %B')"; ERROR
+  sleep 2
+  echo ""
+  echo ""
+  echo -e "${blanc}-- Génération de l'archive:${fin}"
+  echo ""
+  sleep 1
+  sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -; ERROR
+  sudo chown $USER $FILE_LOG; ERROR
+  echo ""
+  echo ""
+  sleep 1
+  echo -e "=> L'archive a été généré avec ${vert}SUCCES${fin}."
+  echo ""
+  echo "Il est disponible localement sur :"
+  du -sh $FILE_LOG; ERROR
+  echo ""
+  echo ""
+}
+###############################################################################################
 
 
 ##########
@@ -292,6 +479,7 @@ echo -e "${bleu}  ██║  ██║█████╗  █████╗  �
 echo -e "${bleu}  ██║  ██║██╔══╝  ██╔══╝  ██╔═══╝ ██║██║╚██╗██║╚════╝██╔══╝  ██╔══██╗${fin}"
 echo -e "${bleu}  ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║${fin}"
 echo -e "${bleu}  ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝${fin}"
+echo "version: $VERSION"
 echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
@@ -302,46 +490,66 @@ echo "- Arch : $(uname -m)"
 echo ""
 echo "Nous vous proposons les taches suivantes :"
 echo ""
-PS3='=> Choix : '
-options=("Liste votre dépot actuel" "Lister les dépots disponibles" "Utiliser le meilleur dépot" "Revenir au dépot original" "Mettre à jour sa distribution PROPREMENT" "Nettoyer sa distribution COMPLETEMENT" "Ajouter le dictionnaire Francais pour WPS-Office" "Activer la touche \"verrouillage numérique\" au démarrage" "Telecharger des fonds d'écran sur InterfaceLIFT.com" "Quitter")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Liste votre dépot actuel")
-            DEPOT_CHECK
-            ;;
-        "Lister les dépots disponibles")
-            DEPOT_LIST
-            ;;
-        "Utiliser le meilleur dépot")
-            DEPOT_REMPLACE
-            ;;
-        "Revenir au dépot original")
-            DEPOT_RETOUR
-            ;;
-        "Mettre à jour sa distribution PROPREMENT")
-            MAJ_SYSTEME
-            ;;
-        "Nettoyer sa distribution COMPLETEMENT")
-            CLEAN_SYSTEME
-            ;;
-	"Ajouter le dictionnaire Francais pour WPS-Office")
-	    DICO_FR_WPS
-	    ;;
-        "Activer la touche \"verrouillage numérique\" au démarrage")
-            VERR_NUM_BOOT
-            ;;
-        "Telecharger des fonds d'écran sur InterfaceLIFT.com")
-            DL_WALLPAPER
-            ;;
-        "Quitter")
-	    echo ""
-	    echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
-            ;;
-        *) echo option invalide;;
+while :
+do 
+cat <<EOF
+MENU: "Deepin-tools"
+01) Installation et Mise-à-jour
+02) Désinstallation
+
+MENU: "Depot distant"
+03) Liste votre dépot actuel
+04) Lister les dépots disponibles
+05) Utiliser le meilleur dépot
+06) Revenir au dépot original
+
+MENU: "Mise-à-jour et nettoyage"
+07) Mettre à jour sa distribution PROPREMENT
+08) Nettoyer sa distribution COMPLETEMENT
+
+MENU: "Fonctionnalités"
+09) Ajouter le dictionnaire Francais pour WPS-Office
+10) Activer la touche verrouillage numérique au démarrage
+11) Telechargement wallpaper : InterfaceLIFT.com
+12) Desactiver/Activer les sons de démarrage
+
+MENU: "Audit" 
+13) Generation d'un rapport SYSTEME
+14) Copie des logs journaliers
+
+---
+Q) Quitter      D) Mode développeur
+
+
+EOF
+read -p "=> Selection : "
+    case "$REPLY" in
+    "1"|"01")  	SETUP_UPDATE ;;
+    "2"|"02")  	REMOVE ;;
+    "3"|"03")  	DEPOT_CHECK ;;
+    "4"|"04")  	DEPOT_LIST ;;
+    "5"|"05")  	DEPOT_REMPLACE ;;
+    "6"|"06")  	DEPOT_RETOUR ;;
+    "7"|"07")  	MAJ_SYSTEME ;;
+    "8"|"08")  	CLEAN_SYSTEME ;;
+    "9"|"09")  	DICO_FR_WPS ;;
+    "10")  		VERR_NUM_BOOT ;;
+    "11")  		DL_WALLPAPER ;;
+    "12")		SYS_SOUND ;;
+    "13")  		AUDIT ;;
+    "14")  		LOG ;;
+    "D"|"d") 	notify-send "Activation mode: DEV"
+				bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
+				;;
+    "Q"|"q")  	echo ""
+				echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
+				echo ""
+				sleep 1;exit 0
+				;;                
+    *)			echo "/!\ L'option choisi est invalide !" 
+				bash ;;
     esac
-break
+  echo ""
+  sleep 1
+  break
 done
-
-exit 0
-
