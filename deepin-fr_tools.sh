@@ -554,5 +554,7 @@ read -p "=> Selection : "
     esac
   echo ""
   sleep 2
+  echo "Appuyer sur une touche pour quitter..."
+  read touche
   break
 done
