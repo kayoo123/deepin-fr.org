@@ -122,7 +122,7 @@ EOF
   if [ $SHELL = '/usr/bin/zsh' ]; then
     ENV_USER="$HOME/.zshrc"
   fi
-    sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1; ERROR
+    sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1
     echo "" >> $ENV_USER
     echo "## DEEPIN-FR.org: deepin-tools" >> $ENV_USER
     echo "alias deepin-tools=/usr/share/deepin-tools/deepin-fr_tools.sh " >> $ENV_USER
@@ -139,7 +139,7 @@ function REMOVE {
   echo ""
   echo -e "${blanc}-- Supression des alias:${fin}"
   sleep 1
-  sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1; ERROR
+  sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1
   echo ""
   echo -e "${blanc}-- Supression du raccourci:${fin}"
   sleep 1
