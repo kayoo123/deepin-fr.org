@@ -469,6 +469,228 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo ""
   echo ""
 }
+
+###############################################################################################
+## 15: Remplacer les logiciels propriéraires 
+function REPLACE_APP {
+  echo ""
+  echo -e "${titre}15: Remplacer les logiciels propriétaires par des équivalents libres :${fin}"
+  echo ""
+  CHECK_SERVICE apt-get
+  sudo apt-get update > /dev/null
+
+  echo ""
+  echo -e "${blanc}-- Navigateur:${fin}"
+  echo ""
+  echo "Nous vous proposons de remplacer GOOGLE-CHROME, par Firefox"
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Remplacer" "Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Remplacer")
+	sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+	sudo apt-get autoremove -y google-chrome-stable; ERROR
+	echo ""
+	echo "Remplacement terminé"
+	echo ""
+	;;
+	"Supprimer")
+	sudo apt-get autoremove -y google-chrome-stable; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "${blanc}-- Suite Office:${fin}"
+  echo ""
+  echo "Nous vous proposons de remplacer WPS-OFFICE, par Libre-Office"
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Remplacer" "Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Remplacer")
+	sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
+	sudo apt-get autoremove -y wps-office ttf-wps-fonts; ERROR
+	echo ""
+	echo "Remplacement terminé"
+	echo ""
+	;;	
+	"Supprimer")
+	sudo apt-get autoremove -y wps-office ttf-wps-fonts; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;	
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "${blanc}-- Outil de VOIP:${fin}" 
+  echo ""
+  echo "Nous vous proposons de remplacer SKYPE, par Ekiga/Empathy/Pidgin/Jitsi"
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Remplacer" "Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Remplacer")
+	echo ""
+	echo "Faites votre choix parmis les logiciels suivants à installer :"
+	echo "1- Ekiga"
+	echo "2- Empathy"
+	echo "3- Pidgin"
+	echo "4- Jisti"
+	echo ""
+	read -p "=> Choix : "
+	if [ $REPLY = '1']; then  
+	sudo apt-get install -y ekiga ekiga-plugin-evolution; ERROR
+	fi
+	if [ $REPLY = '2']; then  
+	sudo apt-get install -y empathy empathy-skype; ERROR
+	fi
+	if [ $REPLY = '3']; then  
+	sudo apt-get install -y pidgin pidgin-skype; ERROR
+	fi
+	if [ $REPLY = '4']; then  
+	sudo apt-get install -y jitsi; ERROR
+	fi
+	sudo apt-get autoremove -y skype skype-bin; ERROR
+	echo ""
+	echo "Remplacement terminé"
+	echo ""
+	;;	
+	"Supprimer")
+	sudo apt-get autoremove -y skype skype-bin; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "${blanc}-- Plateforme Gaming:${fin}"
+  echo ""
+  echo "STEAM n'ayant pas d'équivalent dans le monde libre, nous vous conseillons de consulter le \"Deepin Store\", rubrique: \"Game\""
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Supprimer")
+	sudo apt-get autoremove -y steam; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "${blanc}-- Plateforme Streaming Audio:${fin}"
+  echo ""
+  echo "SPOTIFY n'ayant pas d'équivalent dans le monde libre, nous vous conseillons d'utiliser directement votre navigateur"
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Supprimer")
+	sudo apt-get autoremove -y spotify-client; ERROR
+	rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "${blanc}-- Liseuse d'eBook:${fin}" 
+  echo ""
+  echo "Nous vous proposons de remplacer CHMSEE qui n'est plus maintenu, par Calibre/FBReader"
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Remplacer" "Supprimer" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+  case $opt in
+	"Remplacer")
+	echo ""
+	echo "Faites votre choix parmis les logiciels suivants à installer :"
+	echo "1- Calibre"
+	echo "2- FBReader
+	echo ""
+	read -p "=> Choix : "
+	if [ $REPLY = '1']; then  
+	sudo apt-get install -y calibre calibre-bin; ERROR
+	fi
+	if [ $REPLY = '2']; then  
+	sudo apt-get install -y fbreader; ERROR
+	fi
+	sudo apt-get autoremove -y chmsee; ERROR
+	echo ""
+	echo "Remplacement terminé"
+	echo ""
+	;;
+	"Supprimer")
+	sudo apt-get autoremove -y chmsee; ERROR
+	echo ""
+	echo "Suppression terminé"
+	echo ""	
+	;;
+	"Ne rien faire")
+	;;
+	*) echo Option invalide;;
+  esac
+  sleep 1
+  done
+
+  echo ""
+  echo -e "=> Vous venez de finaliser le remplacement des logiciels propriétaires avec ${vert}SUCCES${fin}."
+}
 ###############################################################################################
 
 
@@ -543,11 +765,13 @@ read -p "=> Selection : "
     "7"|"07")  	MAJ_SYSTEME ;;
     "8"|"08")  	CLEAN_SYSTEME ;;
     "9"|"09")  	DICO_FR_WPS ;;
-    "10")  		VERR_NUM_BOOT ;;
-    "11")  		DL_WALLPAPER ;;
-    "12")		SYS_SOUND ;;
-    "13")  		AUDIT ;;
-    "14")  		LOG ;;
+    "10")  	VERR_NUM_BOOT ;;
+    "11")  	DL_WALLPAPER ;;
+    "12")	SYS_SOUND ;;
+    "13")  	AUDIT ;;
+    "14")  	LOG ;;
+    "15")	REPLACE_APP ;;
+    "16")	REMOVE_APP ;;
     "D"|"d") 	notify-send "Activation mode: DEV"
 				bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
 				;;
