@@ -523,8 +523,9 @@ MENU: "Audit"
 14) Copie des logs journaliers
 
 MENU: "Logiciel Propriétaire"
-15) ...
-16) ...
+15) Remplacer les logiciels propriétaires par des équivalents libres
+16) Supprimer tous logiciels propriétaires
+17) Réinstaller les programmes propriétaires par défaut 
 
 ---
 Q) Quitter      D) Mode développeur
