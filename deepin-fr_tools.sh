@@ -508,6 +508,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
@@ -540,6 +541,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
@@ -591,6 +593,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
@@ -616,6 +619,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
@@ -642,6 +646,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
@@ -685,6 +690,7 @@ function REPLACE_APP {
 	;;
 	*) echo Option invalide;;
   esac
+  break
   sleep 1
   done
 
