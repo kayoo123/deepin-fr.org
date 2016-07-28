@@ -661,7 +661,7 @@ function REPLACE_APP {
 	echo ""
 	echo "Faites votre choix parmis les logiciels suivants à installer :"
 	echo "1- Calibre"
-	echo "2- FBReader
+	echo "2- FBReader"
 	echo ""
 	read -p "=> Choix : "
 	if [ $REPLY = '1']; then  
