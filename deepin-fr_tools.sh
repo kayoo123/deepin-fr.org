@@ -636,7 +636,7 @@ function REPLACE_APP {
     case $opt in
     "Supprimer")
 	sudo apt-get autoremove -y spotify-client; ERROR
-	rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+	sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
@@ -725,8 +725,8 @@ function REMOVE_APP {
 		echo ""
 		echo -e "${blanc}-- Supression complete:${fin}"
 		echo ""
-		sudo apt-get autoremove -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
-		rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+		sudo apt-get autoremove -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+		sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 		;;
 	"Faire une selection")  
 		echo ""
@@ -757,7 +757,7 @@ function REMOVE_APP {
 		read REP
 		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
 		sudo apt-get autoremove -y spotify-client; ERROR
-		rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+		sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 		fi  
 		echo -e "- CHMSEE ${jaune}[O/n]${fin} ?"
 		read REP
