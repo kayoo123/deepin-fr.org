@@ -478,7 +478,6 @@ function REPLACE_APP {
   echo ""
   CHECK_SERVICE apt-get
   sudo apt-get update > /dev/null
-
   echo ""
   echo -e "${blanc}-- Navigateur:${fin}"
   echo ""
@@ -490,30 +489,30 @@ function REPLACE_APP {
   options=("Remplacer" "Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Remplacer")
+    case $opt in
+    "Remplacer")
 	sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
 	sudo apt-get autoremove -y google-chrome-stable; ERROR
 	echo ""
 	echo "Remplacement terminé"
 	echo ""
 	;;
-	"Supprimer")
+    "Supprimer")
 	sudo apt-get autoremove -y google-chrome-stable; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
-  echo -e "${blanc}-- Suite Office:${fin}"
+  echo -e "${blanc}-- Suite Bureautique:${fin}"
   echo ""
   echo "Nous vous proposons de remplacer WPS-OFFICE, par Libre-Office"
   echo "Que souhaitez-vous faire ?"
@@ -523,28 +522,28 @@ function REPLACE_APP {
   options=("Remplacer" "Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Remplacer")
+    case $opt in
+    "Remplacer")
 	sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
 	sudo apt-get autoremove -y wps-office ttf-wps-fonts; ERROR
 	echo ""
 	echo "Remplacement terminé"
 	echo ""
 	;;	
-	"Supprimer")
+    "Supprimer")
 	sudo apt-get autoremove -y wps-office ttf-wps-fonts; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;	
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
   echo -e "${blanc}-- Outil de VOIP:${fin}" 
   echo ""
@@ -556,8 +555,8 @@ function REPLACE_APP {
   options=("Remplacer" "Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Remplacer")
+    case $opt in
+    "Remplacer")
 	echo ""
 	echo "Faites votre choix parmis les logiciels suivants à installer :"
 	echo "1- Ekiga"
@@ -567,36 +566,36 @@ function REPLACE_APP {
 	echo ""
 	read -p "=> Choix : "
 	if [ $REPLY = '1']; then  
-	sudo apt-get install -y ekiga ekiga-plugin-evolution; ERROR
+	  sudo apt-get install -y ekiga ekiga-plugin-evolution; ERROR
 	fi
 	if [ $REPLY = '2']; then  
-	sudo apt-get install -y empathy empathy-skype; ERROR
+	  sudo apt-get install -y empathy empathy-skype; ERROR
 	fi
 	if [ $REPLY = '3']; then  
-	sudo apt-get install -y pidgin pidgin-skype; ERROR
+	  sudo apt-get install -y pidgin pidgin-skype; ERROR
 	fi
 	if [ $REPLY = '4']; then  
-	sudo apt-get install -y jitsi; ERROR
+	  sudo apt-get install -y jitsi; ERROR
 	fi
 	sudo apt-get autoremove -y skype skype-bin; ERROR
 	echo ""
 	echo "Remplacement terminé"
 	echo ""
 	;;	
-	"Supprimer")
+    "Supprimer")
 	sudo apt-get autoremove -y skype skype-bin; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
   echo -e "${blanc}-- Plateforme Gaming:${fin}"
   echo ""
@@ -608,21 +607,21 @@ function REPLACE_APP {
   options=("Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Supprimer")
+    case $opt in
+    "Supprimer")
 	sudo apt-get autoremove -y steam; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
   echo -e "${blanc}-- Plateforme Streaming Audio:${fin}"
   echo ""
@@ -634,22 +633,22 @@ function REPLACE_APP {
   options=("Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Supprimer")
+    case $opt in
+    "Supprimer")
 	sudo apt-get autoremove -y spotify-client; ERROR
 	rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
   echo -e "${blanc}-- Liseuse d'eBook:${fin}" 
   echo ""
@@ -661,8 +660,8 @@ function REPLACE_APP {
   options=("Remplacer" "Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
-  case $opt in
-	"Remplacer")
+    case $opt in
+    "Remplacer")
 	echo ""
 	echo "Faites votre choix parmis les logiciels suivants à installer :"
 	echo "1- Calibre"
@@ -670,35 +669,196 @@ function REPLACE_APP {
 	echo ""
 	read -p "=> Choix : "
 	if [ $REPLY = '1']; then  
-	sudo apt-get install -y calibre calibre-bin; ERROR
+	  sudo apt-get install -y calibre calibre-bin; ERROR
 	fi
 	if [ $REPLY = '2']; then  
-	sudo apt-get install -y fbreader; ERROR
+	  sudo apt-get install -y fbreader; ERROR
 	fi
 	sudo apt-get autoremove -y chmsee; ERROR
 	echo ""
 	echo "Remplacement terminé"
 	echo ""
 	;;
-	"Supprimer")
+    "Supprimer")
 	sudo apt-get autoremove -y chmsee; ERROR
 	echo ""
 	echo "Suppression terminé"
 	echo ""	
 	;;
-	"Ne rien faire")
+    "Ne rien faire")
 	;;
-	*) echo Option invalide;;
+    *) echo Option invalide
+    	;;
   esac
   break
   sleep 1
   done
-
   echo ""
   echo -e "=> Vous venez de finaliser le remplacement des logiciels propriétaires avec ${vert}SUCCES${fin}."
 }
 ###############################################################################################
-
+## 16: Remplacer les logiciels propriéraires 
+function REMOVE_APP {
+  echo ""
+  echo -e "${titre}16: Supprimer tous les logiciels propriétaires :${fin}"
+  echo ""
+  CHECK_SERVICE apt-get
+  sudo apt-get update > /dev/null
+  echo ""
+  echo "Nous vous proposons de supprimer les logiciels suivants :"
+  echo "- GOOGLE-CHROME (Navigateur)"
+  echo "- WPS-OFFICE (Suite Bureautique)"
+  echo "- SKYPE (Outil de VOIP)"
+  echo "- STEAM (Plateforme Gaming)"
+  echo "- SPOTIFY (Plateforme Streaming Audio)"
+  echo "- CHMSEE (Liseuse d'eBook)"
+  echo""
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Tout supprimer !" "Faire une selection" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+	case $opt in
+	"Tout supprimer !")
+		echo ""
+		echo -e "${blanc}-- Supression complete:${fin}"
+		echo ""
+		sudo apt-get autoremove -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+		rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+		;;
+	"Faire une selection"  
+		echo ""
+		echo -e "${blanc}-- Selection:${fin}"
+		echo ""
+		echo "Souhaitez-vous supprimer :"
+		echo -e "- Google-Chrome ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y google-chrome-stable; ERROR
+		fi
+		echo -e "- WPS-OFFICE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y wps-office ttf-wps-fonts; ERROR
+		fi   
+		echo -e "- SKYPE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y skype skype-bin; ERROR
+		fi 
+		echo -e "- STEAM ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y steam; ERROR
+		fi
+		echo -e "- SPOTIFY ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y spotify-client; ERROR
+		rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+		fi  
+		echo -e "- CHMSEE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get autoremove -y chmsee; ERROR
+		fi
+		;; 
+	"Ne rien faire")
+		;;
+	*) 	echo Option invalide
+		;;
+	esac
+  break
+  sleep 1
+  done
+  echo ""
+  echo -e "=> Vous venez de supprimer les logiciels propriétaires avec ${vert}SUCCES${fin}."
+}
+###############################################################################################
+## 17: Reinstaller les logiciels propriéraires 
+function REINSTALL_APP {
+  echo ""
+  echo -e "${titre}16: Reinstaller tous les logiciels propriétaires par defaut:${fin}"
+  echo ""
+  CHECK_SERVICE apt-get
+  sudo apt-get update > /dev/null
+  echo ""
+  echo "Nous vous proposons de reinstaller les logiciels suivants :"
+  echo "- GOOGLE-CHROME (Navigateur)"
+  echo "- WPS-OFFICE (Suite Bureautique)"
+  echo "- SKYPE (Outil de VOIP)"
+  echo "- STEAM (Plateforme Gaming)"
+  echo "- SPOTIFY (Plateforme Streaming Audio)"
+  echo "- CHMSEE (Liseuse d'eBook)"
+  echo""
+  echo "Que souhaitez-vous faire ?"
+  echo ""
+  sleep 1
+  PS3='=> Choix : '
+  options=("Tout reinstaller !" "Faire une selection" "Ne rien faire")
+  select opt in "${options[@]}"
+  do
+	case $opt in
+	"Tout reinstaller !")
+		echo ""
+		echo -e "${blanc}-- Reinstallation complete:${fin}"
+		echo ""
+		sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
+		sudo apt-get update > /dev/null
+		sudo apt-get install -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+		;;
+	"Faire une selection"  
+		echo ""
+		echo -e "${blanc}-- Selection:${fin}"
+		echo ""
+		echo "Souhaitez-vous installer :"
+		echo -e "- Google-Chrome ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get install -y google-chrome-stable; ERROR
+		fi
+		echo -e "- WPS-OFFICE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get install -y wps-office ttf-wps-fonts; ERROR
+		fi   
+		echo -e "- SKYPE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get install -y skype skype-bin; ERROR
+		fi 
+		echo -e "- STEAM ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get install -y steam; ERROR
+		fi
+		echo -e "- SPOTIFY ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
+  		sudo apt-get update > /dev/null
+		sudo apt-get install -y spotify-client; ERROR
+		fi  
+		echo -e "- CHMSEE ${jaune}[O/n]${fin} ?"
+		read REP
+		if [ $REP = 'O' ] || [ $REP = 'o' ] || [ $REP = 'Y' ] || [ $REP = 'y' ]; then 
+		sudo apt-get install -y chmsee; ERROR
+		fi
+		;; 
+	"Ne rien faire")
+		;;
+	*) 	echo Option invalide
+		;;
+	esac
+  break
+  sleep 1
+  done
+  echo ""
+  echo -e "=> Vous venez de reinstaller les logiciels propriétaires avec ${vert}SUCCES${fin}."
+}
+###############################################################################################
 
 ##########
 ## MAIN ##
@@ -752,7 +912,7 @@ MENU: "Audit"
 
 MENU: "Logiciel Propriétaire"
 15) Remplacer les logiciels propriétaires par des équivalents libres
-16) Supprimer tous logiciels propriétaires
+16) Supprimer tous les logiciels propriétaires
 17) Réinstaller les programmes propriétaires par défaut 
 
 ---
@@ -778,16 +938,17 @@ read -p "=> Selection : "
     "14")  	LOG ;;
     "15")	REPLACE_APP ;;
     "16")	REMOVE_APP ;;
+    "17")	REINSTALL_APP ;;
     "D"|"d") 	notify-send "Activation mode: DEV"
-				bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
-				;;
+		bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
+		;;
     "Q"|"q")  	echo ""
-				echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
-				echo ""
-				sleep 1;exit 0
-				;;                
-    *)			echo "/!\ L'option choisi est invalide !" 
-				bash ;;
+		echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
+		echo ""
+		sleep 1; exit 0
+		;;                
+    *)		echo "/!\ L'option choisi est invalide !" 
+		;;
     esac
   echo ""
   sleep 2
@@ -795,3 +956,4 @@ read -p "=> Selection : "
   read touche
   break
 done
+exit 0
