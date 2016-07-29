@@ -807,7 +807,7 @@ function REINSTALL_APP {
 		echo ""
 		sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
 		sudo apt-get update > /dev/null
-		sudo apt-get install -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+		sudo apt-get install -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 		;;
 	"Faire une selection") 
 		echo ""
