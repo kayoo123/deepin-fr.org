@@ -728,7 +728,7 @@ function REMOVE_APP {
 		sudo apt-get autoremove -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 		rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 		;;
-	"Faire une selection"  
+	"Faire une selection")  
 		echo ""
 		echo -e "${blanc}-- Selection:${fin}"
 		echo ""
@@ -809,7 +809,7 @@ function REINSTALL_APP {
 		sudo apt-get update > /dev/null
 		sudo apt-get install -y wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 		;;
-	"Faire une selection"  
+	"Faire une selection") 
 		echo ""
 		echo -e "${blanc}-- Selection:${fin}"
 		echo ""
