@@ -774,7 +774,7 @@ function REMOVE_APP {
   sleep 1
   done
   echo ""
-  echo -e "=> Vous venez de supprimer les logiciels propriétaires avec ${vert}SUCCES${fin}."
+  echo -e "=> Vous venez de finaliser la supression des logiciels propriétaires avec ${vert}SUCCES${fin}."
 }
 ###############################################################################################
 ## 17: Reinstaller les logiciels propriéraires 
@@ -856,7 +856,7 @@ function REINSTALL_APP {
   sleep 1
   done
   echo ""
-  echo -e "=> Vous venez de reinstaller les logiciels propriétaires avec ${vert}SUCCES${fin}."
+  echo -e "=> Vous venez de finaliser la reinstaller des logiciels propriétaires avec ${vert}SUCCES${fin}."
 }
 ###############################################################################################
 
