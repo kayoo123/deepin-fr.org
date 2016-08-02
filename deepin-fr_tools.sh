@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 4.0
+# Vers : 4.1
 # Date : 26/07/2016
 # Auth : Kayoo (http://hub.deepin-fr.org/)
 #
@@ -599,15 +599,23 @@ function REPLACE_APP {
   echo ""
   echo -e "${blanc}-- Plateforme Gaming:${fin}"
   echo ""
-  echo "STEAM n'ayant pas d'équivalent dans le monde libre, nous vous conseillons de consulter le \"Deepin Store\", rubrique: \"Game\""
+  echo "Nous vous proposons de remplacer STEAM, par Deepin-Game-Center"
+  echo "Nous vous conseillons également de consulter le \"Deepin Store\", rubrique: \"Game\""
   echo "Que souhaitez-vous faire ?"
   echo ""
   sleep 1
   PS3='=> Choix : '
-  options=("Supprimer" "Ne rien faire")
+  options=("Remplacer" "Supprimer" "Ne rien faire")
   select opt in "${options[@]}"
   do
     case $opt in
+    "Remplacer")
+    	sudo apt-get install -y deepin-game-center; ERROR
+    	sudo apt-get autoremove -y steam; ERROR
+    	echo ""
+	echo "Remplacement terminé"
+	echo ""
+     	;;
     "Supprimer")
 	sudo apt-get autoremove -y steam; ERROR
 	echo ""
