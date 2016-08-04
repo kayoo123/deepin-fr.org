@@ -498,28 +498,28 @@ while :
 do 
 cat <<EOF
 MENU: "Deepin-tools"
-01) Installation et Mise-à-jour
-02) Désinstallation
+  01) Installation et Mise-à-jour
+  02) Désinstallation
 
 MENU: "Depot distant"
-03) Liste votre dépot actuel
-04) Lister les dépots disponibles
-05) Utiliser le meilleur dépot
-06) Revenir au dépot original
+  03) Liste votre dépot actuel
+  04) Lister les dépots disponibles
+  05) Utiliser le meilleur dépot
+  06) Revenir au dépot original
 
 MENU: "Mise-à-jour et nettoyage"
-07) Mettre à jour sa distribution PROPREMENT
-08) Nettoyer sa distribution COMPLETEMENT
+  07) Mettre à jour sa distribution PROPREMENT
+  08) Nettoyer sa distribution COMPLETEMENT
 
 MENU: "Fonctionnalités"
-09) Ajouter le dictionnaire Francais pour WPS-Office
-10) Activer la touche verrouillage numérique au démarrage
-11) Telechargement wallpaper : InterfaceLIFT.com
-12) Desactiver/Activer les sons de démarrage
+  09) Ajouter le dictionnaire Francais pour WPS-Office
+  10) Activer la touche verrouillage numérique au démarrage
+  11) Telechargement wallpaper : InterfaceLIFT.com
+  12) Desactiver/Activer les sons de démarrage
 
 MENU: "Audit" 
-13) Generation d'un rapport SYSTEME
-14) Copie des logs journaliers
+  13) Generation d'un rapport SYSTEME
+  14) Copie des logs journaliers
 
 ---
 Q) Quitter      D) Mode développeur
