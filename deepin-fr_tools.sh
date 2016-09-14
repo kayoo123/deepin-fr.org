@@ -226,7 +226,7 @@ function MAJ_SYSTEME {
   sudo apt-get update; ERROR
   echo ""
   echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-  sudo apt-get -y upgrade; ERROR
+  sudo apt-get -y dist-upgrade; ERROR
   echo ""
   echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
   sudo apt-get install -f; ERROR
