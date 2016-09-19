@@ -957,7 +957,8 @@ read -p "=> Selection : "
     "16")	REMOVE_APP ;;
     "17")	REINSTALL_APP ;;
     "D"|"d") 	notify-send "Activation mode: DEV"
-		bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
+#		bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)
+		echo "Cette fonctionnalité a été désactivé temporairement..."
 		;;
     "Q"|"q")  	echo ""
 		echo "L'équipe de \"Deepin-fr.org\" vous remercie d'avoir utilisé ce script..."
