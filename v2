@@ -1,0 +1,528 @@
+#!/bin/bash 
+#################################################################################################################
+# DESC : Boite-a-outils Deepin-FR
+# Vers : 5.0
+# Date : 26/07/2016
+# Auth : Kayoo (http://hub.deepin-fr.org/)
+#################################################################################################################
+# Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
+# Information : https://github.com/kayoo123/deepin-fr.org
+#
+# TODO:
+#
+
+sleep 1
+############################
+## VARIABLES ET FONCTIONS ##
+############################
+
+#--- COULEUR 
+blanc='\e[1;37m'
+bleu='\e[1;34m'
+vert='\e[1;32m'
+jaune='\e[1;33m'
+rouge='\e[1;31m'
+titre='\e[0;100m'
+fin='\e[0;m'
+
+#--- Affichage: Message et log
+displayError() {
+  echo -e "${rouge}------------------------------------------------------------------------------${fin}"
+  echo -e "${rouge}>>> $* <<<${fin}"
+  echo -e "${rouge}------------------------------------------------------------------------------${fin}"
+  notify-send  --icon=dialog-error "$*" -t 10000
+  #test couleur a faire
+  #exit 1
+}
+
+displayWarning() {
+  echo -e "${jaune}------------------------------------------------------------------------------${fin}"
+  echo -e "${jaune}>>> $* <<<${fin}"
+  echo -e "${jaune}------------------------------------------------------------------------------${fin}"
+  notify-send  --icon=dialog-error "$*" -t 10000
+}
+
+displayTitle() {
+  echo 
+  echo "------------------------------------------------------------------------------"
+  echo "$*"
+  echo "------------------------------------------------------------------------------"
+  notify-send -i applications-system "$*" -t 5000
+}
+
+#--- Vérifie que la commande précédente s'éxécute sans erreur 
+function ERROR { 
+  if [ ! $? -eq 0 ]; then
+    echo ""
+    displayError "! Erreur détecté !"
+    echo ""
+    echo "Une erreure est intervenu dans le script, merci de le signaler directement sur notre forum :"
+    echo -e "=> ${blanc}http://hub.deepin-fr.org${fin}"
+    echo ""
+    exit 1
+  fi
+}
+
+## Vérifie et install le paquet manquant 
+function TEST_BIN() {
+dpkg -l |grep -w " $1 " |grep ^ii > /dev/null
+  if [ ! $? -eq 0 ]; then
+    DisplayWarning "Warning: Paquet manquant !"
+    echo "ce script nécessite : $1"
+    echo ""
+    CHECK_SERVICE apt-get
+    sudo -v
+    sudo apt-get update 
+    sudo apt-get install -y $1
+    echo ""
+	DisplayWarning "Warning: Paquet manquant installé !"
+    sleep 1
+  fi
+}
+
+## Vérifie qu'aucun processus ne soit déjà lancé
+function CHECK_SERVICE() {
+  ps -edf |grep -w $1 |grep -v grep > /dev/null
+  if [ $? -eq 0 ]; then
+    echo ""
+    DisplayError "Un processus est actuellement en cours..."
+    echo "Un processus est deja en cours d'utilisation : $1"
+    echo "Merci de patienter la fin de la tache courante..."
+    echo ""; sleep 1
+    exit 1
+  fi
+}
+
+
+
+
+
+
+##########
+## MAIN ##
+##########
+
+#--- Clear the Terminal
+#clear
+notify-send  --icon=dialog-error "Attention" "Le mot de passe root vous sera demandé" -t 10000
+
+#--- Menu Principal
+GUI=$(zenity --list --checklist \
+	--height 400 \
+	--width 900 \
+	--title="Outil Deepin-Tools v5.0" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
+	FALSE "Mise à jour du Système" "Mise à jour de la liste des paquets et des applications déjà installées."  \
+	FALSE "Accélération de la mémoire" "Installation de preload et de zRAM." \
+	FALSE "Memtest86+" "Installation de memtest86+ pour tester la RAM." \
+	FALSE "Kernel Xenial BFS/BFQ" "Installe le Kernel Xenial LTS optimisé BFQ/BFS scheduler." \
+	FALSE "Driver NVIDIA" "Installe le driver NVIDIA (ppa graphics-drivers) pour GTX 7XX et +." \
+	FALSE "Oibaf" "Installe le PPA Oibaf pour les versions git des drivers graphiques libres (xorg-server-nouveau/intel/ati)" \
+	FALSE "TLP" "Installe TLP pour augmenter la durée de vie de la batterie et réduire la surchauffe." \
+	FALSE "Tweaks" "Installe elementary Tweaks pour avoir plus d'options de configuration." \
+	FALSE "Boot Repair" "Installe boot-repair, réparateur de GRUB." \
+	FALSE "Elementary-wallpapers-extra" "Installe les fonds d'écran de Luna." \
+	FALSE "elementaryplus" "Installe le thème d'icones indispensable elementary plus." \
+	FALSE "Neofetch" "Le remplacant de Screenfetch" \
+	FALSE "Conky-Manager" "Application pour gérer les fichier de conf de conky" \
+	FALSE "Support formats d'archivage" "Installation du support pour formats d'archivage (zip,rar,7z...)." \
+	FALSE "GDebi" "Installe GDebi. Outil pour installer les fichiers .deb" \
+	FALSE "Atom" "Installe Atom, un éditeur de texte du 21ème siècle." \
+	FALSE "Sublime Text 3" "Installe Sublime Text 3, un puissant éditeur de texte." \
+	FALSE "Deja Dup" "Installe Deja Dup,  utilitaire pour sauvegarde." \
+	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
+    FALSE "Pushbullet" "Installe l'indicator Pushbullet (interactions entre PC et vos appareils Android)." \
+	FALSE "Time Shift" "Installe timeshift pour les restaurations système." \
+	FALSE "Aptik" "Installe aptik pour sauvegardes de paquets, thèmes,icones..." \
+	FALSE "Redshift" "Installe redshift pour adapter la luminositié de l'écran en fonction du jour..." \
+	FALSE "LibreOffice" "Installe LibreOffice, la suite bureautique libre." \
+	FALSE "Ubuntu Restricted Extras" "Installation des paquets sous copyrights (mp3, avi, mpeg, TrueType, Java, Flash, Codecs)." \
+	FALSE "Extra Multimedia Codecs" "Installation des codecs multimédia additionnels." \
+	FALSE "Support DVD encrypté" "Installation du support pour lire les DVDs encryptés." \
+	FALSE "VLC" "Installe VLC, le lecteur multimédia." \
+	FALSE "Vocal" "Installe vocal, application de podcasts." \
+	FALSE "Clementine" "Installe Clementine, lecteur de musique." \
+	FALSE "Lollypop" "Installe lollypop, lecteur de musique." \
+	FALSE "Tomahawk" "Installe tomahawk, lecteur de musique." \
+	FALSE "Spotify" "Installe Spotify, l'application de service streaming de musique." \
+	FALSE "Google Chrome" "Installe Google Chrome, le navigateur Google." \
+	FALSE "Chromium" "Installe Chromium, la version opensource de Chrome." \
+	FALSE "Firefox" "Installe Firefox, le navigateur libre et opensource." \
+	FALSE "Nylas N1" "Installe Nylas N1, un superbe client mail." \
+	FALSE "Vivaldi" "Installe Vivaldi, le nouveau navigateur (version Tech Preview)." \
+	FALSE "FeedReader" "Installe FeedReader, un aggrégateur de flux opensource." \
+	FALSE "Transmission" "Installe Transmission, le client bitorrent." \
+	FALSE "Dropbox" "Installe dropbox avec les icones monochromes elementary." \
+	FALSE "MEGA" "Installe MEGASync pour le cloud de MEGA avec les icones monochromes elementary." \
+	FALSE "Grive 2" "Installe Grive 2 pour le cloud Google Drive." \
+	FALSE "Skype" "Installe Skype." \
+	FALSE "Telegram" "Installe Telegram, version desktop de l'application SMS." \
+	FALSE "Polari" "Installe le client IRC Polari." \
+	FALSE "Gimp et GMIC" "Installe le logiciel de retouche GIMP et son extension GMIC." \
+	FALSE "Inkscape" "Installe le logiciel de vectorisation Inkscape." \
+	FALSE "Darktable" "Installe darktable, logiciel de traitement de fichier RAW." \
+	FALSE "Rapid-photo-downloader" "Installe rapid-photo-downloader, logiciel d'importation de photos depuis supports externes." \
+	FALSE "Steam" "Installe Steam, la plateforme en ligne de Jeux." \
+	FALSE "itch.io" "Installe itch.io, une autre plateforme de jeux." \
+	FALSE "0.A.D" "Installe 0.A.D, le jeu de stratégie en temps réel dans l'époque Antique." \
+	FALSE "Wesnoth" "Installe Bataille de Wesnoth, le jeu de stratégie au tour par tour" \
+	FALSE "FlightGear" "Installe FlightGear, le simulateur de vol OpenSource." \
+	FALSE "Unvanquished" "Installe Unvanquished, jeux FPS contre des Aliens." \
+	FALSE "War Thunder" "Installe War Thunder, simulateur de chars et avions de combat en ligne (64bits seulement!)" \
+	FALSE "Réparer les paquets cassés" "Vas réparer les paquets cassés." \
+	FALSE "Nettoyage de prinptemps" "Retire les paquets qui ne sont plus nécéssaires." \
+	--separator=', ');
+
+	
+	
+#--- Install ou mise à jour de Deepin-tools
+if [[ $GUI == *"Install Deepin-tools"* ]] || [[ $GUI == *"UPDATE Deepin-tools"* ]]
+then
+  displayTitle "Install Deepin-tools"
+  echo -e "${blanc}-- Installation des soures:${fin}"
+  sleep 1
+  TEST_BIN git; ERROR
+  sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
+  git -C /tmp clone https://github.com/kayoo123/deepin-fr.org.git; ERROR
+  chmod +x /tmp/deepin-fr.org/deepin-fr_tools.sh; ERROR
+  sudo mv /tmp/deepin-fr.org /usr/share/deepin-tools; ERROR
+  echo ""
+  echo -e "${blanc}-- Installation du raccourci:${fin}"
+  sleep 1
+  rm -f $HOME/.local/share/applications/deepin-tools.desktop; ERROR
+  cat > $HOME/.local/share/applications/deepin-tools.desktop << "EOF"
+  [Desktop Entry]
+  Version=1.0
+  Type=Application
+  Name=Deepin-tools
+  Name[fr_FR.UTF-8]=Deepin-tools
+  Comment="Outils aide deepin-fr.org"
+  Path=/usr/share/deepin-tools
+  Exec=/usr/share/deepin-tools/deepin-fr_tools.sh
+  Icon=logo.png
+  Terminal=true
+  StartupNotify=false
+  Categories=others;
+EOF
+  echo ""
+  echo -e "${blanc}-- Installation des alias:${fin}"
+  sleep 1
+  if [ $SHELL = '/bin/bash' ]; then
+    ENV_USER="$HOME/.bashrc"
+  fi
+  if [ $SHELL = '/usr/bin/zsh' ]; then
+    ENV_USER="$HOME/.zshrc"
+  fi
+    sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1
+    echo "" >> $ENV_USER
+    echo "## DEEPIN-FR.org: deepin-tools" >> $ENV_USER
+    echo "alias deepin-tools=/usr/share/deepin-tools/deepin-fr_tools.sh " >> $ENV_USER
+    echo "alias deepin-tools-dev=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
+fi
+
+#--- Remove Deepin-tools
+if [[ $GUI == *"remove Deepin-tools"* ]]
+then
+	displayTitle "Remove Deepin-tools"
+	echo -e "${blanc}-- Supression des alias:${fin}"
+    sleep 1
+    sed -i '/deepin-tools/d' $HOME/.bashrc $HOME/.zshrc > /dev/null 2>&1
+    echo ""
+    echo -e "${blanc}-- Supression du raccourci:${fin}"
+    sleep 1
+    rm -f $HOME/.local/share/applications/deepin-tools.desktop; ERROR
+    echo ""
+    echo -e "${blanc}-- Supression des sources:${fin}"
+    sleep 1
+    sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
+fi
+	
+#--- best Depot
+if [[ $GUI == *"Meilleur depot"* ]]
+then
+
+fi
+
+#--- Dépot Original
+if [[ $GUI == *"Dépot original"* ]]
+then
+
+fi
+
+#--- Mise à jour du Système
+if [[ $GUI == *"Mise à jour du Système"* ]]
+then
+	echo "Mise à jour du Système..."
+	echo ""
+	notify-send -i system-software-update "elementary OS Post Install" "Mise à jour du système en cours" -t 5000
+	sudo apt -y update
+	sudo apt -y upgrade
+fi
+
+#--- Nettoyage systeme
+if [[ $GUI == *"Nettoyage systeme"* ]]
+then
+
+fi
+
+
+
+#--- Dictionnaire France WPS-Office
+if [[ $GUI == *"Dictionnaire France WPS-Office"* ]]
+then
+
+fi
+
+
+#--- Activation de la touche verr.num. au boot
+if [[ $GUI == *"Activation de la touche verr.num. au boot"* ]]
+then
+
+fi
+
+
+#--- Désactivation son au démarage
+if [[ $GUI == *"Desactivation son au boot"* ]]
+then
+
+fi
+
+#--- Activation son au démarage
+if [[ $GUI == *"Activation son au boot"* ]]
+then
+
+fi
+
+#--- Télécharger quelques fond d'écran InterfaceLIFT.com
+if [[ $GUI == *"Télécharger quelques fond d'écran InterfaceLIFT.com"* ]]
+then
+
+fi
+
+#--- Télécharger quelques fond d'écran InterfaceLIFT.com
+if [[ $GUI == *"Télécharger quelques fond d'écran InterfaceLIFT.com"* ]]
+then
+
+fi
+
+
+
+
+
+
+----------------------------
+
+
+#--- Accélération de la mémoire
+if [[ $GUI == *"Accélération de la mémoire"* ]]
+then
+	echo "Accélération de la mémoire..."
+	echo ""
+	notify-send -i system-software-update "elementary OS Post Install" "Installation de Preload" -t 5000
+	
+	notify-send -i system-software-update "elementary OS Post Install" "Installation de zRAM" -t 5000
+	sudo apt -y install zram-config
+fi
+
+#--- Memtest86+
+if [[ $GUI == *"Memtest86+"* ]]
+then
+	echo "Installation de Memtest86+..."
+	echo ""
+	notify-send -i system-software-update "elementary OS Post Install" "Installation de Memtest86+" -t 5000
+	sudo apt -y install memtest86+
+fi
+
+#--- Installer Extra Multimedia Codecs
+if [[ $GUI == *"Extra Multimedia Codecs"* ]]
+then
+	echo "Installation des Extra Multimedia Codecs..."
+	echo ""
+	notify-send -i multimedia-video-player "elementary OS Post Install" "Installation des codecs" -t 5000
+	sudo apt -y install libavcodec-extra-53 gstreamer0.10-plugins-bad-multiverse
+fi
+
+#--- Installer le Support pour DVD encrypté
+if [[ $GUI == *"Support DVD encrypté"* ]]
+then
+	echo "Installation du Support pour DVD encrypté..."
+	echo ""
+	notify-send -i media-dvd "elementary OS Post Install" "Installation de libdvdread4" -t 5000
+	sudo apt -y install libdvdread4
+	sudo /usr/share/doc/libdvdread4/install-css.sh
+fi
+
+#--- Installer le Support pour les formats d'archivage
+if [[ $GUI == *"Support formats d'archivage"* ]]
+then
+	echo "Installation du Support pour les formats d'archivage"
+	echo ""
+	notify-send -i file-roller "elementary OS Post Install" "Installation de zip,unrar,unace,cabextract...etc" -t 5000
+	sudo apt -y install unace rar unrar p7zip-rar p7zip zip unzip sharutils uudeview mpack arj cabextract
+fi
+
+#--- Installer GDebi
+if [[ $GUI == *"GDebi"* ]]
+then
+	echo "Installation de GDebi..."
+	echo ""
+	notify-send -i package "elementary OS Post Install" "Installation de GDebi" -t 5000
+	sudo apt -y install gdebi
+fi
+
+#--- Installer Google Chrome Action
+if [[ $GUI == *"Google Chrome"* ]]
+then
+	echo "Installation de Google Chrome..."
+	echo ""
+  	notify-send -i web-browser "elementary OS Post Install" "Installation de Google Chrome" -t 5000
+	cd /tmp
+	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+	sudo dpkg -i --force-depends google-chrome-stable_current_amd64.deb
+fi
+
+#--- Installer Chromium
+if [[ $GUI == *"Chromium"* ]]
+then
+	echo "Installation de Chromium..."
+	echo ""
+	notify-send -i web-browser "elementary OS Post Install" "Installation de Chromium" -t 5000
+	sudo apt -y install chromium-browser
+fi
+
+#--- Installer Firefox
+if [[ $GUI == *"Firefox"* ]]
+then
+	echo "Installation de Firefox..."
+	echo ""
+	notify-send -i web-browser "elementary OS Post Install" "Installation de Firefox" -t 5000
+	sudo apt -y install firefox
+fi
+
+#--- Installer Nylas N1
+if [[ $GUI == *"Nylas N1"* ]]
+then
+	echo "Installation de Nylas N1..."
+	echo ""
+	notify-send -i internet-mail "elementary OS Post Install" "Installation de Nylas N1" -t 5000
+	if [[ $(uname -m) == "i686" ]]
+	then
+		wget -O /tmp/N1.deb https://edgehill.nylas.com/download?platform=linux-deb
+		sudo dpkg -i /tmp/N1.deb
+	elif [[ $(uname -m) == "x86_64" ]]
+	then
+		wget -O /tmp/N1.deb https://edgehill.nylas.com/download?platform=linux-deb
+		sudo dpkg -i /tmp/N1.deb
+	fi
+fi
+
+#--- Installer ADB
+if [[ $GUI == *"ADB"* ]]
+then
+	echo "Installation du SDK Android..."
+	echo ""
+	notify-send -i applications-office "elementary OS Post Install" "Installation du SDK Android" -t 5000
+	sudo wget -O /etc/udev/rules.d/51-android.rules https://raw.githubusercontent.com/NicolasBernaerts/ubuntu-scripts/master/android/51-android.rules
+	sudo chmod a+r /etc/udev/rules .d/51-android.rules
+	sudo service udev restart
+	sudo apt install android-tools-adb android-tools-fastboot
+fi
+
+
+#--- Installer VLC
+if [[ $GUI == *"VLC"* ]]
+then
+	echo "Installation de VLC..."
+	echo ""
+	notify-send -i multimedia-video-player "elementary OS Post Install" "Installation de VLC" -t 5000
+	sudo apt -y install vlc
+fi
+
+
+#--- Installer Deja Dup
+if [[ $GUI == *"Deja Dup"* ]]
+then
+	echo "Installation de Deja Dup..."
+	echo ""
+	notify-send -i locked "elementary OS Post Install" "Installation de Deja Dup" -t 5000
+	sudo apt -y update
+	sudo apt -y install deja-dup
+fi
+
+
+#--- Installer timeshift
+if [[ $GUI == *"Time Shift"* ]]
+then
+	echo "Installation de Time Shift..."
+	echo ""
+	notify-send -i applications-system "elementary OS Post Install" "Installation de timeshift" -t 5000
+	sudo add-apt-repository -y ppa:teejee2008/ppa
+	sudo apt -y update
+	sudo apt -y install timeshift
+fi
+
+#--- Installer redshift
+if [[ $GUI == *"Redshift"* ]]
+then
+	echo "Compilation et Installation de redshift..."
+	echo ""
+	notify-send -i display "elementary OS Post Install" "Installation de Redshift" -t 5000
+	sudo apt install -y redshift-gtk
+	wget -O $HOME/.config/redshift.conf https://raw.githubusercontent.com/Devil505/elementaryos-postinstall/master/redshift.conf
+fi
+
+#--- Installer LibreOffice
+if [[ $GUI == *"LibreOffice"* ]]
+then
+	echo "Installation de LibreOffice..."
+	echo ""
+	notify-send -i applications-office "elementary OS Post Install" "Installation de Libreoffice" -t 5000
+	sudo add-apt-repository -y ppa:libreoffice/libreoffice-5-0
+	sudo add-apt-repository -y ppa:shimmerproject/daily
+	sudo apt -y update
+	sudo apt -y install libreoffice libreoffice-style-elementary
+fi
+
+
+#--- Installer Tomahawk
+if [[ $GUI == *"Tomahawk"* ]]
+then
+	echo "Installation de Tomahawk..."
+	echo ""
+	notify-send -i multimedia-audio-player "elementary OS Post Install" "Installation de Tomahawk" -t 5000
+	sudo add-apt-repository -y ppa:tomahawk/ppa
+	sudo apt -y update
+	sudo apt -y install tomahawk
+fi
+
+#--- Installer Clementine
+if [[ $GUI == *"Clementine"* ]]
+then
+	echo "Installation de Clementine..."
+	echo ""
+	notify-send -i multimedia-audio-player "elementary OS Post Install" "Installation de Clementine" -t 5000
+	sudo add-apt-repository -y ppa:me-davidsansome/clementine
+ 	sudo apt -y update
+  	sudo apt -y install clementine
+fi
+
+#--- Installer Skype
+if [[ $GUI == *"Skype"* ]]
+then
+	echo "Installation de Skype..."
+	echo ""
+	notify-send -i applications-chat "elementary OS Post Install" "Installation de Skype" -t 5000
+	if [[ $(uname -m) == "x86_64" ]]
+	then
+		wget -O /tmp/skypeforlinux-64-alpha.deb https://go.skype.com/skypeforlinux-64-alpha.deb
+		sudo dpkg -i /tmp/skypeforlinux-64-alpha.deb
+	fi
+fi
+
+
+#--- Notification
+clear
+notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000
