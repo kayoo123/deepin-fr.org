@@ -101,6 +101,7 @@ function SETUP_UPDATE {
   sleep 1
   rm -f $HOME/.local/share/applications/deepin-tools.desktop; ERROR
   cat > $HOME/.local/share/applications/deepin-tools.desktop << "EOF"
+  #!/usr/bin/env xdg-open
   [Desktop Entry]
   Version=1.0
   Type=Application
