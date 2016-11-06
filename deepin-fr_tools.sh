@@ -462,7 +462,7 @@ FILE_LOG=$HOME/deepin_log_backup_$(date +"%Y-%m-%d").tgz
   echo -e "${blanc}-- Génération de l'archive:${fin}"
   echo ""
   sleep 1
-  sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -; ERROR
+  sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -
   sudo chown $USER $FILE_LOG; ERROR
   echo ""
   echo ""
