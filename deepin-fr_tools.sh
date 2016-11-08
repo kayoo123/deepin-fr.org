@@ -530,8 +530,8 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	echo -e "${blanc}-- Génération de l'archive:${fin}"
 	echo ""
 	sleep 1
-	sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -
-	sudo chown $USER $FILE_LOG; ERROR
+	TEST_SUDO; sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -
+	TEST_SUDO; sudo chown $USER $FILE_LOG; ERROR
 	echo ""
 	echo ""
 	sleep 1
@@ -548,12 +548,47 @@ fi
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
 displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
 	echo ""
+	echo "Nous vous proposons de supprimer les logiciels suivants :"
+	echo "- GOOGLE-CHROME (Navigateur)"
+	echo "- WPS-OFFICE (Suite Bureautique)"
+	echo "- SKYPE (Outil de VOIP)"
+	echo "- STEAM (Plateforme Gaming)"
+	echo "- SPOTIFY (Plateforme Streaming Audio)"
+	echo "- CHMSEE (Liseuse d'eBook)"
+	echo ""
+	if zenity --question --text="Nous vous proposons de supprimer les logiciels suivants : \n- GOOGLE-CHROME (Navigateur)\n- WPS-OFFICE (Suite Bureautique)\n- SKYPE (Outil de VOIP)\n- STEAM (Plateforme Gaming)\n- SPOTIFY (Plateforme Streaming Audio)\n- CHMSEE (Liseuse d'eBook)\n\nEtes-vous sur de continuer ?"; then
+		echo ""
+		echo -e "${blanc}-- Supression complete:${fin}"
+		echo ""
+		TEST_SUDO; sudo apt-get autoremove -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+		TEST_SUDO; sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
+		echo ""
+		echo -e "=> Vous venez de finaliser la supression des logiciels propriétaires avec ${vert}SUCCES${fin}."
+	else 
+		echo ""
+		echo "Opération annulé"
+		echo ""
+	fi
 fi
 
 ## 15: Installation des logiciels propriétaires par défaut.
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
+	echo -e "${blanc}-- Reinstallation complete:${fin}"
+	echo ""
+	TEST_SUDO; sudo -v
+	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
+	TEST_SUDO; sudo apt-get update > /dev/null
+	TEST_SUDO; sudo apt-get install -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+	echo "- GOOGLE-CHROME (Navigateur)"
+	echo "- WPS-OFFICE (Suite Bureautique)"
+	echo "- SKYPE (Outil de VOIP)"
+	echo "- STEAM (Plateforme Gaming)"
+	echo "- SPOTIFY (Plateforme Streaming Audio)"
+	echo "- CHMSEE (Liseuse d'eBook)"
+	echo ""
+	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
 ## 16: Installation du navigateur Firefox.
