@@ -306,9 +306,6 @@ fi
 
 
 
-
-
-
 # Fin
 echo; echo
 pkill zenity
