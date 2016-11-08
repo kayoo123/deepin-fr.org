@@ -1,4 +1,14 @@
 #!/bin/bash 
+#
+# DESC : Boite-a-outils Deepin-FR
+# Vers : 5.0
+# Date : 08/11/2016
+# Auth : Kayoo (http://forum.deepin-fr.org/)
+#
+# Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
+# Information : https://github.com/kayoo123/deepin-fr.org
+###############
+sleep 1
 #######################################################################
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
@@ -11,9 +21,6 @@
 #######################################################################
 #
 # TODO
-# - barre de progression sur le message d'attente
-# - Utilitaire pour creation de raccourci
-# - Utilitaire pour lancer commande au démarrage (gnome-session-properties)
 # - GUI pour partage samba
 # - Installation AdobeAIR
 # - Reunir certain menu (ex. sons, logiciel proprio)
