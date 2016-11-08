@@ -61,11 +61,13 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
   # Vérification si mot de passe vide
   if [[ ${?} != 0 || -z ${SUDOPASSWORD} ]]; then
   	  displayError "Le mot de passe SUDO est vide !"
+  	  pkill zenity
   	  exit 1
   fi
   # Vérifie si le passwd est valid
   if ! sudo -Sp '' [ 1 ] <<<"${SUDOPASSWORD}" 2>/dev/null; then
   	  displayError "Le mot de passe SUDO est invalide !"
+  	  pkill zenity
   	  exit 1
   fi
 
@@ -80,6 +82,7 @@ function LOCK() {
               echo "Si ce n'est pas le cas, verifier/supprimer la presence du repertoire de \".lock\""
               echo "=> rmdir $LOCKDIR"
               echo ''
+              pkill zenity
               exit 1
         fi
         trap 'rmdir "$LOCKDIR"' 0
@@ -93,6 +96,7 @@ function ERROR {
     echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
     echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
     echo ""
+    pkill zenity
     exit 1
   fi
 }
@@ -105,21 +109,21 @@ if [ ! $? -eq 0 ]; then
     echo  -e "${jaune}/!\ Attention:${fin}"
     echo "ce script nécessite : $1"
     echo ""
-  if zenity --question --text="Ce script nécessite l'installation du paquet: $1 .\nVoulez-vous l'installer ?"; then
+  if zenity --question --text="Ce script nécessite l'installation du paquet: $1 .\nVoulez-vous l'installer ?" &> /dev/null; then 
 		echo ""
 		echo ">> OK"
 		echo ""
 		notify-send -i package "Notice:" "Installation en cours, veuillez patienter..." -t 10000
 		CHECK_SERVICE apt-get
-		TEST_SUDO
-		sudo apt-get update 
-		sudo apt-get install -y $1
+		TEST_SUDO; sudo apt-get update 
+		TEST_SUDO; sudo apt-get install -y $1
 		echo ""
 		notify-send -i package "Notice:" "Installation de $1 terminé." -t 10000
 		echo "Intallation de $1 terminé"
 		sleep 1
   else
 		displayError "Installation annulé !"
+		pkill zenity
 		exit 1
   fi 
 fi
@@ -129,13 +133,23 @@ fi
 function CHECK_SERVICE() {
   ps -edf |grep -w $1 |grep -v grep 
   if [ $? -eq 0 ]; then
-    notify-send "Alerte:" "Un processus est déjà en cours d'utilisation, Merci de ressayer... " -t 10000
+    notify-send "Alerte:" "Un processus est déjà en cours d'utilisation... " -t 10000
     echo ""
     echo  -e "${jaune}/!\ Attention:${fin}"
     echo "Un processus est deja en cours d'utilisation : $1"
-    echo "Merci de patienter la fin de la tache courante..."
-    echo ""; sleep 1
-    exit 1
+    echo 
+    if zenity --question --text="Un processus est deja en cours d'utilisation : $1.\nNous pouvons forcer son arrêt. Mais soyez sur qu'il s'agit d'un comportement non-recommandé.\n\nEtes-vous bien sur de vouloir continuer ?" &> /dev/null; then 
+		echo ""
+		echo ">> OK"
+		echo ""
+		TEST_SUDO; sudo pkill -9 "$1"
+		sleep 1
+    else
+        echo "Merci de ressayer une fois le processus terminé..."
+		echo ""; sleep 1
+		pkill zenity
+		exit 1
+	fi
   fi
 }
 
@@ -162,13 +176,12 @@ echo ""
 echo "- Noyaux: $(uname -r)"
 echo "- OS : $(source /etc/lsb-release; echo $DISTRIB_DESCRIPTION)"
 echo "- Arch : $(uname -m)"
-echo ""
 echo "- Depot: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq)"
 echo ""
 
 # Zenity
 GUI=$(zenity --list --checklist \
-	--height 400 \
+	--height 600 \
 	--width 900 \
 	--title="Script script Deepin-tools" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
@@ -183,28 +196,30 @@ GUI=$(zenity --list --checklist \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
+	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
-	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
+	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par d\éfaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
-	FALSE "VLC" "Installation du lecteur multimedia VLC." \	
+	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
-	--separator=', ');
+	--separator=', ' ) \
+	||exit 1
 
-## Message d'attente...
-zenity --info --width=400 --title="Deepin-tools travaille" --text "Veuillez patienter quelques instants \npendant que nous réalisons vos actions." &
-#zenity --progress --title="Exécution du script" --width=400 --text="Veuillez patienter quelques instants !" --pulsate --no-cancel --auto-close
+## [DEBUT] fenetre de chargement...
+zenity --progress --width=400 --title="Exécution du script" --text="Veuillez patienter quelques instants !" --pulsate --no-cancel --auto-close &>/dev/null\
+|(
 
 ## 1: Installation et mise-à-jour de l'outil Deepin-tools
 if [[ $GUI == *"Installation Deepin-tools"* ]]; then
 displayTitle "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."
 	echo ""
-	echo -e "${blanc}-- Installation des soures:${fin}"
+	echo -e "${blanc}-- Installation des sources:${fin}"
 	sleep 1
 	TEST_BIN git; ERROR
 	TEST_SUDO; sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
@@ -268,7 +283,7 @@ displayTitle "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U
 	echo ""
 	echo -e "${blanc}-- Supression des sources:${fin}"
 	sleep 1
-	sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
+	TEST_SUDO; sudo rm -rf /usr/share/deepin-tools /tmp/deepin-fr.org; ERROR
 	echo "> Sources supprimées" 
 echo ""
 echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
@@ -420,8 +435,32 @@ echo "Il vous suffit de sélectionner dirrectement depuis la suite WPS-Office:"
 echo "Outils > Options > Vérifier l'orthographe > Dictionnaire personnel > Ajouter"
 sleep 2
 fi
+
+## 9: Permet de lancer un assistant pour l'aide à la création de raccourci.
+if [[ $GUI == *"Créer un raccourci"* ]]; then
+displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	dpkg -l |grep -w " gnome-panel " |grep ^ii 
+	if [ ! $? -eq 0 ]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y --no-install-recommends gnome-panel
+		echo "> Le paquet est a présent installé."
+	else
+		echo "> Le paquet est déjà installé."
+	fi
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	echo "> Configuration en cours..."
+	TEST_SUDO; sudo gnome-desktop-item-edit /usr/share/applications/ --create-new &>/dev/null
+	sleep 1
+echo ""
+echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
+fi
 	
-## 9: Telechargement de 10 wallpapers au bon format.
+## 10: Telechargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
 displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
 	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
@@ -433,7 +472,7 @@ displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au
 	echo ""
 	echo -e "${blanc}-- Detection de vos écrans:${fin}"
 	sleep 1; echo -e "Nous avons détecté une resolution pour votre ecran de : ${blanc}$RESOLUTION${fin}"
-	if zenity --question --text="Nous avons détecté une resolution pour votre ecran de : $RESOLUTION$ .\nConfirmez-vous cette résolution ?"; then
+	if zenity --question --text="Nous avons détecté une resolution pour votre ecran de : $RESOLUTION.\nConfirmez-vous cette résolution ?" &>/dev/null; then
 		echo ""
 		echo ">> OK"
 		echo ""
@@ -450,7 +489,7 @@ echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCE
 fi
 fi
 
-## 10: Permet de rendre silencieux l'ouverture de session.
+## 11: Permet de rendre silencieux l'ouverture de session.
 if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
 displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -463,7 +502,7 @@ echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
 fi
 
-## 11: Permet de rendre réactiver les sons lors de l'ouverture de session.
+## 12: Permet de rendre réactiver les sons lors de l'ouverture de session.
 if [[ $GUI == *"Activation sons démarrage"* ]]; then
 displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -477,7 +516,7 @@ echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
 fi
 
-## 12: Réalise un audit de la machine.
+## 13: Réalise un audit de la machine.
 if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	FILE_AUDIT=/tmp/hardinfo.txt
@@ -494,7 +533,7 @@ displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	echo ""
 	sleep 1
 	echo "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
-	if zenity --question --text="Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net] .\nAcceptez-vous cet envoi ?"; then
+	if zenity --question --text="Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net] .\nAcceptez-vous cet envoi ?" &>/dev/null ; then
 		echo ""
 		echo ">> OK"
 		echo ""
@@ -518,7 +557,7 @@ echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
 
-## 13: Récupere les logs journaliers.
+## 14: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	echo ""
@@ -544,7 +583,7 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	sleep 3
 fi
 
-## 14: Supprime tous les logiciels dont la license n'est pas libre.
+## 15: Supprime tous les logiciels dont la license n'est pas libre.
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
 displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
 	echo ""
@@ -556,7 +595,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	echo "- SPOTIFY (Plateforme Streaming Audio)"
 	echo "- CHMSEE (Liseuse d'eBook)"
 	echo ""
-	if zenity --question --text="Nous vous proposons de supprimer les logiciels suivants : \n- GOOGLE-CHROME (Navigateur)\n- WPS-OFFICE (Suite Bureautique)\n- SKYPE (Outil de VOIP)\n- STEAM (Plateforme Gaming)\n- SPOTIFY (Plateforme Streaming Audio)\n- CHMSEE (Liseuse d'eBook)\n\nEtes-vous sur de continuer ?"; then
+	if zenity --question --text="Nous vous proposons de supprimer les logiciels suivants : \n- GOOGLE-CHROME (Navigateur)\n- WPS-OFFICE (Suite Bureautique)\n- SKYPE (Outil de VOIP)\n- STEAM (Plateforme Gaming)\n- SPOTIFY (Plateforme Streaming Audio)\n- CHMSEE (Liseuse d'eBook)\n\nEtes-vous sur de continuer ?" &>/dev/null; then
 		echo ""
 		echo -e "${blanc}-- Supression complete:${fin}"
 		echo ""
@@ -571,7 +610,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	fi
 fi
 
-## 15: Installation des logiciels propriétaires par défaut.
+## 16: Installation des logiciels propriétaires par défaut.
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
@@ -591,7 +630,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
-## 16: Installation du navigateur Firefox.
+## 17: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	echo ""
@@ -600,7 +639,7 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 	echo ""
 fi
 
-## 17: Installation du la suite bureatique LibreOffice.
+## 18: Installation du la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
@@ -609,7 +648,7 @@ displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
 fi
 
-## 18: Installation du lecteur multimedia VLC.
+## 19: Installation du lecteur multimedia VLC.
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
@@ -618,7 +657,7 @@ displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
 fi
 
-## 19: Installe ADB, outil pour téléphones sous Android.
+## 20: Installe ADB, outil pour téléphones sous Android.
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
@@ -627,12 +666,11 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
 fi
 
+## [FIN] fenetre de chargement...
+pkill zenity
 
 # Fin
-echo; echo
-#pkill zenity
-PID=$(pgrep -l "Deepin-tools travaille"|awk '{ print $1 }')
-kill -9 $PID > /dev/null 2>&1
-zenity --info --width=400 --title="Et voilà !" --text "C'est a présent terminé. \nToutes les tâches ont été effectuées avec succès !" &  
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
+zenity --info --width=400 --title="Et voilà !" --text "C'est a présent terminé. \nToutes les tâches ont été effectuées avec succès !" &> /dev/null 
+)
 exit 0
