@@ -16,6 +16,7 @@
 # - Utilitaire pour lancer commande au démarrage (gnome-session-properties)
 # - GUI pour partage samba
 # - Installation AdobeAIR
+# - Reunir certain menu (ex. sons, logiciel proprio)
 
 ## VERSION
 VERSION=5.0
@@ -304,6 +305,95 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
+## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
+if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
+displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
+	echo ""
+fi
+
+## 6: Nettoie votre systeme en profondeur.
+if [[ $GUI == *"Nettoyage de printemps"* ]]; then
+displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
+	echo ""
+fi
+
+## 7: Activation de la touche \"Verrouillage Numérique\" au démarrage.
+if [[ $GUI == *"Verr.Num au boot"* ]]; then
+displayTitle "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."
+	echo ""
+fi
+
+## 8: Installation du dictionnaire de la suite WPS-Office.
+if [[ $GUI == *"Dictionnaire FR pour WPS"* ]]; then
+displayTitle "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office."
+	echo ""
+fi
+	
+## 9: Telechargement de 10 wallpapers au bon format.
+if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
+displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
+	echo ""
+fi
+
+## 10: Permet de rendre silencieux l'ouverture de session.
+if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
+displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
+	echo ""
+fi
+
+## 11: Permet de rendre réactiver les sons lors de l'ouverture de session.
+if [[ $GUI == *"Activation sons démarrage"* ]]; then
+displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
+	echo ""
+fi
+
+## 12: Réalise un audit de la machine.
+if [[ $GUI == *"Génération d'un rapport"* ]]; then
+displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
+	echo ""
+fi
+
+## 13: Récupere les logs journaliers.
+if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
+displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
+	echo ""
+fi
+
+## 14: Supprime tous les logiciels dont la license n'est pas libre.
+if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
+displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
+	echo ""
+fi
+
+## 15: Installation des logiciels propriétaires par défaut.
+if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
+displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
+	echo ""
+fi
+
+## 16: Installation du navigateur Firefox.
+if [[ $GUI == *"Firefox"* ]]; then
+displayTitle "Firefox" "Installation du navigateur Firefox."
+	echo ""
+fi
+
+## 17: Installation du la suite bureatique LibreOffice.
+if [[ $GUI == *"LibreOffice"* ]]; then
+displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
+	echo ""
+fi
+
+## 18: Installation du lecteur multimedia VLC.
+if [[ $GUI == *"VLC"* ]]; then
+displayTitle "VLC" "Installation du lecteur multimedia VLC."
+	echo ""
+fi
+
+## 19: Installe ADB, outil pour téléphones sous Android.
+if [[ $GUI == *"ADB"* ]]; then
+displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
+	echo ""
+fi
 
 
 # Fin
