@@ -190,7 +190,7 @@ echo ""
 GUI=$(zenity --list --checklist \
 	--height 600 \
 	--width 900 \
-	--title="Script: Deepin-tools" \
+	--title="DEEPIN-TOOLS" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
 	--column=Actions \
