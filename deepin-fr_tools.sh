@@ -71,6 +71,21 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
 fi
 }
 
+## Verrouillage  
+function LOCK() {
+        LOCKDIR="$HOME/$(basename $0).lock"
+        if ! mkdir $LOCKDIR 2>/dev/null; then
+              echo ''
+              echo -e "\r\e[0;31m* Un script \"$(basename $0)\" est actuellement en cours...*\e[0m"
+              echo ''
+              echo "Si ce n'est pas le cas, verifier/supprimer la presence du repertoire de \".lock\""
+              echo "=> rmdir $LOCKDIR"
+              echo ''
+              exit 1
+        fi
+        trap 'rmdir "$LOCKDIR"' 0
+}
+
 
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
@@ -131,7 +146,7 @@ function CHECK_SERVICE() {
 ##########
 ## MAIN ##
 ##########
-#LOCK
+LOCK
 clear
 echo ""
 echo -e "${bleu}  ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗ ${fin}"
