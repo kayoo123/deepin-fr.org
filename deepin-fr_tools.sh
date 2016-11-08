@@ -75,9 +75,7 @@ fi
 function LOCK() {
         LOCKDIR="$HOME/$(basename $0).lock"
         if ! mkdir $LOCKDIR 2>/dev/null; then
-              echo ''
-              echo -e "\r\e[0;31m* Un script \"$(basename $0)\" est actuellement en cours...*\e[0m"
-              echo ''
+              displayError "Un script \"$(basename $0)\" est actuellement en cours..."
               echo "Si ce n'est pas le cas, verifier/supprimer la presence du repertoire de \".lock\""
               echo "=> rmdir $LOCKDIR"
               echo ''
@@ -85,7 +83,6 @@ function LOCK() {
         fi
         trap 'rmdir "$LOCKDIR"' 0
 }
-
 
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
@@ -181,39 +178,21 @@ GUI=$(zenity --list --checklist \
 	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
 	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
-	FALSE "TLP" "Installe TLP pour augmenter la durée de vie de la batterie et réduire la surchauffe." \
-	FALSE "Boot Repair" "Installe boot-repair, réparateur de GRUB." \
-	FALSE "Support formats d'archivage" "Installation du support pour formats d'archivage (zip,rar,7z...)." \
-	FALSE "Atom" "Installe Atom, un éditeur de texte du 21ème siècle." \
-	FALSE "Sublime Text 3" "Installe Sublime Text 3, un puissant éditeur de texte." \
-	FALSE "Deja Dup" "Installe Deja Dup,  utilitaire pour sauvegarde." \
+	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
+	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
+	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
+	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
+	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
+	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
+	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
+	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
+	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
+	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
+	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
+	FALSE "Firefox" "Installation du navigateur Firefox." \
+	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
+	FALSE "VLC" "Installation du lecteur multimedia VLC." \	
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
-	FALSE "Pushbullet" "Installe l'indicator Pushbullet (interactions entre PC et vos appareils Android)." \
-	FALSE "Time Shift" "Installe timeshift pour les restaurations système." \
-	FALSE "Redshift" "Installe redshift pour adapter la luminositié de l'écran en fonction du jour..." \
-	FALSE "LibreOffice" "Installe LibreOffice, la suite bureautique libre." \
-	FALSE "Extra Multimedia Codecs" "Installation des codecs multimédia additionnels." \
-	FALSE "Support DVD encrypté" "Installation du support pour lire les DVDs encryptés." \
-	FALSE "VLC" "Installe VLC, le lecteur multimédia." \
-	FALSE "Vocal" "Installe vocal, application de podcasts." \
-	FALSE "Clementine" "Installe Clementine, lecteur de musique." \
-	FALSE "Tomahawk" "Installe tomahawk, lecteur de musique." \
-	FALSE "Spotify" "Installe Spotify, l'application de service streaming de musique." \
-	FALSE "Google Chrome" "Installe Google Chrome, le navigateur Google." \
-	FALSE "Chromium" "Installe Chromium, la version opensource de Chrome." \
-	FALSE "Firefox" "Installe Firefox, le navigateur libre et opensource." \
-	FALSE "FeedReader" "Installe FeedReader, un aggrégateur de flux opensource." \
-	FALSE "Transmission" "Installe Transmission, le client bitorrent." \
-	FALSE "Dropbox" "Installe dropbox avec les icones monochromes elementary." \
-	FALSE "Grive 2" "Installe Grive 2 pour le cloud Google Drive." \
-	FALSE "Skype" "Installe Skype." \
-	FALSE "Telegram" "Installe Telegram, version desktop de l'application SMS." \
-	FALSE "Polari" "Installe le client IRC Polari." \
-	FALSE "Gimp et GMIC" "Installe le logiciel de retouche GIMP et son extension GMIC." \
-	FALSE "Inkscape" "Installe le logiciel de vectorisation Inkscape." \
-	FALSE "Steam" "Installe Steam, la plateforme en ligne de Jeux." \
-	FALSE "Réparer les paquets cassés" "Vas réparer les paquets cassés." \
-	FALSE "Nettoyage de prinptemps" "Retire les paquets qui ne sont plus nécéssaires." \
 	--separator=', ');
 
 ## Message d'attente...
