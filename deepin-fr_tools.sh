@@ -1,14 +1,14 @@
 #!/bin/bash 
-########################################################################
-#                                       			       #
-# ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   #
-# ██╔══██╗██╔════╝██╔════╝██╔══██╗██║████╗  ██║      ██╔════╝██╔══██╗  #
-# ██║  ██║█████╗  █████╗  ██████╔╝██║██╔██╗ ██║█████╗█████╗  ██████╔╝  #
-# ██║  ██║██╔══╝  ██╔══╝  ██╔═══╝ ██║██║╚██╗██║╚════╝██╔══╝  ██╔══██╗  #
-# ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║  #
-# ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝  #
-#								       #
-########################################################################
+#######################################################################
+#                                       			       
+# ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
+# ██╔══██╗██╔════╝██╔════╝██╔══██╗██║████╗  ██║      ██╔════╝██╔══██╗  
+# ██║  ██║█████╗  █████╗  ██████╔╝██║██╔██╗ ██║█████╗█████╗  ██████╔╝  
+# ██║  ██║██╔══╝  ██╔══╝  ██╔═══╝ ██║██║╚██╗██║╚════╝██╔══╝  ██╔══██╗  
+# ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║  
+# ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝  
+#								       
+#######################################################################
 #
 # TODO
 # - barre de progression sur le message d'attente
@@ -508,9 +508,9 @@ displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons 
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
 	echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
-    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg; ERROR
-    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg; ERROR
-    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg
     sleep 1
 echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
