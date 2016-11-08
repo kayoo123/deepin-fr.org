@@ -595,11 +595,17 @@ fi
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	echo ""
+	TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+	echo "> Installation Firefox terminé"
+	echo ""
 fi
 
 ## 17: Installation du la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
+	echo ""
+	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
+	echo "> Installation LibreOffice terminé"
 	echo ""
 fi
 
@@ -607,11 +613,17 @@ fi
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
+	TEST_SUDO; sudo apt-get install -y vlc; ERROR
+	echo "> Installation VLC terminé"
+	echo ""
 fi
 
 ## 19: Installe ADB, outil pour téléphones sous Android.
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
+	echo ""
+	TEST_SUDO; sudo apt-get install -y adb; ERROR
+	echo "> Installation ADB terminé"
 	echo ""
 fi
 
