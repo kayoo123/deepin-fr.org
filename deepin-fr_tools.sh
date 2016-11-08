@@ -461,7 +461,7 @@ displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à
 	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
 	echo ""
 	echo "> Configuration en cours..."
-	gnome-desktop-item-edit $HOME/.local/share/applications/ --create-new &>/dev/null
+	TEST_SUDO; sudo gnome-desktop-item-edit /usr/share/applications/ --create-new &>/dev/null
 	sleep 1
 echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
