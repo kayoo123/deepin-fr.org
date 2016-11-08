@@ -13,6 +13,7 @@
 # TODO
 # - barre de progression sur le message d'attente
 # - Utilitaire pour creation de raccourci
+# - Utilitaire pour lancer commande au démarrage (gnome-session-properties)
 # - GUI pour partage samba
 # - Installation AdobeAIR
 
