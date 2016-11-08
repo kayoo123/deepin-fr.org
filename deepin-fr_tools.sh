@@ -309,54 +309,239 @@ fi
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
 displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
 	echo ""
+	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get update; ERROR
+	echo ""
+	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
+	TEST_SUDO; sudo apt-get -y dist-upgrade; ERROR
+	echo ""
+	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
+	TEST_SUDO; sudo apt-get install -f; ERROR
+	TEST_SUDO; sudo dpkg --configure -a; ERROR
+	echo ""
+	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
+	TEST_SUDO; sudo apt-get -y autoremove; ERROR
+	echo ""
+echo ""
+echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
 fi
 
 ## 6: Nettoie votre systeme en profondeur.
 if [[ $GUI == *"Nettoyage de printemps"* ]]; then
 displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
+	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get update; ERROR # cache
+	TEST_SUDO; sudo apt-get autoclean; ERROR # Suppression des archives périmées
+	TEST_SUDO; sudo apt-get clean; ERROR # Supressions des paquets en cache
+	TEST_SUDO; sudo apt-get autoremove; ERROR # Supression des dépendances inutilisées
+	echo ""
+	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
+	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
+	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
+	echo ""
+	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
+	TEST_BIN deborphan; ERROR
+	TEST_SUDO; sudo deborphan; ERROR
+	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+	echo ""
+	echo -e "${blanc}-- Nettoyage des locales:${fin}"
+	TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
+	TEST_SUDO; sudo locale-gen; ERROR
+	TEST_BIN localepurge; ERROR
+	TEST_SUDO; sudo localepurge; ERROR
+	echo ""
+	echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
+	rm -Rf $HOME/.thumbnails/*; ERROR
+	echo "> Images thumbnails supprimées."
+	echo ""
+	echo -e "${blanc}-- Nettoyage du cache des navigateurs:${fin}"
+	rm -Rf $HOME/.mozilla/firefox/*.default/Cache/*; ERROR
+	rm -Rf $HOME/.cache/google-chrome/Default/Cache/*; ERROR
+	rm -Rf $HOME/.cache/chromium/Default/Cache/*; ERROR
+	echo "> Cache navigateur nettoyé."
+	echo ""
+	echo -e "${blanc}-- Nettoyage du cache de Flash_Player:${fin}"
+	rm -Rf $HOME/.macromedia/Flash_Player/macromedia.com; ERROR
+	rm -Rf $HOME/.macromedia/Flash_Player/\#SharedObjects; ERROR
+	echo "> Cache flash-Player nettoyé."
+	echo ""
+	echo -e "${blanc}-- Nettoyage des fichiers de sauvegarde:${fin}"
+	find $HOME -name '*~' -exec rm {} \;; ERROR
+	echo "> Supression des fichiers d'ouverture temporaire."
+	echo ""
+	echo -e "${blanc}-- Nettoyage de la corbeille:${fin}"
+	rm -Rf $HOME/.local/share/Trash/*; ERROR
+	echo "> Corbeille vidé"
+	echo ""
+	echo -e "${blanc}-- Nettoyage de la RAM:${fin}"
+	TEST_SUDO; sudo -v
+	TEST_SUDO; sudo sysctl -w vm.drop_caches=3 &> /dev/null; ERROR
+	free -h
+	echo ""
+echo ""
+echo -e "=> Votre systeme a été nettoyé avec ${vert}SUCCES${fin}."
 fi
 
 ## 7: Activation de la touche \"Verrouillage Numérique\" au démarrage.
 if [[ $GUI == *"Verr.Num au boot"* ]]; then
 displayTitle "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."
 	echo ""
+	echo -e "${blanc}-- Téléchargement de numlockx:${fin}"
+	TEST_BIN numlockx; ERROR
+	echo ""
+	echo -e "${blanc}-- Activation dans la configuration \"lightdm\":${fin}"
+	TEST_SUDO; sudo sed -i -e "s#\#greeter-setup-script=#greeter-setup-script=/usr/bin/numlockx\ on#g" /etc/lightdm/lightdm.conf; ERROR
+	echo "> Activation de numlockx terminé."
+	echo ""
+echo ""
+echo -e "=> La touche \"Verrouillage Numérique\" a été activé au démarrage avec ${vert}SUCCES${fin}."
 fi
 
 ## 8: Installation du dictionnaire de la suite WPS-Office.
 if [[ $GUI == *"Dictionnaire FR pour WPS"* ]]; then
 displayTitle "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office."
 	echo ""
+	echo -e "${blanc}-- Téléchargement de l'archive:${fin}"
+	TEST_SUDO; sudo rm -rf /opt/kingsoft/wps-office/office6/dicts/fr_FR
+	wget -P /tmp http://wps-community.org/download/dicts/fr_FR.zip; ERROR
+	echo ""
+	echo -e "${blanc}-- Décompression de l'archive:${fin}"
+	TEST_BIN unzip; ERROR
+	TEST_SUDO; sudo unzip /tmp/fr_FR.zip -d /opt/kingsoft/wps-office/office6/dicts/; ERROR
+	rm -f /tmp/fr_FR.zip; ERROR
+	echo "> Archive décompressé."
+	echo ""
+echo ""
+echo -e "=> Le dictionnaire Francais a été téléchargé avec ${vert}SUCCES${fin}."
+echo "Il vous suffit de sélectionner dirrectement depuis la suite WPS-Office:"
+echo "Outils > Options > Vérifier l'orthographe > Dictionnaire personnel > Ajouter"
+sleep 2
 fi
 	
 ## 9: Telechargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
 displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
+	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
+	DIR=$HOME/Images/Wallpapers
+	URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTION/
 	echo ""
+	echo "Nous allons télécharger 10 fonds d'écran aléatoires."
+	echo ""
+	echo ""
+	echo -e "${blanc}-- Detection de vos écrans:${fin}"
+	sleep 1; echo -e "Nous avons détecté une resolution pour votre ecran de : ${blanc}$RESOLUTION${fin}"
+	if zenity --question --text="Nous avons détecté une resolution pour votre ecran de : $RESOLUTION$ .\nConfirmez-vous cette résolution ?"; then
+		echo ""
+		echo ">> OK"
+		echo ""
+		echo -e "${blanc}-- Debut du telechargement:${fin}"
+		echo ""
+		TEST_BIN lynx; ERROR
+		TEST_BIN wget; ERROR
+		wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
+		find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
+		echo "> Récupération des fonds d'écran terminé"
+		echo ""
+echo ""
+echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCES${fin}."
+fi
 fi
 
 ## 10: Permet de rendre silencieux l'ouverture de session.
 if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
 displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
+	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
+	echo -e "${blanc}-- Désactiver les sons au démarrage de la session:${fin}"
+    TEST_SUDO; sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_disable \; ;ERROR
+    TEST_SUDO; sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
+    sleep 1
+echo ""
+echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
 fi
 
 ## 11: Permet de rendre réactiver les sons lors de l'ouverture de session.
 if [[ $GUI == *"Activation sons démarrage"* ]]; then
 displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
+	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
+	echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg; ERROR
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg; ERROR
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR
+    sleep 1
+echo ""
+echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
 fi
 
 ## 12: Réalise un audit de la machine.
 if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
+	FILE_AUDIT=/tmp/hardinfo.txt
 	echo ""
+	echo "Nous allons générer et mettre a disposition un audit complet de votre systeme."
+	echo ""
+	echo ""
+	echo -e "${blanc}-- Génération de l'audit SYSTEME:${fin}"
+	echo ""
+	TEST_BIN hardinfo; ERROR
+	sleep 2
+	hardinfo --generate-report --load-module computer.so --load-module devices.so > $FILE_AUDIT
+	echo ""
+	echo ""
+	sleep 1
+	echo "Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net]"
+	if zenity --question --text="Par simplicité, nous vous proposons d'envoyer votre rapport sur un service en ligne [http://paste.debian.net] .\nAcceptez-vous cet envoi ?"; then
+		echo ""
+		echo ">> OK"
+		echo ""
+		echo -e "${blanc}-- Envoie du rapport en ligne :${fin}"
+		echo ""
+		TEST_BIN pastebinit; ERROR
+		echo Le lien va être généré...Merci de le conserver:
+		echo ""
+		pastebinit -P -i $FILE_AUDIT; ERROR
+		rm -f $FILE_AUDIT; ERROR
+		echo ""
+		echo " - Votre fichier n'est accessible qu'à partir du lien ci-dessus."
+		echo " - Votre fichier restera disponible pendant 7 jours."
+		echo ""
+		sleep 3
+echo ""
+echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
+	else
+echo ""
+echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
+	fi
 fi
 
 ## 13: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	echo ""
+	echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
+	echo " -  $(date +'%A %d %B')"; ERROR
+	sleep 2
+	echo ""
+	echo ""
+	echo -e "${blanc}-- Génération de l'archive:${fin}"
+	echo ""
+	sleep 1
+	sudo find /var/log -type f -newermt $(date +"%Y-%m-%d") -print0 |sudo tar -cvzf $FILE_LOG --null -T -
+	sudo chown $USER $FILE_LOG; ERROR
+	echo ""
+	echo ""
+	sleep 1
+	echo -e "=> L'archive a été généré avec ${vert}SUCCES${fin}."
+	echo ""
+	echo "Il est disponible localement sur :"
+	du -sh $FILE_LOG; ERROR
+	echo ""
+	echo ""
+	sleep 3
 fi
 
 ## 14: Supprime tous les logiciels dont la license n'est pas libre.
@@ -398,7 +583,9 @@ fi
 
 # Fin
 echo; echo
-pkill zenity
+#pkill zenity
+PID=$(pgrep -l "Deepin-tools travaille"|awk '{ print $1 }')
+kill -9 $PID > /dev/null 2>&1
 zenity --info --width=400 --title="Et voilà !" --text "C'est a présent terminé. \nToutes les tâches ont été effectuées avec succès !" &  
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
 exit 0
