@@ -210,7 +210,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
-	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par d\éfaut." \
+	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
