@@ -98,7 +98,7 @@ function LOCK() {
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
   if [ ! $? -eq 0 ]; then
-	displayError "/!\ Un erreur a été détecté !"
+	displayError "/!\\ Un erreur a été détecté !"
     echo ""
     echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
     echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
