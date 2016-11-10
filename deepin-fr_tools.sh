@@ -329,6 +329,7 @@ fi
 
 ## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
+#export DEBIAN_FRONTEND=noninteractive  
 displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
