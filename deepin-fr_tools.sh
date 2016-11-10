@@ -462,9 +462,11 @@ displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à
 	echo ""
 	echo "> Configuration en cours..."
 	TEST_SUDO; sudo gnome-desktop-item-edit /usr/share/applications/ --create-new &>/dev/null
-	sleep 1
+	if [ ! $? -eq 0 ]; then
+	zenity --info --width=400 --title="Raccourci créé avec succès." --text "Vous trouverez votre raccourci directement dans la liste d'application de votre lanceur.\n Rubrique: \"Autres\"." &> /dev/null
 echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
+	fi
 fi
 	
 ## 10: Telechargement de 10 wallpapers au bon format.
