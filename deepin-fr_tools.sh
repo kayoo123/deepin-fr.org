@@ -329,7 +329,7 @@ fi
 
 ## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
-#export DEBIAN_FRONTEND=noninteractive  
+export DEBIAN_FRONTEND=noninteractive  
 displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
@@ -370,12 +370,12 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; sudo deborphan; ERROR
 	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
 	echo ""
-	echo -e "${blanc}-- Nettoyage des locales:${fin}"
-	TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
-	TEST_SUDO; sudo locale-gen; ERROR
-	TEST_BIN localepurge; ERROR
-	TEST_SUDO; sudo localepurge; ERROR
-	echo ""
+	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
+	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
+	#TEST_SUDO; sudo locale-gen; ERROR
+	#TEST_BIN localepurge; ERROR
+	#TEST_SUDO; sudo localepurge; ERROR
+	#echo ""
 	echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
 	rm -Rf $HOME/.thumbnails/*; ERROR
 	echo "> Images thumbnails supprimées."
