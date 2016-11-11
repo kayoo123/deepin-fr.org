@@ -679,7 +679,7 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 fi
 
 ## [FIN] fenetre de chargement...
-pkill zenity
+pkill zenity; sleep 1; pkill zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
