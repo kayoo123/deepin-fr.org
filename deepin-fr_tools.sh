@@ -392,7 +392,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo "> Cache flash-Player nettoyé."
 	echo ""
 	echo -e "${blanc}-- Nettoyage des fichiers de sauvegarde:${fin}"
-	find $HOME -name '*~' -exec rm {} \;; ERROR
+	find $HOME -name '*~' -exec rm {} \;
 	echo "> Supression des fichiers d'ouverture temporaire."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la corbeille:${fin}"
