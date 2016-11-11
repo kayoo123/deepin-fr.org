@@ -22,6 +22,8 @@ sleep 1
 #
 # TODO
 # - GUI pour partage samba
+# - Installation flash-player
+# - Installation chromium
 # - Installation AdobeAIR
 # - Reunir certain menu (ex. sons, logiciel proprio)
 
