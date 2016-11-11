@@ -336,17 +336,17 @@ displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des d
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get update; ERROR
+	TEST_SUDO; sudo apt update; ERROR
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-	TEST_SUDO; sudo apt-get -y dist-upgrade; ERROR
+	TEST_SUDO; sudo apt -y dist-upgrade; ERROR
 	echo ""
 	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
-	TEST_SUDO; sudo apt-get install -f; ERROR
+	TEST_SUDO; sudo apt install -f; ERROR
 	TEST_SUDO; sudo dpkg --configure -a; ERROR
 	echo ""
 	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
-	TEST_SUDO; sudo apt-get -y autoremove; ERROR
+	TEST_SUDO; sudo apt -y autoremove; ERROR
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
@@ -358,10 +358,10 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get update; ERROR # cache
-	TEST_SUDO; sudo apt-get autoclean; ERROR # Suppression des archives périmées
-	TEST_SUDO; sudo apt-get clean; ERROR # Supressions des paquets en cache
-	TEST_SUDO; sudo apt-get autoremove; ERROR # Supression des dépendances inutilisées
+	TEST_SUDO; sudo apt -y update; ERROR # cache
+	TEST_SUDO; sudo apt -y autoclean; ERROR # Suppression des archives périmées
+	TEST_SUDO; sudo apt -y clean; ERROR # Supressions des paquets en cache
+	TEST_SUDO; sudo apt -y autoremove; ERROR # Supression des dépendances inutilisées
 	echo ""
 	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
