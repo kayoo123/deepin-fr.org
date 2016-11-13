@@ -125,7 +125,7 @@ if [ ! $? -eq 0 ]; then
 		notify-send -i package "Notice:" "Installation en cours, veuillez patienter..." -t 10000
 		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get update 
-		TEST_SUDO; sudo apt-get install -y $1
+		TEST_SUDO; sudo apt-get install -y --force-yes $1
 		echo ""
 		notify-send -i package "Notice:" "Installation de $1 terminé." -t 10000
 		echo "Intallation de $1 terminé"
@@ -339,14 +339,14 @@ displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des d
 	TEST_SUDO; sudo apt update; ERROR
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-	TEST_SUDO; sudo apt -y dist-upgrade; ERROR
+	TEST_SUDO; sudo apt -y --force-yes dist-upgrade; ERROR
 	echo ""
 	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
 	TEST_SUDO; sudo apt install -f; ERROR
 	TEST_SUDO; sudo dpkg --configure -a; ERROR
 	echo ""
 	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
-	TEST_SUDO; sudo apt -y autoremove; ERROR
+	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
@@ -358,10 +358,10 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt -y update; ERROR # cache
-	TEST_SUDO; sudo apt -y autoclean; ERROR # Suppression des archives périmées
-	TEST_SUDO; sudo apt -y clean; ERROR # Supressions des paquets en cache
-	TEST_SUDO; sudo apt -y autoremove; ERROR # Supression des dépendances inutilisées
+	TEST_SUDO; sudo apt update; ERROR # cache
+	TEST_SUDO; sudo apt -y --force-yes autoclean; ERROR # Suppression des archives périmées
+	TEST_SUDO; sudo apt -y --force-yes clean; ERROR # Supressions des paquets en cache
+	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR # Supression des dépendances inutilisées
 	echo ""
 	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
