@@ -21,6 +21,8 @@ sleep 1
 #######################################################################
 #
 # TODO
+# - Installation du flashPlayer
+# - force choix user
 # - GUI pour partage samba
 # - Installation flash-player
 # - Installation chromium
@@ -645,10 +647,17 @@ fi
 ## 17: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
-	echo ""
-	TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
-	echo "> Installation Firefox terminé"
-	echo ""
+	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
+		echo ""
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash; ERROR
+		echo "> Installation Firefox (avec Flash Player) terminé"
+		echo ""
+	else 
+		echo ""
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+		echo "> Installation Firefox terminé"
+		echo ""
+	fi
 fi
 
 ## 18: Installation du la suite bureatique LibreOffice.
