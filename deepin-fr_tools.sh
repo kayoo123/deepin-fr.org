@@ -22,6 +22,8 @@ sleep 1
 #
 # TODO
 # - GUI pour partage samba
+# - Installation flash-player
+# - Installation chromium
 # - Installation AdobeAIR
 # - Reunir certain menu (ex. sons, logiciel proprio)
 
@@ -98,7 +100,7 @@ function LOCK() {
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
   if [ ! $? -eq 0 ]; then
-	displayError "/!\ Un erreur a été détecté !"
+	displayError "/!\\ Un erreur a été détecté !"
     echo ""
     echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
     echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
@@ -123,7 +125,7 @@ if [ ! $? -eq 0 ]; then
 		notify-send -i package "Notice:" "Installation en cours, veuillez patienter..." -t 10000
 		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get update 
-		TEST_SUDO; sudo apt-get install -y $1
+		TEST_SUDO; sudo apt-get install -y --force-yes $1
 		echo ""
 		notify-send -i package "Notice:" "Installation de $1 terminé." -t 10000
 		echo "Intallation de $1 terminé"
@@ -190,7 +192,7 @@ echo ""
 GUI=$(zenity --list --checklist \
 	--height 600 \
 	--width 900 \
-	--title="Script script Deepin-tools" \
+	--title="DEEPIN-TOOLS" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
 	--column=Actions \
@@ -210,7 +212,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
-	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par d\éfaut." \
+	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
@@ -329,21 +331,22 @@ fi
 
 ## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
+export DEBIAN_FRONTEND=noninteractive  
 displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get update; ERROR
+	TEST_SUDO; sudo apt update; ERROR
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-	TEST_SUDO; sudo apt-get -y dist-upgrade; ERROR
+	TEST_SUDO; sudo apt -y --force-yes dist-upgrade; ERROR
 	echo ""
 	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
-	TEST_SUDO; sudo apt-get install -f; ERROR
+	TEST_SUDO; sudo apt install -f; ERROR
 	TEST_SUDO; sudo dpkg --configure -a; ERROR
 	echo ""
 	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
-	TEST_SUDO; sudo apt-get -y autoremove; ERROR
+	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
@@ -355,10 +358,10 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get update; ERROR # cache
-	TEST_SUDO; sudo apt-get autoclean; ERROR # Suppression des archives périmées
-	TEST_SUDO; sudo apt-get clean; ERROR # Supressions des paquets en cache
-	TEST_SUDO; sudo apt-get autoremove; ERROR # Supression des dépendances inutilisées
+	TEST_SUDO; sudo apt update; ERROR # cache
+	TEST_SUDO; sudo apt -y --force-yes autoclean; ERROR # Suppression des archives périmées
+	TEST_SUDO; sudo apt -y --force-yes clean; ERROR # Supressions des paquets en cache
+	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR # Supression des dépendances inutilisées
 	echo ""
 	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
@@ -369,12 +372,12 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; sudo deborphan; ERROR
 	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
 	echo ""
-	echo -e "${blanc}-- Nettoyage des locales:${fin}"
-	TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
-	TEST_SUDO; sudo locale-gen; ERROR
-	TEST_BIN localepurge; ERROR
-	TEST_SUDO; sudo localepurge; ERROR
-	echo ""
+	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
+	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
+	#TEST_SUDO; sudo locale-gen; ERROR
+	#TEST_BIN localepurge; ERROR
+	#TEST_SUDO; sudo localepurge; ERROR
+	#echo ""
 	echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
 	rm -Rf $HOME/.thumbnails/*; ERROR
 	echo "> Images thumbnails supprimées."
@@ -391,7 +394,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo "> Cache flash-Player nettoyé."
 	echo ""
 	echo -e "${blanc}-- Nettoyage des fichiers de sauvegarde:${fin}"
-	find $HOME -name '*~' -exec rm {} \;; ERROR
+	find $HOME -name '*~' -exec rm {} \;
 	echo "> Supression des fichiers d'ouverture temporaire."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la corbeille:${fin}"
@@ -462,9 +465,11 @@ displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à
 	echo ""
 	echo "> Configuration en cours..."
 	TEST_SUDO; sudo gnome-desktop-item-edit /usr/share/applications/ --create-new &>/dev/null
-	sleep 1
+	if [ ! $? -eq 0 ]; then
+	zenity --info --width=400 --title="Raccourci créé avec succès." --text "Vous trouverez votre raccourci directement dans la liste d'application de votre lanceur.\n Rubrique: \"Autres\"." &> /dev/null
 echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
+	fi
 fi
 	
 ## 10: Telechargement de 10 wallpapers au bon format.
@@ -674,7 +679,7 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 fi
 
 ## [FIN] fenetre de chargement...
-pkill zenity
+pkill zenity; sleep 1; pkill zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
