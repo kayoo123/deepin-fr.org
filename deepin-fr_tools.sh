@@ -23,6 +23,7 @@ sleep 1
 # TODO
 # - Installation du flashPlayer
 # - force choix user
+# - hardinfo
 # - GUI pour partage samba
 # - Installation flash-player
 # - Installation chromium
