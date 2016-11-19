@@ -21,6 +21,9 @@ sleep 1
 #######################################################################
 #
 # TODO
+# - Installation du flashPlayer
+# - force choix user
+# - hardinfo
 # - GUI pour partage samba
 # - Installation flash-player
 # - Installation chromium
@@ -631,7 +634,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
 	TEST_SUDO; sudo apt-get update > /dev/null
-	TEST_SUDO; sudo apt-get install -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
+	TEST_SUDO; sudo apt-get install -y --allow-unauthenticated google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 	echo "- GOOGLE-CHROME (Navigateur)"
 	echo "- WPS-OFFICE (Suite Bureautique)"
 	echo "- SKYPE (Outil de VOIP)"
@@ -645,10 +648,17 @@ fi
 ## 17: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
-	echo ""
-	TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
-	echo "> Installation Firefox terminé"
-	echo ""
+	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
+		echo ""
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash; ERROR
+		echo "> Installation Firefox (avec Flash Player) terminé"
+		echo ""
+	else 
+		echo ""
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+		echo "> Installation Firefox terminé"
+		echo ""
+	fi
 fi
 
 ## 18: Installation du la suite bureatique LibreOffice.
