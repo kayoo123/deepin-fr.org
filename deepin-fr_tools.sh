@@ -9,7 +9,7 @@
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
-#set -xv
+set -xv
 #######################################################################
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
@@ -107,7 +107,7 @@ function ERROR {
     	echo ""
     	echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
     	echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
-	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
+#	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
     	echo ""
     	pkill zenity
     	exit 1
