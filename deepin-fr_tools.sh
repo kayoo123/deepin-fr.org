@@ -1,8 +1,8 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 5.0
-# Date : 08/11/2016
+# Vers : 5.1
+# Date : 21/11/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -22,17 +22,17 @@ sleep 1
 #
 # TODO
 # - Installation du flashPlayer
-# - force choix user
+# - force choix user (retrait de localpurge)
+# - Installation AdobeAIR
+# - amélioration sur gestion des erreures
 # - hardinfo
 # - GUI pour partage samba
-# - Installation flash-player
 # - Installation chromium
-# - Installation AdobeAIR
 # - Reunir certain menu (ex. sons, logiciel proprio)
 
 ## VERSION
-VERSION=5.0
-MOD_DEV=0
+VERSION=5.1
+MOD_DEV=1
 
 ## COULEUR 
 blanc='\e[1;37m'
@@ -68,7 +68,7 @@ displayTitle() {
 function TEST_SUDO() {
 if ! sudo -S -p '' echo -n < /dev/null 2> /dev/null; then
 
-SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert certains droits administrateurs (sudo) afin de poursuivre ses actions. Aucune inquiétude, celui-ci ne sera jamais stocké. Si vous avez le moindre doute, n hésitez pas à venir demander sur le forum ou de regarder directement le code source.' -- : 2>/dev/null )"
+SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert certains droits administrateurs (sudo) afin de poursuivre ses actions. Aucune inquiétude, celui-ci ne sera jamais stocké. \nSi vous avez le moindre doute, n hésitez pas à venir demander sur le forum ou de regarder directement le code source.' -- : 2>/dev/null )"
 
   # Vérification si mot de passe vide
   if [[ ${?} != 0 || -z ${SUDOPASSWORD} ]]; then
@@ -102,13 +102,14 @@ function LOCK() {
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
   if [ ! $? -eq 0 ]; then
-	displayError "/!\\ Un erreur a été détecté !"
-    echo ""
-    echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
-    echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
-    echo ""
-    pkill zenity
-    exit 1
+	displayError "/!\\ Une erreur a été détecté !"
+    	echo ""
+    	echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
+    	echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
+	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
+    	echo ""
+    	pkill zenity
+    	exit 1
   fi
 }
 
@@ -133,6 +134,9 @@ if [ ! $? -eq 0 ]; then
 		echo "Intallation de $1 terminé"
 		sleep 1
   else
+  		echo ""
+		echo ">> Annulé"
+		echo ""
 		displayError "Installation annulé !"
 		pkill zenity
 		exit 1
@@ -156,7 +160,10 @@ function CHECK_SERVICE() {
 		TEST_SUDO; sudo pkill -9 "$1"
 		sleep 1
     else
-        echo "Merci de ressayer une fois le processus terminé..."
+    		echo ""
+		echo ">> Annulé"
+		echo ""
+        	echo "Merci de ressayer une fois le processus terminé..."
 		echo ""; sleep 1
 		pkill zenity
 		exit 1
@@ -219,6 +226,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
+	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	--separator=', ' ) \
 	||exit 1
 
@@ -496,8 +504,9 @@ displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au
 		TEST_BIN wget; ERROR
 		wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
 		find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
-		echo "> Récupération des fonds d'écran terminé"
 		echo ""
+		echo "> Récupération des fonds d'écran terminé
+		zenity --info --width=400 --title="Fond écrans téléchargés avec succès." --text "Vous trouverez vos fonds d'écran directement dans votre répertoire \"Images\".\n Ils sont déjà disponible par simple clic-droit sur votre bureau." &> /dev/null
 echo ""
 echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCES${fin}."
 fi
@@ -566,7 +575,9 @@ displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 echo ""
 echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
 	else
-echo ""
+		echo ""
+		echo ">> LOCAL"
+		echo ""
 echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
@@ -613,6 +624,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 		echo ""
 		echo -e "${blanc}-- Supression complete:${fin}"
 		echo ""
+		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get autoremove -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 		TEST_SUDO; sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 		echo ""
@@ -632,6 +644,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo ""
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get update > /dev/null
 	TEST_SUDO; sudo apt-get install -y --allow-unauthenticated google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 	echo "- GOOGLE-CHROME (Navigateur)"
@@ -649,12 +662,16 @@ if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
 		echo ""
+		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash; ERROR
+		echo ""
 		echo "> Installation Firefox (avec Flash Player) terminé"
 		echo ""
 	else 
 		echo ""
+		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+		echo ""
 		echo "> Installation Firefox terminé"
 		echo ""
 	fi
@@ -664,7 +681,9 @@ fi
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
+	echo ""
 	echo "> Installation LibreOffice terminé"
 	echo ""
 fi
@@ -673,7 +692,9 @@ fi
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y vlc; ERROR
+	echo ""
 	echo "> Installation VLC terminé"
 	echo ""
 fi
@@ -682,8 +703,35 @@ fi
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y adb; ERROR
+	echo ""
 	echo "> Installation ADB terminé"
+	echo ""
+fi
+
+## 21: Installe AdobeAIR, outil moteur logiciel d'Adobe.
+if [[ $GUI == *"AdobeAIR"* ]]; then
+displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
+	echo ""
+	echo -e "${blanc}-- Installation Prérequis:${fin}"
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y install libnss3-1d:i386 libxt6:i386 libnspr4-0d:i386 libgtk2.0-0:i386 libstdc++6:i386 libnss3-1d:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386 libxaw7 lib32nss-mdns libnspr4-0d:i386 gdebi
+	TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
+	TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	echo ""
+	echo "> Installation des prérequis terminé"
+	echo ""
+	echo -e "${blanc}-- Installation AdobeAIR:${fin}"
+	echo ""
+	wget -P /tmp http://airdownload.adobe.com/air/lin/download/2.6/adobeair.deb; ERROR
+	TEST_SUDO; sudo gdebi /tmp/adobeair.deb; ERROR
+	rm -f /tmp/adobeair.deb
+	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0; ERROR
+	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	echo ""
+	echo "> Installation AdobeAIR terminé"
 	echo ""
 fi
 
