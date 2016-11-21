@@ -23,7 +23,7 @@ sleep 1
 # TODO
 # - Installation du flashPlayer
 # - force choix user (retrait de localpurge)
-# - Installation AdobeAIR
+# - Installation AdobeAIR (a test sur des env 32/64 vierge)
 # - amélioration sur gestion des erreures
 # - hardinfo
 # - GUI pour partage samba
@@ -716,10 +716,22 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
 	echo -e "${blanc}-- Installation Prérequis:${fin}"
 	echo ""
-	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get install -y install libnss3-1d:i386 libxt6:i386 libnspr4-0d:i386 libgtk2.0-0:i386 libstdc++6:i386 libnss3-1d:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386 libxaw7 lib32nss-mdns libnspr4-0d:i386 gdebi
-	TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
-	TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	if [[ "$(uname -m)" = "x86_64" ]] ; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y install libnss3-1d:i386 libxt6:i386 libnspr4-0d:i386 libgtk2.0-0:i386 libstdc++6:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386 libxaw7 lib32nss-mdns libnspr4-0d:i386 gdebi
+		TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
+		TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	elif [[ "$(uname -m)" = "i386" ]] || [[ "$(uname -m)" = "i686" ]]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y install libnss3-1d libxt6 libnspr4-0d libgtk2.0-0 libstdc++6 lib32nss-mdns libxml2 libxslt1.1 libcanberra-gtk-module gtk2-engines-murrine libgnome-keyring0 libxaw7 lib32nss-mdns libnspr4-0d gdebi
+		TEST_SUDO; sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
+		TEST_SUDO; sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	else
+		echo ""
+		displayError "/!\\ Une erreur a été détecté !"
+		echo "> Imposible de récupérer l'architecture."
+		exit 1
+	fi
 	echo ""
 	echo "> Installation des prérequis terminé"
 	echo ""
@@ -733,6 +745,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
 	echo "> Installation AdobeAIR terminé"
 	echo ""
+	
 fi
 
 ## [FIN] fenetre de chargement...
