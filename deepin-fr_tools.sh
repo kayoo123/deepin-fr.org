@@ -216,6 +216,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
+	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
@@ -484,8 +485,34 @@ echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
 	fi
 fi
-	
-## 10: Telechargement de 10 wallpapers au bon format.
+
+## 10: Permet de lancer un assistant pour la gestion de partage de dossier.
+if [[ $GUI == *"Gérer un partage"* ]]; then
+displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	dpkg -l |grep -w " system-config-samba " |grep ^ii 
+	if [ ! $? -eq 0 ]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y gdebi samba libuser1 python-libuser
+		wget -P /tmp http://archive.ubuntu.com/ubuntu/pool/universe/s/system-config-samba/system-config-samba_1.2.63-0ubuntu6_all.deb
+		TEST_SUDO; sudo gdebi --n /tmp/system-config-samba_1.2.63-0ubuntu6_all.deb
+		TEST_SUDO; sudo touch /etc/libuser.conf
+		echo "> Le paquet est a présent installé."
+	else
+		echo "> Le paquet est déjà installé."
+	fi
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	echo "> Configuration en cours..."
+	TEST_SUDO; sudo system-config-samba &> /dev/null
+echo ""
+echo -e "=> Le partage a été créé/modifié avec ${vert}SUCCES${fin}."
+fi
+
+## 11: Telechargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
 displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
 	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
@@ -515,7 +542,7 @@ echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCE
 fi
 fi
 
-## 11: Permet de rendre silencieux l'ouverture de session.
+## 12: Permet de rendre silencieux l'ouverture de session.
 if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
 displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -528,7 +555,7 @@ echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
 fi
 
-## 12: Permet de rendre réactiver les sons lors de l'ouverture de session.
+## 13: Permet de rendre réactiver les sons lors de l'ouverture de session.
 if [[ $GUI == *"Activation sons démarrage"* ]]; then
 displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -542,7 +569,7 @@ echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
 fi
 
-## 13: Réalise un audit de la machine.
+## 14: Réalise un audit de la machine.
 if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	FILE_AUDIT=/tmp/hardinfo.txt
@@ -585,7 +612,7 @@ echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
 
-## 14: Récupere les logs journaliers.
+## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	echo ""
@@ -611,7 +638,7 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	sleep 3
 fi
 
-## 15: Supprime tous les logiciels dont la license n'est pas libre.
+## 16: Supprime tous les logiciels dont la license n'est pas libre.
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
 displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
 	echo ""
@@ -639,7 +666,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	fi
 fi
 
-## 16: Installation des logiciels propriétaires par défaut.
+## 17: Installation des logiciels propriétaires par défaut.
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
@@ -660,7 +687,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
-## 17: Installation du navigateur Firefox.
+## 18: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
@@ -680,7 +707,7 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 	fi
 fi
 
-## 18: Installation du la suite bureatique LibreOffice.
+## 19: Installation du la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
@@ -691,7 +718,7 @@ displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
 fi
 
-## 19: Installation du lecteur multimedia VLC.
+## 20: Installation du lecteur multimedia VLC.
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
@@ -702,7 +729,7 @@ displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
 fi
 
-## 20: Installe ADB, outil pour téléphones sous Android.
+## 21: Installe ADB, outil pour téléphones sous Android.
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
@@ -713,7 +740,7 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
 fi
 
-## 21: Installe AdobeAIR, outil moteur logiciel d'Adobe.
+## 22: Installe AdobeAIR, outil moteur logiciel d'Adobe.
 if [[ $GUI == *"AdobeAIR"* ]]; then
 displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
@@ -741,7 +768,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo -e "${blanc}-- Installation AdobeAIR:${fin}"
 	echo ""
 	wget -P /tmp http://airdownload.adobe.com/air/lin/download/2.6/adobeair.deb; ERROR
-	TEST_SUDO; sudo gdebi /tmp/adobeair.deb; ERROR
+	TEST_SUDO; sudo gdebi --n /tmp/adobeair.deb; ERROR
 	rm -f /tmp/adobeair.deb
 	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0; ERROR
 	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0.2.0; ERROR
