@@ -94,7 +94,6 @@ function LOCK() {
               echo "Si ce n'est pas le cas, verifier/supprimer la presence du repertoire de \".lock\""
               echo "=> rmdir $LOCKDIR"
               echo ''
-              pkill zenity
               exit 1
         fi
         trap 'rmdir "$LOCKDIR"' 0
