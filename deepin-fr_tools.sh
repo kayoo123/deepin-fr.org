@@ -1,5 +1,5 @@
 #!/bin/bash 
-set -x
+#
 # DESC : Boite-a-outils Deepin-FR
 # Vers : 5.1
 # Date : 21/11/2016
@@ -9,6 +9,7 @@ set -x
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
+set -xv
 #######################################################################
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
