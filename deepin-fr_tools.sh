@@ -1,5 +1,5 @@
 #!/bin/bash 
-#
+set -x
 # DESC : Boite-a-outils Deepin-FR
 # Vers : 5.1
 # Date : 21/11/2016
