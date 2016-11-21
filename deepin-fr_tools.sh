@@ -26,10 +26,10 @@ sleep 1
 # - force choix user (retrait de localpurge)
 # - Installation AdobeAIR (a test sur des env 32/64 vierge)
 # - amélioration sur gestion des erreures
-# - hardinfo
 # - GUI pour partage samba
-# - Installation chromium
+# - hardinfo
 # - Reunir certain menu (ex. sons, logiciel proprio)
+# - fermeture zenity
 
 ## VERSION
 VERSION=5.1
