@@ -69,7 +69,7 @@ displayTitle() {
 function TEST_SUDO() {
 if ! sudo -S -p '' echo -n < /dev/null 2> /dev/null; then
 
-SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert certains droits administrateurs (sudo) afin de poursuivre ses actions. Aucune inquiétude, celui-ci ne sera jamais stocké. \nSi vous avez le moindre doute, n hésitez pas à venir demander sur le forum ou de regarder directement le code source.' -- : 2>/dev/null )"
+SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert certains droits administrateurs (sudo) afin de poursuivre ses actions. Aucune inquiétude, celui-ci ne sera jamais stocké. Si vous avez le moindre doute, n hésitez pas à venir demander sur le forum ou de regarder directement le code source.' -- : 2>/dev/null )"
 
   # Vérification si mot de passe vide
   if [[ ${?} != 0 || -z ${SUDOPASSWORD} ]]; then
