@@ -37,18 +37,20 @@ bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr
 
 ## Comment l'installer pour l'avoir toujours de côté :
 C'est tout bête a vrai dire.... alors, suivez le guide : 
+
 1. Ouvrez un terminal, et exécuter la commande cité juste au-dessus pour appeler le script
 2. Choisissez l'option “**01) Installation et Mise-à-jour**”
 3. Laissez-vous guider
+
 Félicitation, vous avez terminé ! 
 
 A présent, vous trouverez depuis votre “**lanceur**”, l'application “**deepin-tools**” 
 
 Si vous êtes du genre a utiliser souvent le terminal, un alias est mise-à-votre disposition :
-
-```deepin-tools```
+```
+deepin-tools
+```
 Facile, non ?
-
 
 
 ## Attention :
@@ -62,8 +64,9 @@ Si vous pensez en avoir l'utilité alors **ne pas hésitez à "l'épingler au do
 Envie de tester la version bêta qui inclus les nouveautés mais au détriment de certain bug ? 
 Pas de soucis ça ne touchera pas votre outil local et pointera toujours sur la dernière version.
 C'est ici que ça ce passe : 
-```deepin-tools-dev```
-
+```
+deepin-tools-dev
+```
 
 
 ## Comment m'aider à faire évoluer cet outil ?
