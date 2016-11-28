@@ -32,6 +32,7 @@ sleep 1
 # - fermeture zenity
 # - Mise en forme (message d'acceuil couleur)
 # - Progression (mise-à-jour / nettoyage)
+# - Désactivation ipv6
 
 ## VERSION
 VERSION=5.1
