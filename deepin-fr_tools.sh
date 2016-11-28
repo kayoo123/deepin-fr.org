@@ -22,11 +22,11 @@ sleep 1
 #######################################################################
 #
 # TODO
-# - Installation du flashPlayer
-# - force choix user (retrait de localpurge)
+# x Installation du flashPlayer
+# x force choix user (retrait de localpurge)
 # - Installation AdobeAIR (a test sur des env 32/64 vierge)
-# - amélioration sur gestion des erreures
-# - GUI pour partage samba
+# x amélioration sur gestion des erreures
+# x GUI pour partage samba
 # - hardinfo
 # - Reunir certain menu (ex. sons, logiciel proprio)
 # - fermeture zenity
