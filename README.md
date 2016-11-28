@@ -45,6 +45,7 @@ C'est tout bête a vrai dire.... alors, suivez le guide :
 Félicitation, vous avez terminé ! 
 
 A présent, vous trouverez depuis votre “**lanceur**”, l'application “**deepin-tools**” 
+![alt tag](http://wiki.deepin-fr.org/lib/exe/fetch.php?w=100&tok=986f2d&media=captureecrandeepin20160726183518.png)
 
 Si vous êtes du genre a utiliser souvent le terminal, un alias est mise-à-votre disposition :
 ```
@@ -55,8 +56,11 @@ Facile, non ?
 
 ## Attention :
 Ce script n'est fonctionnel que sur le systeme Deepin !  (DSL pour nos amis qui utilise Manjaro/DDE)
+
 Ce script fera des choix pour vous ! Exemple: relance de service. 
+
 En effet, celui-ci étant mise-à-disposition de novice, il se doit d’être le plus simple possible.
+
 
 ## Astuces :
 Pour reposer vos petits yeux, je vous recommande vivement de changer la couleur verte par défaut du "deepin-terminal". Il existe différent thèmes, alors faites vous plaisir !
