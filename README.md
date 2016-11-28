@@ -64,7 +64,9 @@ En effet, celui-ci étant mise-à-disposition de novice, il se doit d’être le
 
 ## Astuces :
 Pour reposer vos petits yeux, je vous recommande vivement de changer la couleur verte par défaut du "deepin-terminal". Il existe différent thèmes, alors faites vous plaisir !
+
 Si vous pensez en avoir l'utilité alors **ne pas hésitez à "l'épingler au dock" !!! :blush: **
+
 Envie de tester la version bêta qui inclus les nouveautés mais au détriment de certain bug ? 
 Pas de soucis ça ne touchera pas votre outil local et pointera toujours sur la dernière version.
 C'est ici que ça ce passe : 
