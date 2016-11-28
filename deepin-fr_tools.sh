@@ -28,8 +28,10 @@ sleep 1
 # x amélioration sur gestion des erreures
 # x GUI pour partage samba
 # - hardinfo
-# - Reunir certain menu (ex. sons, logiciel proprio)
+# - Reunir certain menu (ex. depot,sons, logiciel proprio)
 # - fermeture zenity
+# - Mise en forme (message d'acceuil couleur)
+# - Progression (mise-à-jour / nettoyage)
 
 ## VERSION
 VERSION=5.1
