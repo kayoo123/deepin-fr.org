@@ -6,3 +6,7 @@ Ces scripts sont produits dans le cadre d'une assistance sur http://deepin-fr.or
 
 Pour toute question, n'hésitez pas :
 - Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
+
+
+
+VERSION DEV !!!!
