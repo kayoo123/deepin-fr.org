@@ -33,6 +33,7 @@ sleep 1
 # - Mise en forme (message d'acceuil couleur)
 # - Progression (mise-à-jour / nettoyage)
 # - Désactivation ipv6
+# - Vérifier présence AdobeAir
 
 ## VERSION
 VERSION=5.1
