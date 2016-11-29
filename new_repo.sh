@@ -2,7 +2,7 @@
 ##############
 # Script pour récupération de la liste des dépôts deepin
 ##############
-$url="/var/www/xxxx/index.html"
+url="/var/www/xxxx/index.html"
 
 ## récupétation de la liste
 rm -f /tmp/mirror.html
