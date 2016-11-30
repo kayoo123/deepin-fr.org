@@ -528,7 +528,7 @@ displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide 
 	echo ""
 	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
 	echo ""
-	gprename
+	gprename &> /dev/null
 echo ""
 echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
