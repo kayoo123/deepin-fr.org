@@ -505,6 +505,7 @@ displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion 
 		wget -P /tmp http://archive.ubuntu.com/ubuntu/pool/universe/s/system-config-samba/system-config-samba_1.2.63-0ubuntu6_all.deb
 		TEST_SUDO; sudo gdebi --n /tmp/system-config-samba_1.2.63-0ubuntu6_all.deb
 		TEST_SUDO; sudo touch /etc/libuser.conf
+		TEST_SUDO; sudo rm -f /usr/share/applications/system-config-samba.desktop &> /dev/null
 		echo "> Le paquet est a présent installé."
 	else
 		echo "> Le paquet est déjà installé."
@@ -525,6 +526,9 @@ displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide 
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
 	TEST_BIN pyrenamer; ERROR
+	TEST_SUDO; sudo rm -f /usr/share/applications/XRCed.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/PyCrust.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/pyrenamer.desktop &> /dev/null
 	echo ""
 	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
 	echo ""
