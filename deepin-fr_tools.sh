@@ -34,7 +34,7 @@ sleep 1
 # - Progression (mise-à-jour / nettoyage)
 # - Désactivation ipv6
 # - Vérifier présence AdobeAir
-# - gprename
+# - gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
 
 ## VERSION
 VERSION=5.1
