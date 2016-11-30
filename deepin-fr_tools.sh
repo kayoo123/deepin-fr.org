@@ -34,6 +34,7 @@ sleep 1
 # - Progression (mise-à-jour / nettoyage)
 # - Désactivation ipv6
 # - Vérifier présence AdobeAir
+# - gprename
 
 ## VERSION
 VERSION=5.1
@@ -221,6 +222,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
+	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
@@ -514,6 +516,21 @@ displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion 
 	TEST_SUDO; sudo system-config-samba &> /dev/null
 echo ""
 echo -e "=> Le partage a été créé/modifié avec ${vert}SUCCES${fin}."
+fi
+
+## 10: Permet de lancer un outil d'aide au renommage de fichier par lot.
+if [[ $GUI == *"Renommer en masse des fichiers"* ]]; then
+displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	TEST_BIN gprename; ERROR
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	gprename
+echo ""
+echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
 ## 11: Telechargement de 10 wallpapers au bon format.
