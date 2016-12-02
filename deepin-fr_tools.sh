@@ -35,6 +35,7 @@ sleep 1
 # - Désactivation ipv6
 # - Vérifier présence AdobeAir
 # - gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
+# - vérifier locknumx
 
 ## VERSION
 VERSION=5.1
