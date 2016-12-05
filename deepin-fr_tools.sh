@@ -21,21 +21,7 @@ sleep 1
 #								       
 #######################################################################
 #
-# TODO
-# x Installation du flashPlayer
-# x force choix user (retrait de localpurge)
-# - Installation AdobeAIR (a test sur des env 32/64 vierge)
-# x amélioration sur gestion des erreures
-# x GUI pour partage samba
-# - hardinfo
-# - Reunir certain menu (ex. depot,sons, logiciel proprio)
-# - fermeture zenity
-# - Mise en forme (message d'acceuil couleur)
-# - Progression (mise-à-jour / nettoyage)
-# - Désactivation ipv6
-# - Vérifier présence AdobeAir
-# - gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
-# - vérifier locknumx
+
 
 ## VERSION
 VERSION=5.1
