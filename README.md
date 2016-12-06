@@ -38,11 +38,11 @@ TODO
  
  [-] Vérifier présence AdobeAir
  
- [-] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
+ [x] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
  
  [-] vérifier locknumx
  
- [-] PavuControle
+ [-] PavuControl
  
  [-] font rendering
  
