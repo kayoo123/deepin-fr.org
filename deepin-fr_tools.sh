@@ -20,8 +20,6 @@ sleep 1
 # ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝  
 #								       
 #######################################################################
-#
-
 
 ## VERSION
 VERSION=5.1
@@ -705,14 +703,14 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
 		echo ""
 		CHECK_SERVICE apt-get
-		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash; ERROR
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash hunspell-fr; ERROR
 		echo ""
 		echo "> Installation Firefox (avec Flash Player) terminé"
 		echo ""
 	else 
 		echo ""
 		CHECK_SERVICE apt-get
-		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr hunspell-fr; ERROR
 		echo ""
 		echo "> Installation Firefox terminé"
 		echo ""
@@ -724,7 +722,7 @@ if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
+	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr; ERROR
 	echo ""
 	echo "> Installation LibreOffice terminé"
 	echo ""
