@@ -13,36 +13,19 @@ Pour toute question, n'hésitez pas :
 
 
 TODO
-
- [x] Installation du flashPlayer
- 
- [x] force choix user (retrait de localpurge)
- 
- [-] Installation AdobeAIR (a test sur des env 32/64 vierge)
- 
- [x] amélioration sur gestion des erreures
- 
- [x] GUI pour partage samba
- 
- [-] hardinfo
- 
- [-] Reunir certain menu (ex. depot,sons, logiciel proprio)
- 
- [-] fermeture zenity
- 
- [-] Mise en forme (message d'acceuil couleur)
- 
- [-] Progression (mise-à-jour / nettoyage)
- 
- [-] Désactivation ipv6
- 
- [-] Vérifier présence AdobeAir
- 
- [x] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
- 
- [-] vérifier locknumx
- 
- [-] PavuControl
- 
- [-] font rendering
- 
+- [OK] Installation du flashPlayer 
+- [OK] force choix user (retrait de localpurge)
+- [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
+- [OK] amélioration sur gestion des erreures
+- [OK] GUI pour partage samba
+- [a faire] hardinfo
+- [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
+- [a faire] fermeture zenity
+- [a faire] Mise en forme (message d'acceuil couleur)
+- [a faire] Progression (mise-à-jour / nettoyage)
+- [a faire] Désactivation ipv6
+- [a faire] Vérifier présence AdobeAir
+- [OK] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
+- [a faire] vérifier locknumx
+- [a faire] PavuControl
+- [a faire] font rendering
