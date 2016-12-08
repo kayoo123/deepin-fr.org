@@ -29,3 +29,4 @@ TODO
 - [a faire] vérifier locknumx
 - [a faire] PavuControl
 - [a faire] font rendering
+- [a faire] Molotov
