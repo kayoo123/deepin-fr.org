@@ -30,3 +30,4 @@ TODO
 - [a faire] PavuControl
 - [a faire] font rendering
 - [a faire] Molotov
+- [a faire] Clean old kernel + message avant supression
