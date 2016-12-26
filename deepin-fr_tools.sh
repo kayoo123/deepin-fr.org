@@ -380,6 +380,10 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; sudo deborphan; ERROR
 	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
 	echo ""
+	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	#prev=`readlink /vmlinuz.old` && prev=linux-image-${prev#*-}+
+	#TEST_SUDO; exec sudo apt-get -y purge '^linux-image-[0-9]' linux-image-`uname -r`+ $prev
+	#echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
