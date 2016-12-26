@@ -24,6 +24,7 @@ TODO
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
 - [test] Désactivation ipv6
 - [test] Clean old kernel
+- [test] Molotov
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
 - [a faire] fermeture zenity
@@ -32,5 +33,4 @@ TODO
 - [a faire] Vérifier présence AdobeAir
 - [a faire] vérifier locknumx
 - [a faire] font rendering
-- [a faire] Molotov
 - [a faire] Jdownloader
