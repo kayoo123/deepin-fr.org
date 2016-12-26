@@ -25,6 +25,7 @@ TODO
 - [test] Désactivation ipv6
 - [test] Clean old kernel
 - [test] Molotov
+- [test] xdiskusage
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
 - [a faire] fermeture zenity
