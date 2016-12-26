@@ -211,6 +211,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
+	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
@@ -579,6 +580,22 @@ displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons 
     sleep 1
 echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
+fi
+
+## 14: Permet de désactiver l'IP v6 sur toutes les interfaces réseaux.
+if [[ $GUI == *"Desactivation IPv6"* ]]; then
+displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
+	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
+	echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6
+	echo "## désactivation de ipv6 (et de l'autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6
+	echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6
+	echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6
+	echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6
+	echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6
+	sudo sysctl -p $FILECONF_DISABLE_IPV6
+	sleep 1
+echo ""
+echo -e " Vous venez de desactiver la configuration IPv6 avec ${vert}SUCCES${fin}."
 fi
 
 ## 14: Réalise un audit de la machine.
