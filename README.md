@@ -23,7 +23,7 @@ TODO
 - [OK] PavuControl
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
 - [test] Désactivation ipv6
-- [a faire] Clean old kernel + message avant supression
+- [test] Clean old kernel
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
 - [a faire] fermeture zenity
