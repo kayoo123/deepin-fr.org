@@ -19,6 +19,8 @@ TODO
 - [OK] GUI pour partage samba
 - [OK] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
+- [a faire] Remplacement "dde-file-manager" par "Nautilus"
+- [a faire] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
 - [a faire] fermeture zenity
