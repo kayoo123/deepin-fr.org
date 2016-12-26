@@ -22,7 +22,7 @@ TODO
 - [OK] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
 - [OK] PavuControl
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
-- [a faire] Désactivation ipv6
+- [test] Désactivation ipv6
 - [a faire] Clean old kernel + message avant supression
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
