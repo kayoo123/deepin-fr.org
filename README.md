@@ -18,9 +18,9 @@ TODO
 - [OK] amélioration sur gestion des erreures
 - [OK] GUI pour partage samba
 - [OK] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
-- [OK] Remplacement "dde-file-manager" par "Nautilus"
-- [OK] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
-- [OK] PavuControl
+- [test] Remplacement "dde-file-manager" par "Nautilus"
+- [test] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
+- [test] PavuControl
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
 - [test] Désactivation ipv6
 - [test] Clean old kernel
