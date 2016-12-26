@@ -219,7 +219,9 @@ GUI=$(zenity --list --checklist \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
+	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
+	FALSE "PavuControl" "Installe le controller avancé audio." \
 	--separator=', ' ) \
 	||exit 1
 
@@ -750,7 +752,19 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
 fi
 
-## 22: Installe AdobeAIR, outil moteur logiciel d'Adobe.
+## 22: Remplace l'explorateur par défaut pour Nautilus.
+if [[ $GUI == *"Nautilus"* ]]; then
+displayTitle "Nautilus" "Remplace l'explorateur par défaut pour Nautilus."
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y nautilus; ERROR
+	TEST_SUDO; sudo apt-get autoremove -y dde-file-manager; ERROR
+	echo ""
+	echo "> Installation Nautilus terminé"
+	echo ""
+fi
+
+## 23: Installe AdobeAIR, outil moteur logiciel d'Adobe.
 if [[ $GUI == *"AdobeAIR"* ]]; then
 displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
@@ -784,6 +798,17 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0.2.0; ERROR
 	echo ""
 	echo "> Installation AdobeAIR terminé"
+	echo ""
+fi
+
+## 24: Installe le controller avancé audio.
+if [[ $GUI == *"PavuControl"* ]]; then
+displayTitle "PavuControl" "Installe le controller avancé audio."
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y pavucontrol; ERROR
+	echo ""
+	echo "> Installation PavuControl terminé"
 	echo ""
 fi
 
