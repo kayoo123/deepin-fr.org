@@ -378,13 +378,15 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
-	TEST_SUDO; sudo deborphan; ERROR
-	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+	for i in `seq 1 4` ; do 
+		TEST_SUDO; sudo deborphan; ERROR
+		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+	done
 	echo ""
-	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
-	#prev=`readlink /vmlinuz.old` && prev=linux-image-${prev#*-}+
-	#TEST_SUDO; exec sudo apt-get -y purge '^linux-image-[0-9]' linux-image-`uname -r`+ $prev
-	#echo ""
+	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r); echo ""
+	TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r) | xargs sudo apt-get -y purge
+	echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
