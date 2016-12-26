@@ -18,18 +18,18 @@ TODO
 - [OK] amélioration sur gestion des erreures
 - [OK] GUI pour partage samba
 - [OK] gprename / pyrenamer / metamorphose2: https://github.com/metamorphose/metamorphose2
+- [OK] Remplacement "dde-file-manager" par "Nautilus"
+- [OK] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
+- [OK] PavuControl
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
-- [a faire] Remplacement "dde-file-manager" par "Nautilus"
-- [a faire] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
+- [a faire] Désactivation ipv6
+- [a faire] Clean old kernel + message avant supression
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
 - [a faire] fermeture zenity
 - [a faire] Mise en forme (message d'acceuil couleur)
 - [a faire] Progression (mise-à-jour / nettoyage)
-- [a faire] Désactivation ipv6
 - [a faire] Vérifier présence AdobeAir
 - [a faire] vérifier locknumx
-- [a faire] PavuControl
 - [a faire] font rendering
 - [a faire] Molotov
-- [a faire] Clean old kernel + message avant supression
