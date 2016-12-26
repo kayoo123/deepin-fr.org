@@ -33,3 +33,4 @@ TODO
 - [a faire] vérifier locknumx
 - [a faire] font rendering
 - [a faire] Molotov
+- [a faire] Jdownloader
