@@ -208,7 +208,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
 	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
-	FALSE "Visualiser les partitions" "Assistant permettant d'afficher par taille les repertoires et fichiers." \
+	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
@@ -533,9 +533,9 @@ echo ""
 echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## 10: Assistant permettant d'afficher par taille les repertoires et fichiers.
-if [[ $GUI == *"Visualiser les partitions"* ]]; then
-displayTitle "Visualiser les partitions" "Assistant permettant d'afficher par taille les repertoires et fichiers."
+## 10: Assistant permettant d'afficher par taille les repertoires et fichiers de sa home.
+if [[ $GUI == *"Visualiser son repertoire perso"* ]]; then
+displayTitle "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
 	echo ""
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
@@ -552,7 +552,7 @@ displayTitle "Visualiser les partitions" "Assistant permettant d'afficher par ta
 	echo ""
 	xdiskusage $HOME
 echo ""
-echo -e "=> L'assistant des tailles des partitions s'est terminé avec ${vert}SUCCES${fin}."
+echo -e "=> L'assistant de visualisation s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
 ## 11: Telechargement de 10 wallpapers au bon format.
