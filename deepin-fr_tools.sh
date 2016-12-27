@@ -384,10 +384,10 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
 	done
 	echo ""
-	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
-	TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r); echo ""
-	TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r) | xargs sudo apt-get -y purge
-	echo ""
+	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	#TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r); echo ""
+	#TEST_SUDO; dpkg -l linux-{image,headers}-* | awk '/^ii/{print $2}' | egrep '[0-9]+\.[0-9]+\.[0-9]+' | grep -v $(uname -r) | xargs sudo apt-get -y purge
+	#echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
@@ -616,12 +616,13 @@ fi
 if [[ $GUI == *"Desactivation IPv6"* ]]; then
 displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
 	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
-	TEST_SUDO; sudo 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo 'echo "## désactivation de ipv6 (et de l'autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo 'echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo 'echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo 'echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo -v
+	TEST_SUDO; sudo sh -c 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sh -c 'echo "## désactivation de ipv6 (et autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
 	TEST_SUDO; sudo sysctl -p $FILECONF_DISABLE_IPV6
 	sleep 1
 echo ""
