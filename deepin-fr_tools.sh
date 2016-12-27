@@ -64,13 +64,13 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
   # Vérification si mot de passe vide
   if [[ ${?} != 0 || -z ${SUDOPASSWORD} ]]; then
   	  displayError "Le mot de passe SUDO est vide !"
-  	  pkill zenity
+  	  pkill -9 zenity
   	  exit 1
   fi
   # Vérifie si le passwd est valid
   if ! sudo -Sp '' [ 1 ] <<<"${SUDOPASSWORD}" 2>/dev/null; then
   	  displayError "Le mot de passe SUDO est invalide !"
-  	  pkill zenity
+  	  pkill -9 zenity
   	  exit 1
   fi
 
@@ -99,7 +99,7 @@ function ERROR {
     	echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
 	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
     	echo ""
-    	pkill zenity
+    	pkill -9 zenity
     	exit 1
   fi
 }
