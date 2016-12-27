@@ -21,11 +21,11 @@ TODO
 - [OK] inverser l'ordre dépot pour reset avant d'appliquer le dépot plus rapide (correction sur les sourcelist foireux)
 - [OK] Remplacement "dde-file-manager" par "Nautilus"
 - [OK] PavuControl
+- [OK] xdiskusage
+- [OK] Désactivation ipv6
 - [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
-- [test] Désactivation ipv6
 - [test] Clean old kernel
 - [test] Molotov
-- [test] xdiskusage
 - [a faire] conky manager http://www.teejeetech.in/p/conky-manager.html
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
