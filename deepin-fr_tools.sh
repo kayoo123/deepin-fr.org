@@ -871,8 +871,8 @@ displayTitle "Molotov" "Installe l'application pour regarder la télévision."
 	TEST_SUDO; sudo rm -rf $APP_PATH; sudo mkdir $APP_PATH
 	TEST_SUDO; sudo wget -P $APP_PATH $APP_URL $APP_IMG; ERROR
 	TEST_SUDO; sudo mv $APP_PATH/*.AppImage $APP_PATH/Molotov.AppImage
-	TEST_SUDO; sudo chown -R root:users $APP_PATH
-	TEST_SUDO; sudo chmod -R 770 $APP_PATH
+#	TEST_SUDO; sudo chown -R root:users $APP_PATH
+	TEST_SUDO; sudo chmod -R 755 $APP_PATH
 #	echo ""
 #	echo -e "${blanc}-- Installation du raccourci et execution:${fin}"
 #	export XDG_DATA_DIRS="$HOME/.local/share/"
