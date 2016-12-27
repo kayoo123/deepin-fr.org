@@ -550,7 +550,7 @@ displayTitle "Visualiser les partitions" "Assistant permettant d'afficher par ta
 	echo ""
 	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
 	echo ""
-	TEST_SUDO; sudo xdiskusage 
+	xdiskusage $HOME
 echo ""
 echo -e "=> L'assistant des tailles des partitions s'est terminé avec ${vert}SUCCES${fin}."
 fi
