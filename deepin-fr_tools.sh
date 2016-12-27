@@ -617,12 +617,12 @@ if [[ $GUI == *"Desactivation IPv6"* ]]; then
 displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
 	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
 	TEST_SUDO; sudo -v
-	TEST_SUDO; sudo sh -c 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo sh -c 'echo "## désactivation de ipv6 (et autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
-	TEST_SUDO; sudo sh -c 'echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "## désactivation de ipv6 (et autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
 	TEST_SUDO; sudo sysctl -p $FILECONF_DISABLE_IPV6
 	sleep 1
 echo ""
