@@ -804,7 +804,7 @@ if [[ $GUI == *"Nautilus"* ]]; then
 displayTitle "Nautilus" "Remplace l'explorateur par défaut pour Nautilus."
 	echo ""
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt-get install -y nautilus; ERROR
+	TEST_SUDO; sudo apt-get install -y nautilus deepin-nautilus-properties nautilus-admin nautilus-compare nautilus-gtkhash nautilus-image-converter nautilus-image-manipulator nautilus-open-terminal ; ERROR
 	TEST_SUDO; sudo apt-get autoremove -y dde-file-manager; ERROR
 	echo ""
 	echo "> Installation Nautilus terminé"
