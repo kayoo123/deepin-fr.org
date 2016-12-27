@@ -904,7 +904,7 @@ displayTitle "Molotov" "Installe l'application pour regarder la télévision."
 fi
 
 ## [FIN] fenetre de chargement...
-pkill zenity; sleep 1; pkill zenity
+pkill zenity; sleep 1; pkill -9 zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
