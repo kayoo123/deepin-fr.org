@@ -224,7 +224,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	FALSE "PavuControl" "Installe le controller avancé audio." \
-	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
+	FALSE "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)" \
 	--separator=', ' ) \
 	||exit 1
 
@@ -861,9 +861,10 @@ displayTitle "PavuControl" "Installe le controller avancé audio."
 	echo ""
 fi
 
-## 25: Installe l'application pour regarder la télévision.
+## 25: Installe l'application pour regarder la télévision. (arch: 64bits seulement)
 if [[ $GUI == *"Molotov"* ]]; then
-displayTitle "Molotov" "Installe l'application pour regarder la télévision."
+displayTitle "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)"
+	if [[ "$(uname -m)" = "x86_64" ]] ; then
 	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/Molotov-1.1.2.AppImage"
 	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
 	APP_PATH=/usr/share/molotov
@@ -900,6 +901,9 @@ EOF
 	echo ""
 	echo "> Installation Molotov terminé"
 	echo ""
+	else
+		displayError "Je suis navré mais l'application Molotov n'est uniquement compatible sur architecture 64b (https://www.molotov.tv/devices)"
+	fi
 fi
 
 ## [FIN] fenetre de chargement...
