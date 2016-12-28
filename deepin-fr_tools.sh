@@ -386,8 +386,8 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
 	dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
-	#TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
-	#echo "> Ancien kernels supprimées."
+	TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
+	echo "> Ancien kernels supprimées."
 	echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8\ UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
