@@ -1,14 +1,15 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 5.0
-# Date : 08/11/2016
+# Vers : 5.1
+# Date : 29/12/2016
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
 # Information : https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
+# set -xv
 #######################################################################
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
@@ -19,19 +20,9 @@ sleep 1
 # ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝  
 #								       
 #######################################################################
-#
-# TODO
-# - Installation du flashPlayer
-# - force choix user
-# - hardinfo
-# - GUI pour partage samba
-# - Installation flash-player
-# - Installation chromium
-# - Installation AdobeAIR
-# - Reunir certain menu (ex. sons, logiciel proprio)
 
 ## VERSION
-VERSION=5.0
+VERSION=5.1
 MOD_DEV=0
 
 ## COULEUR 
@@ -73,13 +64,13 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
   # Vérification si mot de passe vide
   if [[ ${?} != 0 || -z ${SUDOPASSWORD} ]]; then
   	  displayError "Le mot de passe SUDO est vide !"
-  	  pkill zenity
+  	  pkill -9 zenity
   	  exit 1
   fi
   # Vérifie si le passwd est valid
   if ! sudo -Sp '' [ 1 ] <<<"${SUDOPASSWORD}" 2>/dev/null; then
   	  displayError "Le mot de passe SUDO est invalide !"
-  	  pkill zenity
+  	  pkill -9 zenity
   	  exit 1
   fi
 
@@ -102,13 +93,14 @@ function LOCK() {
 ## Vérifie que la commande précédente s'éxécute sans erreur 
 function ERROR { 
   if [ ! $? -eq 0 ]; then
-	displayError "/!\\ Un erreur a été détecté !"
-    echo ""
-    echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
-    echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
-    echo ""
-    pkill zenity
-    exit 1
+	displayError "/!\\ Une erreur a été détecté !"
+    	echo ""
+    	echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
+    	echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
+	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
+    	echo ""
+    	pkill -9 zenity
+    	exit 1
   fi
 }
 
@@ -133,6 +125,9 @@ if [ ! $? -eq 0 ]; then
 		echo "Intallation de $1 terminé"
 		sleep 1
   else
+  		echo ""
+		echo ">> Annulé"
+		echo ""
 		displayError "Installation annulé !"
 		pkill zenity
 		exit 1
@@ -156,7 +151,10 @@ function CHECK_SERVICE() {
 		TEST_SUDO; sudo pkill -9 "$1"
 		sleep 1
     else
-        echo "Merci de ressayer une fois le processus terminé..."
+    		echo ""
+		echo ">> Annulé"
+		echo ""
+        	echo "Merci de ressayer une fois le processus terminé..."
 		echo ""; sleep 1
 		pkill zenity
 		exit 1
@@ -201,16 +199,20 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."  \
 	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
-	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
+	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
+	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
+	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
+	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
+	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
@@ -219,6 +221,9 @@ GUI=$(zenity --list --checklist \
 	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
+	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
+	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
+	FALSE "PavuControl" "Installe le controller avancé audio." \
 	--separator=', ' ) \
 	||exit 1
 
@@ -300,7 +305,23 @@ echo ""
 echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
 fi
 
-## 3: Remplace automatiquement le dépot de votre systeme par le plus performant
+## 3: Remplace votre dépot par l'officiel (seveur en Chine)
+if [[ $GUI == *"Dépot original"* ]]; then
+displayTitle "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)."
+	echo ""
+	echo "Retour sur le dépot original (sans modification)"
+	echo "Veuillez patienter..."
+	sleep 2
+	TEST_SUDO; sudo -v
+	TEST_SUDO; sudo sh -c 'echo "## Generated by deepin-installer" > /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo sh -c 'echo "deb [by-hash=force] http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo sh -c 'echo "#deb-src http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo apt-get update
+echo ""
+echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
+fi
+
+## 4: Remplace automatiquement le dépot de votre systeme par le plus performant
 if [[ $GUI == *"Dépot plus rapide"* ]]; then
 displayTitle "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant."
 	echo ""
@@ -312,21 +333,7 @@ displayTitle "Dépot plus rapide" "Remplace automatiquement le dépot de votre s
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "## Auto-genere par Deepin-fr" > /etc/apt/sources.list'; ERROR
 	TEST_SUDO; sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
-echo ""
-echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
-fi
-
-## 4: Remplace votre dépot par l'officiel (seveur en Chine)
-if [[ $GUI == *"Dépot original"* ]]; then
-displayTitle "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)."
-	echo ""
-	echo "Retour sur le dépot original (sans modification)"
-	echo "Veuillez patienter..."
-	sleep 2
-	TEST_SUDO; sudo -v
-	TEST_SUDO; sudo sh -c 'echo "## Generated by deepin-installer" > /etc/apt/sources.list'; ERROR
-	TEST_SUDO; sudo sh -c 'echo "deb [by-hash=force] http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
-	TEST_SUDO; sudo sh -c 'echo "#deb-src http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo apt-get update
 echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
@@ -371,11 +378,18 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
-	TEST_SUDO; sudo deborphan; ERROR
-	TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+	#for i in `seq 1 4` ; do 
+		TEST_SUDO; sudo deborphan; ERROR
+		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+	#done
+	echo ""
+	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
+	TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
+	echo "> Ancien kernels supprimées."
 	echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
-	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8 UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
+	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8\ UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
 	#TEST_BIN localepurge; ERROR
 	#TEST_SUDO; sudo localepurge; ERROR
@@ -473,8 +487,75 @@ echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
 	fi
 fi
-	
-## 10: Telechargement de 10 wallpapers au bon format.
+
+## 10: Permet de lancer un assistant pour la gestion de partage de dossier.
+if [[ $GUI == *"Gérer un partage"* ]]; then
+displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	dpkg -l |grep -w " system-config-samba " |grep ^ii 
+	if [ ! $? -eq 0 ]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y gdebi samba libuser1 python-libuser
+		wget -P /tmp http://archive.ubuntu.com/ubuntu/pool/universe/s/system-config-samba/system-config-samba_1.2.63-0ubuntu6_all.deb
+		TEST_SUDO; sudo gdebi --n /tmp/system-config-samba_1.2.63-0ubuntu6_all.deb
+		TEST_SUDO; sudo touch /etc/libuser.conf
+		TEST_SUDO; sudo rm -f /usr/share/applications/system-config-samba.desktop &> /dev/null
+		echo "> Le paquet est a présent installé."
+	else
+		echo "> Le paquet est déjà installé."
+	fi
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	echo "> Configuration en cours..."
+	TEST_SUDO; sudo system-config-samba &> /dev/null
+echo ""
+echo -e "=> Le partage a été créé/modifié avec ${vert}SUCCES${fin}."
+fi
+
+## 10: Permet de lancer un outil d'aide au renommage de fichier par lot.
+if [[ $GUI == *"Renommer en masse des fichiers"* ]]; then
+displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	TEST_BIN pyrenamer; ERROR
+	TEST_SUDO; sudo rm -f /usr/share/applications/XRCed.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/PyCrust.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/pyrenamer.desktop &> /dev/null
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	pyrenamer &> /dev/null
+echo ""
+echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
+fi
+
+## 10: Assistant permettant d'afficher par taille les repertoires et fichiers de sa home.
+if [[ $GUI == *"Visualiser son repertoire perso"* ]]; then
+displayTitle "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
+	echo ""
+	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo ""
+	dpkg -l |grep -w " xdiskusage " |grep ^ii 
+	if [ ! $? -eq 0 ]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y xdiskusage
+		echo "> Le paquet est a présent installé."
+	else
+		echo "> Le paquet est déjà installé."
+	fi
+	echo ""
+	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
+	echo ""
+	xdiskusage $HOME
+echo ""
+echo -e "=> L'assistant de visualisation s'est terminé avec ${vert}SUCCES${fin}."
+fi
+
+## 11: Telechargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
 displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
 	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
@@ -496,14 +577,15 @@ displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au
 		TEST_BIN wget; ERROR
 		wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
 		find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
-		echo "> Récupération des fonds d'écran terminé"
 		echo ""
+		echo "> Récupération des fonds d'écran terminé"
+		zenity --info --width=400 --title="Fond écrans téléchargés avec succès." --text "Vous trouverez vos fonds d'écran directement dans votre répertoire \"Images\".\n Ils sont déjà disponible par simple clic-droit sur votre bureau." &> /dev/null
 echo ""
 echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCES${fin}."
 fi
 fi
 
-## 11: Permet de rendre silencieux l'ouverture de session.
+## 12: Permet de rendre silencieux l'ouverture de session.
 if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
 displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -516,7 +598,7 @@ echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
 fi
 
-## 12: Permet de rendre réactiver les sons lors de l'ouverture de session.
+## 13: Permet de rendre réactiver les sons lors de l'ouverture de session.
 if [[ $GUI == *"Activation sons démarrage"* ]]; then
 displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -530,7 +612,24 @@ echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
 fi
 
-## 13: Réalise un audit de la machine.
+## 14: Permet de désactiver l'IP v6 sur toutes les interfaces réseaux.
+if [[ $GUI == *"Desactivation IPv6"* ]]; then
+displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
+	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
+	TEST_SUDO; sudo -v
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "## désactivation de ipv6 (et autoconf) pour toutes les interfaces (ainsi que les nouvelles)." >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.all.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.default.disable_ipv6 = 1" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.all.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "net.ipv6.conf.default.autoconf = 0" >> $FILECONF_DISABLE_IPV6'
+	TEST_SUDO; sudo sysctl -p $FILECONF_DISABLE_IPV6
+	sleep 1
+echo ""
+echo -e " Vous venez de desactiver la configuration IPv6 avec ${vert}SUCCES${fin}."
+fi
+
+## 14: Réalise un audit de la machine.
 if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	FILE_AUDIT=/tmp/hardinfo.txt
@@ -566,12 +665,14 @@ displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 echo ""
 echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
 	else
-echo ""
+		echo ""
+		echo ">> LOCAL"
+		echo ""
 echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
 
-## 14: Récupere les logs journaliers.
+## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	echo ""
@@ -597,7 +698,7 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	sleep 3
 fi
 
-## 15: Supprime tous les logiciels dont la license n'est pas libre.
+## 16: Supprime tous les logiciels dont la license n'est pas libre.
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
 displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
 	echo ""
@@ -613,6 +714,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 		echo ""
 		echo -e "${blanc}-- Supression complete:${fin}"
 		echo ""
+		CHECK_SERVICE apt-get
 		TEST_SUDO; sudo apt-get autoremove -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 		TEST_SUDO; sudo rm -f /etc/apt/sources.list.d/spotify.list; ERROR
 		echo ""
@@ -624,7 +726,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	fi
 fi
 
-## 16: Installation des logiciels propriétaires par défaut.
+## 17: Installation des logiciels propriétaires par défaut.
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
@@ -632,7 +734,8 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo ""
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
-	TEST_SUDO; sudo apt-get update > /dev/null
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get update 
 	TEST_SUDO; sudo apt-get install -y --allow-unauthenticated google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 	echo "- GOOGLE-CHROME (Navigateur)"
 	echo "- WPS-OFFICE (Suite Bureautique)"
@@ -644,51 +747,122 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
-## 17: Installation du navigateur Firefox.
+## 18: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
 		echo ""
-		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash; ERROR
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr browser-plugin-freshplayer-pepperflash hunspell-fr; ERROR
+		echo ""
 		echo "> Installation Firefox (avec Flash Player) terminé"
 		echo ""
 	else 
 		echo ""
-		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr; ERROR
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y firefox firefox-locale-fr firefox-l10n-fr hunspell-fr; ERROR
+		echo ""
 		echo "> Installation Firefox terminé"
 		echo ""
 	fi
 fi
 
-## 18: Installation du la suite bureatique LibreOffice.
+## 19: Installation du la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
-	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr; ERROR
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr; ERROR
+	echo ""
 	echo "> Installation LibreOffice terminé"
 	echo ""
 fi
 
-## 19: Installation du lecteur multimedia VLC.
+## 20: Installation du lecteur multimedia VLC.
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y vlc; ERROR
+	echo ""
 	echo "> Installation VLC terminé"
 	echo ""
 fi
 
-## 20: Installe ADB, outil pour téléphones sous Android.
+## 21: Installe ADB, outil pour téléphones sous Android.
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
+	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y adb; ERROR
+	echo ""
 	echo "> Installation ADB terminé"
 	echo ""
 fi
 
+## 22: Remplace l'explorateur par défaut pour Nautilus.
+if [[ $GUI == *"Nautilus"* ]]; then
+displayTitle "Nautilus" "Remplace l'explorateur par défaut pour Nautilus."
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y nautilus deepin-nautilus-properties nautilus-admin nautilus-open-terminal ; ERROR
+	TEST_SUDO; sudo apt-get autoremove -y dde-file-manager; ERROR
+	echo ""
+	echo "> Installation Nautilus terminé"
+	echo ""
+fi
+
+## 23: Installe AdobeAIR, outil moteur logiciel d'Adobe.
+if [[ $GUI == *"AdobeAIR"* ]]; then
+displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
+	echo ""
+	echo -e "${blanc}-- Installation Prérequis:${fin}"
+	echo ""
+	if [[ "$(uname -m)" = "x86_64" ]] ; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y install libnss3-1d:i386 libxt6:i386 libnspr4-0d:i386 libgtk2.0-0:i386 libstdc++6:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386 libxaw7 lib32nss-mdns libnspr4-0d:i386 gdebi
+		TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
+		TEST_SUDO; sudo ln -s /usr/lib/x86_64-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	elif [[ "$(uname -m)" = "i386" ]] || [[ "$(uname -m)" = "i686" ]]; then
+		CHECK_SERVICE apt-get
+		TEST_SUDO; sudo apt-get install -y install libnss3-1d libxt6 libnspr4-0d libgtk2.0-0 libstdc++6 lib32nss-mdns libxml2 libxslt1.1 libcanberra-gtk-module gtk2-engines-murrine libgnome-keyring0 libxaw7 lib32nss-mdns libnspr4-0d gdebi
+		TEST_SUDO; sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0; ERROR
+		TEST_SUDO; sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	else
+		echo ""
+		displayError "/!\\ Une erreur a été détecté !"
+		echo "> Imposible de récupérer l'architecture."
+		exit 1
+	fi
+	echo ""
+	echo "> Installation des prérequis terminé"
+	echo ""
+	echo -e "${blanc}-- Installation AdobeAIR:${fin}"
+	echo ""
+	wget -P /tmp http://airdownload.adobe.com/air/lin/download/2.6/adobeair.deb; ERROR
+	TEST_SUDO; sudo gdebi --n /tmp/adobeair.deb; ERROR
+	rm -f /tmp/adobeair.deb
+	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0; ERROR
+	TEST_SUDO; sudo unlink /usr/lib/libgnome-keyring.so.0.2.0; ERROR
+	echo ""
+	echo "> Installation AdobeAIR terminé"
+	echo ""
+fi
+
+## 24: Installe le controller avancé audio.
+if [[ $GUI == *"PavuControl"* ]]; then
+displayTitle "PavuControl" "Installe le controller avancé audio."
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y pavucontrol; ERROR
+	echo ""
+	echo "> Installation PavuControl terminé"
+	echo ""
+fi
+
+
 ## [FIN] fenetre de chargement...
-pkill zenity; sleep 1; pkill zenity
+pkill zenity; sleep 1; pkill -9 zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
