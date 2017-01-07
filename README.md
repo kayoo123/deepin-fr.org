@@ -23,9 +23,10 @@ TODO
 - [OK] PavuControl
 - [OK] xdiskusage
 - [OK] Désactivation ipv6
-- [test] Installation AdobeAIR (a test sur des env 32/64 vierge)
-- [test] Clean old kernel
+- [OK] Installation AdobeAIR (a test sur des env 32/64 vierge)
+- [OK] Clean old kernel
 - [test] Molotov
+- [a faire] Compte invite
 - [a faire] conky manager http://www.teejeetech.in/p/conky-manager.html
 - [a faire] hardinfo
 - [a faire] Reunir certain menu (ex. depot,sons, logiciel proprio)
