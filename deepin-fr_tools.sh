@@ -865,14 +865,14 @@ fi
 if [[ $GUI == *"Molotov"* ]]; then
 displayTitle "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)"
 	if [[ "$(uname -m)" = "x86_64" ]] ; then
-	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/Molotov-1.1.2.AppImage"
+	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.4.2/molotov"
 	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
 	APP_PATH=/usr/share/molotov
 	echo ""
 	echo -e "${blanc}-- Installation des sources:${fin}"
 	TEST_SUDO; sudo rm -rf $APP_PATH; sudo mkdir $APP_PATH
 	TEST_SUDO; sudo wget -P $APP_PATH $APP_URL $APP_IMG; ERROR
-	TEST_SUDO; sudo mv $APP_PATH/*.AppImage $APP_PATH/Molotov.AppImage
+	TEST_SUDO; sudo mv $APP_PATH/molotov $APP_PATH/Molotov.AppImage
 #	TEST_SUDO; sudo chown -R root:users $APP_PATH
 	TEST_SUDO; sudo chmod -R 755 $APP_PATH
 #	echo ""
