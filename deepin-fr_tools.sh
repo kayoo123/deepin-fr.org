@@ -187,6 +187,24 @@ echo "- Arch : $(uname -m)"
 echo "- Depot: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq)"
 echo ""
 
+# Zenity MENU
+CHOICE=$(zenity --entry --title="DEEPIN-TOOLS" --text="
+Plateforme de scripts pour la communauté \"Deepin-fr.org\".
+Ces scripts sont produits dans le cadre d\'une assistance sur http://deepin-fr.org
+Prérequis :
+- Utiliser DeepinOS v15.4
+- Avoir une connexion internet
+
+Il se compose en multiples catégories : 
+
+- Systeme:  \tPermet de gérer votre depot, mettre-a-jour et nettoyer votre distribution...
+- Packages: \tPermet d\'un simple clic d\'installer et de gerer vos paquets favoris.
+- Outils:   \tEnsemble d\'outils permettant d\'ajouter des fonctionnalités.
+- Extra:    \tActions bonus.
+
+Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
+
+
 # Zenity
 GUI=$(zenity --list --checklist \
 	--height 600 \
