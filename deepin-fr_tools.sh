@@ -176,7 +176,7 @@ echo -e "${bleu}  ██║  ██║██╔══╝  ██╔══╝  �
 echo -e "${bleu}  ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║${fin}"
 echo -e "${bleu}  ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝${fin}"
 echo "version: $VERSION"
-if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}mode: DEVELOPPEUR${fin}"; fi
+if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}MODE: Dev${fin}"; fi
 echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
@@ -223,7 +223,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	FALSE "PavuControl" "Installe le controller avancé audio." \
-	FALSE "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)" \
+	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 
@@ -382,12 +382,12 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 		TEST_SUDO; sudo deborphan; ERROR
 		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
 	#done
-	echo ""
-	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
-	dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
-	TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
-	echo "> Ancien kernels supprimées."
-	echo ""
+	#echo ""
+	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	#dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
+	#TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
+	#echo "> Ancien kernels supprimées."
+	#echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8\ UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
@@ -592,7 +592,7 @@ displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouvert
 	echo ""
 	echo -e "${blanc}-- Désactiver les sons au démarrage de la session:${fin}"
     TEST_SUDO; sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_disable \; ;ERROR
-    TEST_SUDO; sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
+    #TEST_SUDO; sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
     sleep 1
 echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
@@ -604,7 +604,7 @@ displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons 
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
 	echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
-    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg 
     TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg
     TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg
     sleep 1
@@ -862,8 +862,7 @@ fi
 
 ## 25: Installe l'application pour regarder la télévision. (arch: 64bits seulement)
 if [[ $GUI == *"Molotov"* ]]; then
-displayTitle "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)"
-	if [[ "$(uname -m)" = "x86_64" ]] ; then
+displayTitle "Molotov" "Installe l'application pour regarder la télévision."
 	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.4.2/molotov"
 	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
 	APP_PATH=/usr/share/molotov
@@ -900,9 +899,6 @@ EOF
 	echo ""
 	echo "> Installation Molotov terminé"
 	echo ""
-	else
-		displayError "Je suis navré mais l'application Molotov n'est uniquement compatible sur architecture 64b (https://www.molotov.tv/devices)"
-	fi
 fi
 
 ## [FIN] fenetre de chargement...
