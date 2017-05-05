@@ -188,7 +188,9 @@ echo "- Depot: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $
 echo ""
 
 # Zenity MENU
-CHOICE=$(zenity --entry --title="DEEPIN-TOOLS" --text="
+CHOICE=$(zenity --entry \
+		--title="DEEPIN-TOOLS" \
+		--text="\
 Plateforme de scripts pour la communauté \"Deepin-fr.org\".
 Ces scripts sont produits dans le cadre d\'une assistance sur http://deepin-fr.org
 Prérequis :
@@ -204,34 +206,40 @@ Il se compose en multiples catégories :
 
 Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
 
-
-# Zenity
+# Zenity SYSTEME
+if [[ $CHOICE == "Systeme" ]]; then
 GUI=$(zenity --list --checklist \
-	--height 600 \
+	--height 500 \
 	--width 900 \
-	--title="DEEPIN-TOOLS" \
+	--title="DEEPIN-TOOLS > SYSTEME" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."  \
-	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
 	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
-	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
-	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
-	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
-	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
-	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
-	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
-	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
-	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
+	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
+	FALSE "Verr.Num au boot" "Activation de la touche \"Verouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
+	
+# Zenity PACKAGES
+if [[ $CHOICE == "Packages" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 500 \
+	--width 900 \
+	--title="DEEPIN-TOOLS > PACKAGES" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
 	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
@@ -244,6 +252,43 @@ GUI=$(zenity --list --checklist \
 	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
+fi
+	
+# Zenity OUTILS
+if [[ $CHOICE == "Outils" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 500 \
+	--width 900 \
+	--title="DEEPIN-TOOLS > OUTILS" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
+	FALSE "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."  \
+	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
+	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
+	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
+	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
+	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
+	
+# Zenity EXTRA
+if [[ $CHOICE == "Extra" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 500 \
+	--width 900 \
+	--title="DEEPIN-TOOLS > EXTRA" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
+	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
+	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
 
 ## [DEBUT] fenetre de chargement...
 zenity --progress --width=400 --title="Exécution du script" --text="Veuillez patienter quelques instants !" --pulsate --no-cancel --auto-close &>/dev/null\
