@@ -224,7 +224,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	FALSE "PavuControl" "Installe le controller avancé audio." \
 	FALSE "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)" \
-	--separator=', ' &>/dev/null) \
+	--separator=', ' 2>/dev/null) \
 	||exit 1
 
 ## [DEBUT] fenetre de chargement...
