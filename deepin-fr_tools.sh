@@ -210,7 +210,7 @@ Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extr
 if [[ $CHOICE == "Systeme" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
-	--width 600 \
+	--width 700 \
 	--title="DEEPIN-TOOLS > SYSTEME" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
@@ -232,7 +232,7 @@ fi
 if [[ $CHOICE == "Packages" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
-	--width 600 \
+	--width 700 \
 	--title="DEEPIN-TOOLS > PACKAGES" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
@@ -256,7 +256,7 @@ fi
 if [[ $CHOICE == "Outils" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
-	--width 600 \
+	--width 700 \
 	--title="DEEPIN-TOOLS > OUTILS" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
@@ -278,7 +278,7 @@ fi
 if [[ $CHOICE == "Extra" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
-	--width 600 \
+	--width 700 \
 	--title="DEEPIN-TOOLS > EXTRA" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
