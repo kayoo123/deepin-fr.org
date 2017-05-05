@@ -1,8 +1,8 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 5.1
-# Date : 21/11/2016
+# Vers : 6.0
+# Date : 05/05/2017
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -22,8 +22,8 @@ sleep 1
 #######################################################################
 
 ## VERSION
-VERSION=5.1
-MOD_DEV=1
+VERSION=6.0
+MODE_DEV=1
 
 ## COULEUR 
 blanc='\e[1;37m'
@@ -73,7 +73,6 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
   	  pkill -9 zenity
   	  exit 1
   fi
-
 fi
 }
 
@@ -225,7 +224,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	FALSE "PavuControl" "Installe le controller avancé audio." \
 	FALSE "Molotov" "Installe l'application pour regarder la télévision. (arch: 64bits seulement)" \
-	--separator=', ' ) \
+	--separator=', ' &>/dev/null) \
 	||exit 1
 
 ## [DEBUT] fenetre de chargement...
