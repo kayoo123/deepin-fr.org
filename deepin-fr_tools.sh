@@ -224,8 +224,6 @@ GUI=$(zenity --list --checklist \
 	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
-	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
-	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -270,6 +268,8 @@ GUI=$(zenity --list --checklist \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
 	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
 	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
+	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
+	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -284,7 +284,7 @@ GUI=$(zenity --list --checklist \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
+	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
 	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
