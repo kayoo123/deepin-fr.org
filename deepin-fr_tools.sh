@@ -435,17 +435,17 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; sudo apt -y --force-yes clean; ERROR # Supressions des paquets en cache
 	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR # Supression des dépendances inutilisées
 	echo ""
-	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
+	echo -e "${blanc}-- Supression des configurations logiciels désinstallées:${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
 	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
-	#for i in `seq 1 4` ; do 
+	for i in `seq 1 4` ; do 
 		TEST_SUDO; sudo deborphan; ERROR
 		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
-	#done
-	#echo ""
+	done
+	echo ""
 	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
 	#dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
 	#TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
@@ -738,6 +738,7 @@ fi
 ## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
+	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
 	echo ""
 	echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
 	echo " -  $(date +'%A %d %B')"; ERROR
