@@ -1,8 +1,8 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 5.1
-# Date : 29/12/2016
+# Vers : 6.0
+# Date : 05/05/2017
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -10,7 +10,6 @@
 ###############
 sleep 1
 # set -xv
-export NO_AT_BRIDGE=1
 #######################################################################
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
@@ -23,8 +22,8 @@ export NO_AT_BRIDGE=1
 #######################################################################
 
 ## VERSION
-VERSION=5.1
-MOD_DEV=0
+VERSION=6.0
+MODE_DEV=0
 
 ## COULEUR 
 blanc='\e[1;37m'
@@ -74,7 +73,6 @@ SUDOPASSWORD="$(gksudo --print-pass --message 'L outil Deepin-tools requiert cer
   	  pkill -9 zenity
   	  exit 1
   fi
-
 fi
 }
 
@@ -178,7 +176,7 @@ echo -e "${bleu}  ██║  ██║██╔══╝  ██╔══╝  �
 echo -e "${bleu}  ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║${fin}"
 echo -e "${bleu}  ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝${fin}"
 echo "version: $VERSION"
-if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}mode: DEVELOPPEUR${fin}"; fi
+if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}MODE: Dev${fin}"; fi
 echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
@@ -189,33 +187,57 @@ echo "- Arch : $(uname -m)"
 echo "- Depot: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq)"
 echo ""
 
-# Zenity
+# Zenity MENU
+CHOICE=$(zenity --entry \
+		--title="DEEPIN-TOOLS" \
+		--text="\
+Plateforme de scripts pour la communauté \"Deepin-fr.org\".
+Ces scripts sont produits dans le cadre d\'une assistance sur http://deepin-fr.org
+Prérequis :
+- Utiliser DeepinOS v15.4
+- Avoir une connexion internet
+
+Il se compose en multiples catégories : 
+
+- Systeme:  \tPermet de gérer votre depot, mettre-a-jour et nettoyer votre distribution...
+- Packages: \tPermet d\'un simple clic d\'installer et de gerer vos paquets favoris.
+- Outils:   \tEnsemble d\'outils permettant d\'ajouter des fonctionnalités.
+- Extra:    \tActions bonus.
+
+Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
+
+# Zenity SYSTEME
+if [[ $CHOICE == "Systeme" ]]; then
 GUI=$(zenity --list --checklist \
-	--height 600 \
-	--width 900 \
-	--title="DEEPIN-TOOLS" \
+	--height 400 \
+	--width 700 \
+	--title="DEEPIN-TOOLS > SYSTEME" \
 	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."  \
-	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
 	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
-	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage." \
-	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office." \
-	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
-	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
-	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
-	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
-	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
-	FALSE "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session." \
+	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
+	FALSE "Verr.Num au boot" "Activation de la touche \"Verouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
-	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
-	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
+	
+# Zenity PACKAGES
+if [[ $CHOICE == "Packages" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 400 \
+	--width 700 \
+	--title="DEEPIN-TOOLS > PACKAGES" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
 	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
@@ -225,8 +247,48 @@ GUI=$(zenity --list --checklist \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
 	FALSE "PavuControl" "Installe le controller avancé audio." \
-	--separator=', ' ) \
+	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
+	--separator=', ' 2>/dev/null) \
 	||exit 1
+fi
+	
+# Zenity OUTILS
+if [[ $CHOICE == "Outils" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 400 \
+	--width 700 \
+	--title="DEEPIN-TOOLS > OUTILS" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
+	FALSE "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."  \
+	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
+	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
+	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
+	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
+	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
+	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
+	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
+	
+# Zenity EXTRA
+if [[ $CHOICE == "Extra" ]]; then
+GUI=$(zenity --list --checklist \
+	--height 400 \
+	--width 700 \
+	--title="DEEPIN-TOOLS > EXTRA" \
+	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--column=Cochez \
+	--column=Actions \
+	--column=Description \
+	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
+	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
+	--separator=', ' 2>/dev/null) \
+	||exit 1
+fi
 
 ## [DEBUT] fenetre de chargement...
 zenity --progress --width=400 --title="Exécution du script" --text="Veuillez patienter quelques instants !" --pulsate --no-cancel --auto-close &>/dev/null\
@@ -314,9 +376,9 @@ displayTitle "Dépot original" "Remplace votre dépot par l'officiel (seveur en 
 	echo "Veuillez patienter..."
 	sleep 2
 	TEST_SUDO; sudo -v
-	TEST_SUDO; sudo sh -c 'echo "## Generated by deepin-installer" > /etc/apt/sources.list'; ERROR
-	TEST_SUDO; sudo sh -c 'echo "deb [by-hash=force] http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
-	TEST_SUDO; sudo sh -c 'echo "#deb-src http://packages.deepin.com/deepin unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo sh -c 'echo "## Generated by deepin-installer-reborn" > /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo sh -c 'echo "deb [by-hash=force] http://packages.deepin.com/deepin panda main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo sh -c 'echo "#deb-src http://packages.deepin.com/deepin panda main contrib non-free" >> /etc/apt/sources.list'; ERROR
 	TEST_SUDO; sudo apt-get update
 echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
@@ -333,7 +395,7 @@ displayTitle "Dépot plus rapide" "Remplace automatiquement le dépot de votre s
 	BEST_REPO=$(netselect -t 50 $(curl -L http://mirrors.deepin-fr.org/) |awk '{print $NF}'); ERROR
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "## Auto-genere par Deepin-fr" > /etc/apt/sources.list'; ERROR
-	TEST_SUDO; sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO unstable main contrib non-free" >> /etc/apt/sources.list'; ERROR
+	TEST_SUDO; sudo env BEST_REPO=$BEST_REPO sh -c 'echo "deb [by-hash=force] $BEST_REPO panda main contrib non-free" >> /etc/apt/sources.list'; ERROR
 	TEST_SUDO; sudo apt-get update
 echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
@@ -373,22 +435,22 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; sudo apt -y --force-yes clean; ERROR # Supressions des paquets en cache
 	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR # Supression des dépendances inutilisées
 	echo ""
-	echo -e "${blanc}-- Supression des configurations logiciels désinstallées :${fin}"
+	echo -e "${blanc}-- Supression des configurations logiciels désinstallées:${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
 	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
-	#for i in `seq 1 4` ; do 
+	for i in `seq 1 4` ; do 
 		TEST_SUDO; sudo deborphan; ERROR
 		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
-	#done
+	done
 	echo ""
-	echo -e "${blanc}-- Supression des anciens kernels:${fin}"
-	dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
-	TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
-	echo "> Ancien kernels supprimées."
-	echo ""
+	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	#dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
+	#TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
+	#echo "> Ancien kernels supprimées."
+	#echo ""
 	#echo -e "${blanc}-- Nettoyage des locales:${fin}"
 	#TEST_SUDO; sudo sed -i -e "s/#\ fr_FR.UTF-8\ UTF-8/fr_FR.UTF-8\ UTF-8/g" /etc/locale.gen; ERROR
 	#TEST_SUDO; sudo locale-gen; ERROR
@@ -593,7 +655,7 @@ displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouvert
 	echo ""
 	echo -e "${blanc}-- Désactiver les sons au démarrage de la session:${fin}"
     TEST_SUDO; sudo find $DIR_SOUND_SYS -type f -name "sys-*.ogg" -exec mv {} {}_disable \; ;ERROR
-    TEST_SUDO; sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
+    #TEST_SUDO; sudo touch $DIR_SOUND_SYS/sys-login.ogg $DIR_SOUND_SYS/sys-logout.ogg $DIR_SOUND_SYS/sys-shutdown.ogg; ERROR  
     sleep 1
 echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
@@ -605,7 +667,7 @@ displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons 
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
 	echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
-    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg
+    TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-login.ogg_disable $DIR_SOUND_SYS/sys-login.ogg 
     TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-logout.ogg_disable $DIR_SOUND_SYS/sys-logout.ogg
     TEST_SUDO; sudo mv -f $DIR_SOUND_SYS/sys-shutdown.ogg_disable $DIR_SOUND_SYS/sys-shutdown.ogg
     sleep 1
@@ -676,6 +738,7 @@ fi
 ## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
+	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
 	echo ""
 	echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
 	echo " -  $(date +'%A %d %B')"; ERROR
@@ -861,6 +924,46 @@ displayTitle "PavuControl" "Installe le controller avancé audio."
 	echo ""
 fi
 
+## 25: Installe l'application pour regarder la télévision. (arch: 64bits seulement)
+if [[ $GUI == *"Molotov"* ]]; then
+displayTitle "Molotov" "Installe l'application pour regarder la télévision."
+	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.4.2/molotov"
+	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
+	APP_PATH=/usr/share/molotov
+	echo ""
+	echo -e "${blanc}-- Installation des sources:${fin}"
+	TEST_SUDO; sudo rm -rf $APP_PATH; sudo mkdir $APP_PATH
+	TEST_SUDO; sudo wget -P $APP_PATH $APP_URL $APP_IMG; ERROR
+	TEST_SUDO; sudo mv $APP_PATH/molotov $APP_PATH/Molotov.AppImage
+#	TEST_SUDO; sudo chown -R root:users $APP_PATH
+	TEST_SUDO; sudo chmod -R 755 $APP_PATH
+#	echo ""
+#	echo -e "${blanc}-- Installation du raccourci et execution:${fin}"
+#	export XDG_DATA_DIRS="$HOME/.local/share/"
+#	$APP_PATH/Molotov.AppImage
+	#sed Exec
+	echo ""
+	echo -e "${blanc}-- Installation du raccourci:${fin}"
+	rm -f $HOME/.local/share/applications/Molotov.desktop; ERROR
+	cat > $HOME/.local/share/applications/Molotov.desktop << "EOF"
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Molotov
+Name[fr_FR.UTF-8]=Molotov
+Comment="Une nouvelle façon de regarder la télévision."
+Path=/usr/share/molotov
+Exec=/usr/share/molotov/Molotov.AppImage
+Icon=/usr/share/molotov/molotov-icone.jpg
+Terminal=false
+StartupNotify=false
+Categories=AudioVideo;
+EOF
+	echo ""
+	echo "> Installation Molotov terminé"
+	echo ""
+fi
 
 ## [FIN] fenetre de chargement...
 pkill zenity; sleep 1; pkill -9 zenity
