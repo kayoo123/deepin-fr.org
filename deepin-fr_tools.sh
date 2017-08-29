@@ -55,6 +55,11 @@ displayTitle() {
   echo
 }
 
+displayCommand() {
+	echo -e "\r\e[0;30;43m>>> $* \e[0m"
+	$*
+}
+
 ## Vérification des droits sudo
 function TEST_SUDO() {
 if ! sudo -S -p '' echo -n < /dev/null 2> /dev/null; then
@@ -408,17 +413,17 @@ displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des d
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt update; ERROR
+	TEST_SUDO; displayCommand "sudo apt update"; ERROR
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-	TEST_SUDO; sudo apt -y --force-yes dist-upgrade; ERROR
+	TEST_SUDO; displayCommand "sudo apt -y dist-upgrade"; ERROR
 	echo ""
 	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
-	TEST_SUDO; sudo apt install -f; ERROR
-	TEST_SUDO; sudo dpkg --configure -a; ERROR
+	TEST_SUDO; displayCommand "sudo apt install -f"; ERROR
+	TEST_SUDO; displayCommand "sudo dpkg --configure -a"; ERROR
 	echo ""
 	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
-	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
