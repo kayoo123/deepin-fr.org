@@ -1,5 +1,5 @@
 # DEEPIN-TOOLS
-Plateforme de scripts pour la communauté "Deepin-fr.org" !
+Plateforme de scripts pour la communauté "Deepin-fr.org".
 
 Vous trouverez ici, les sources nécessaires à l'utilisation de l'outil "Deepin-tools".
 Ces scripts sont produits dans le cadre d'une assistance sur http://deepin-fr.org
