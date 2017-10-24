@@ -1,7 +1,7 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 6.0
+# Vers : 6.1
 # Date : 05/05/2017
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
@@ -22,7 +22,7 @@ sleep 1
 #######################################################################
 
 ## VERSION
-VERSION=6.0
+VERSION=6.1
 MODE_DEV=0
 
 ## COULEUR 
@@ -932,7 +932,7 @@ fi
 ## 25: Installe l'application pour regarder la télévision. (arch: 64bits seulement)
 if [[ $GUI == *"Molotov"* ]]; then
 displayTitle "Molotov" "Installe l'application pour regarder la télévision."
-	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.4.2/molotov"
+	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.8.0/molotov"
 	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
 	APP_PATH=/usr/share/molotov
 	echo ""
