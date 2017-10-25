@@ -221,7 +221,7 @@ GUI=$(zenity --list --checklist \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
+	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
 	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
@@ -373,9 +373,9 @@ echo ""
 echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
 fi
 
-## 3: Remplace votre dépot par l'officiel (seveur en Chine)
+## 3: Remplace votre dépot par l'officiel (serveur en Chine)
 if [[ $GUI == *"Dépot original"* ]]; then
-displayTitle "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)."
+displayTitle "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)."
 	echo ""
 	echo "Retour sur le dépot original (sans modification)"
 	echo "Veuillez patienter..."
