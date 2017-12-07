@@ -60,11 +60,11 @@ displayCommand() {
 	$*
 }
 
-## Verification user
-if [[ $EUID -e 0 ]]; then
-   displayError "/!\\ Merci de ne pas utiliser root ou sudo pour lancer l'outil deepin-tool !"
-   exit 1
-fi
+### Verification user
+#if [[ $EUID -e 0 ]]; then
+#   displayError "/!\\ Merci de ne pas utiliser root ou sudo pour lancer l'outil deepin-tool !"
+#   exit 1
+#fi
 
 ## Vérification des droits sudo
 function TEST_SUDO() {
