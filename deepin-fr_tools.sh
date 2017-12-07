@@ -440,20 +440,20 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt update; ERROR # cache
-	TEST_SUDO; sudo apt -y --force-yes autoclean; ERROR # Suppression des archives périmées
-	TEST_SUDO; sudo apt -y --force-yes clean; ERROR # Supressions des paquets en cache
-	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR # Supression des dépendances inutilisées
+	TEST_SUDO; displayCommand "sudo apt update"; ERROR # cache
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoclean"; ERROR # Suppression des archives périmées
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes clean"; ERROR # Supressions des paquets en cache
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR # Supression des dépendances inutilisées
 	echo ""
 	echo -e "${blanc}-- Supression des configurations logiciels désinstallées:${fin}"
-	dpkg -l | grep ^rc | awk '{print $2}' ; ERROR
-	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
+	displayCommand "dpkg -l | grep ^rc | awk '{print $2}'" ; ERROR
+	displayCommand "dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null"
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
 	for i in `seq 1 4` ; do 
-		TEST_SUDO; sudo deborphan; ERROR
-		TEST_SUDO; sudo dpkg --purge $(deborphan) &> /dev/null
+		TEST_SUDO; displayCommand "sudo deborphan"; ERROR
+		TEST_SUDO; displayCommand "sudo dpkg --purge $(deborphan) &> /dev/null"
 	done
 	echo ""
 	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
@@ -468,32 +468,32 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	#TEST_SUDO; sudo localepurge; ERROR
 	#echo ""
 	echo -e "${blanc}-- Nettoyage des images miniatures:${fin}"
-	rm -Rf $HOME/.thumbnails/*; ERROR
+	displayCommand "rm -Rf $HOME/.thumbnails/*"; ERROR
 	echo "> Images thumbnails supprimées."
 	echo ""
 	echo -e "${blanc}-- Nettoyage du cache des navigateurs:${fin}"
-	rm -Rf $HOME/.mozilla/firefox/*.default/Cache/*; ERROR
-	rm -Rf $HOME/.cache/google-chrome/Default/Cache/*; ERROR
-	rm -Rf $HOME/.cache/chromium/Default/Cache/*; ERROR
+	displayCommand "rm -Rf $HOME/.mozilla/firefox/*.default/Cache/*"; ERROR
+	displayCommand "rm -Rf $HOME/.cache/google-chrome/Default/Cache/*"; ERROR
+	displayCommand "rm -Rf $HOME/.cache/chromium/Default/Cache/*"; ERROR
 	echo "> Cache navigateur nettoyé."
 	echo ""
 	echo -e "${blanc}-- Nettoyage du cache de Flash_Player:${fin}"
-	rm -Rf $HOME/.macromedia/Flash_Player/macromedia.com; ERROR
-	rm -Rf $HOME/.macromedia/Flash_Player/\#SharedObjects; ERROR
+	displayCommand "rm -Rf $HOME/.macromedia/Flash_Player/macromedia.com"; ERROR
+	displayCommand "rm -Rf $HOME/.macromedia/Flash_Player/\#SharedObjects"; ERROR
 	echo "> Cache flash-Player nettoyé."
 	echo ""
 	echo -e "${blanc}-- Nettoyage des fichiers de sauvegarde:${fin}"
-	find $HOME -name '*~' -exec rm {} \;
+	displayCommand "find $HOME -name '*~' -exec rm {} \;"
 	echo "> Supression des fichiers d'ouverture temporaire."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la corbeille:${fin}"
-	rm -Rf $HOME/.local/share/Trash/*; ERROR
+	displayCommand "rm -Rf $HOME/.local/share/Trash/*"; ERROR
 	echo "> Corbeille vidé"
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la RAM:${fin}"
 	TEST_SUDO; sudo -v
-	TEST_SUDO; sudo sysctl -w vm.drop_caches=3 &> /dev/null; ERROR
-	free -h
+	TEST_SUDO; displayCommand "sudo sysctl -w vm.drop_caches=3 &> /dev/null"; ERROR
+	displayCommand "free -h"
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été nettoyé avec ${vert}SUCCES${fin}."
