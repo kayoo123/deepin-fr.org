@@ -1,8 +1,8 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 6.1
-# Date : 06/06/2017
+# Vers : 6.2
+# Date : 07/12/2017
 # Auth : Kayoo (http://forum.deepin-fr.org/)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
@@ -22,7 +22,7 @@ sleep 1
 #######################################################################
 
 ## VERSION
-VERSION=6.0
+VERSION=6.2
 MODE_DEV=1
 
 ## COULEUR 
@@ -54,6 +54,17 @@ displayTitle() {
   displayMessage "------------------------------------------------------------------------------"
   echo
 }
+
+displayCommand() {
+	echo -e "\r\e[0;30;43m>>> $* \e[0m"
+	$*
+}
+
+## Verification user
+if [[ $EUID -e 0 ]]; then
+   displayError "/!\\ Merci de ne pas utiliser root ou sudo pour lancer l'outil deepin-tool !"
+   exit 1
+fi
 
 ## Vérification des droits sudo
 function TEST_SUDO() {
@@ -194,7 +205,7 @@ CHOICE=$(zenity --entry \
 Plateforme de scripts pour la communauté \"Deepin-fr.org\".
 Ces scripts sont produits dans le cadre d\'une assistance sur http://deepin-fr.org
 Prérequis :
-- Utiliser DeepinOS v15.4
+- Utiliser DeepinOS v15.5
 - Avoir une connexion internet
 
 Il se compose en multiples catégories : 
@@ -216,7 +227,7 @@ GUI=$(zenity --list --checklist \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)." \
+	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
 	FALSE "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant." \
 	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
@@ -224,7 +235,6 @@ GUI=$(zenity --list --checklist \
 	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
-	FALSE "Clavier FR sur TTY" "Permet de d'activer le clavier francais sur les TTY console." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -295,7 +305,7 @@ fi
 zenity --progress --width=400 --title="Exécution du script" --text="Veuillez patienter quelques instants !" --pulsate --no-cancel --auto-close &>/dev/null\
 |(
 
-## - Installation et mise-à-jour de l'outil Deepin-tools
+## 1: Installation et mise-à-jour de l'outil Deepin-tools
 if [[ $GUI == *"Installation Deepin-tools"* ]]; then
 displayTitle "Installation Deepin-tools" "Installation et mise-à-jour de l'outil Deepin-tools."
 	echo ""
@@ -347,7 +357,7 @@ echo ""
 echo -e "=> L'outil \"deepin-tools\" a été installé avec ${vert}SUCCES${fin}."    
 fi
 
-## - Suppression de l'outil deepin-tools
+## 2: Suppression de l'outil deepin-tools
 if [[ $GUI == *"Suppression Deepin-tools"* ]]; then
 displayTitle "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U"
 	echo ""
@@ -369,9 +379,9 @@ echo ""
 echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
 fi
 
-## - Remplace votre dépot par l'officiel (seveur en Chine)
+## 3: Remplace votre dépot par l'officiel (serveur en Chine)
 if [[ $GUI == *"Dépot original"* ]]; then
-displayTitle "Dépot original" "Remplace votre dépot par l'officiel (seveur en Chine)."
+displayTitle "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)."
 	echo ""
 	echo "Retour sur le dépot original (sans modification)"
 	echo "Veuillez patienter..."
@@ -385,7 +395,7 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## - Remplace automatiquement le dépot de votre systeme par le plus performant
+## 4: Remplace automatiquement le dépot de votre systeme par le plus performant
 if [[ $GUI == *"Dépot plus rapide"* ]]; then
 displayTitle "Dépot plus rapide" "Remplace automatiquement le dépot de votre systeme par le plus performant."
 	echo ""
@@ -402,30 +412,30 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## - Met a jour du systeme avec correction des dépendances et nettoyage.
+## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
 export DEBIAN_FRONTEND=noninteractive  
 displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt update; ERROR
+	TEST_SUDO; displayCommand "sudo apt update"; ERROR
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
-	TEST_SUDO; sudo apt -y --force-yes dist-upgrade; ERROR
+	TEST_SUDO; displayCommand "sudo apt -y dist-upgrade"; ERROR
 	echo ""
 	echo -e "${blanc}-- Installation des dépendances manquantes et reconfiguration:${fin}"
-	TEST_SUDO; sudo apt install -f; ERROR
-	TEST_SUDO; sudo dpkg --configure -a; ERROR
+	TEST_SUDO; displayCommand "sudo apt install -f"; ERROR
+	TEST_SUDO; displayCommand "sudo dpkg --configure -a"; ERROR
 	echo ""
 	echo -e "${blanc}-- Suppression des dépendances inutilisées:${fin}"
-	TEST_SUDO; sudo apt -y --force-yes autoremove; ERROR
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR
 	echo ""
 echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
 fi
 
-## - Nettoie votre systeme en profondeur.
+## 6: Nettoie votre systeme en profondeur.
 if [[ $GUI == *"Nettoyage de printemps"* ]]; then
 displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
@@ -490,7 +500,7 @@ echo ""
 echo -e "=> Votre systeme a été nettoyé avec ${vert}SUCCES${fin}."
 fi
 
-## - Activation de la touche \"Verrouillage Numérique\" au démarrage.
+## 7: Activation de la touche \"Verrouillage Numérique\" au démarrage.
 if [[ $GUI == *"Verr.Num au boot"* ]]; then
 displayTitle "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."
 	echo ""
@@ -505,7 +515,7 @@ echo ""
 echo -e "=> La touche \"Verrouillage Numérique\" a été activé au démarrage avec ${vert}SUCCES${fin}."
 fi
 
-## - Installation du dictionnaire de la suite WPS-Office.
+## 8: Installation du dictionnaire de la suite WPS-Office.
 if [[ $GUI == *"Dictionnaire FR pour WPS"* ]]; then
 displayTitle "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suite WPS-Office."
 	echo ""
@@ -526,7 +536,7 @@ echo "Outils > Options > Vérifier l'orthographe > Dictionnaire personnel > Ajou
 sleep 2
 fi
 
-## - Permet de lancer un assistant pour l'aide à la création de raccourci.
+## 9: Permet de lancer un assistant pour l'aide à la création de raccourci.
 if [[ $GUI == *"Créer un raccourci"* ]]; then
 displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci."
 	echo ""
@@ -552,7 +562,7 @@ echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."
 	fi
 fi
 
-## - Permet de lancer un assistant pour la gestion de partage de dossier.
+## 10: Permet de lancer un assistant pour la gestion de partage de dossier.
 if [[ $GUI == *"Gérer un partage"* ]]; then
 displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier."
 	echo ""
@@ -579,7 +589,7 @@ echo ""
 echo -e "=> Le partage a été créé/modifié avec ${vert}SUCCES${fin}."
 fi
 
-## - Permet de lancer un outil d'aide au renommage de fichier par lot.
+## 10: Permet de lancer un outil d'aide au renommage de fichier par lot.
 if [[ $GUI == *"Renommer en masse des fichiers"* ]]; then
 displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot."
 	echo ""
@@ -597,7 +607,7 @@ echo ""
 echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## - Assistant permettant d'afficher par taille les repertoires et fichiers de sa home.
+## 10: Assistant permettant d'afficher par taille les repertoires et fichiers de sa home.
 if [[ $GUI == *"Visualiser son repertoire perso"* ]]; then
 displayTitle "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
 	echo ""
@@ -619,7 +629,7 @@ echo ""
 echo -e "=> L'assistant de visualisation s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## - Telechargement de 10 wallpapers au bon format.
+## 11: Telechargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
 displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
 	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
@@ -639,7 +649,7 @@ displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au
 		echo ""
 		TEST_BIN lynx; ERROR
 		TEST_BIN wget; ERROR
-		wget -nv --show-progress -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
+		wget -nv -U "Mozilla/5.0" -P $DIR $(lynx --dump $URL_WALLPAPER | awk '/7yz4ma1/ && /jpg/ && !/html/ {print $2}'); ERROR
 		find $DIR -type f -iname "*.jp*g" -size -50k -exec rm {} \;
 		echo ""
 		echo "> Récupération des fonds d'écran terminé"
@@ -649,7 +659,7 @@ echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCE
 fi
 fi
 
-## - Permet de rendre silencieux l'ouverture de session.
+## 12: Permet de rendre silencieux l'ouverture de session.
 if [[ $GUI == *"Désactiver sons démarrage"* ]]; then
 displayTitle "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
@@ -676,7 +686,7 @@ echo ""
 echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin}."
 fi
 
-## - Permet de désactiver l'IP v6 sur toutes les interfaces réseaux.
+## 14: Permet de désactiver l'IP v6 sur toutes les interfaces réseaux.
 if [[ $GUI == *"Desactivation IPv6"* ]]; then
 displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
 	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
@@ -693,7 +703,7 @@ echo ""
 echo -e " Vous venez de desactiver la configuration IPv6 avec ${vert}SUCCES${fin}."
 fi
 
-## - Réalise un audit de la machine.
+## 14: Réalise un audit de la machine.
 if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	FILE_AUDIT=/tmp/hardinfo.txt
@@ -736,7 +746,7 @@ echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
 
-## - Récupere les logs journaliers.
+## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
 displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
@@ -763,7 +773,7 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	sleep 3
 fi
 
-## - Supprime tous les logiciels dont la license n'est pas libre.
+## 16: Supprime tous les logiciels dont la license n'est pas libre.
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
 displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
 	echo ""
@@ -791,7 +801,7 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	fi
 fi
 
-## - Installation des logiciels propriétaires par défaut.
+## 17: Installation des logiciels propriétaires par défaut.
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
@@ -812,7 +822,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
-## - Installation du navigateur Firefox.
+## 18: Installation du navigateur Firefox.
 if [[ $GUI == *"Firefox"* ]]; then
 displayTitle "Firefox" "Installation du navigateur Firefox."
 	if zenity --question --text="Souhaitez-vous installer le Flash-Player ?" &>/dev/null; then
@@ -832,7 +842,7 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 	fi
 fi
 
-## - Installation du la suite bureatique LibreOffice.
+## 19: Installation du la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
@@ -843,7 +853,7 @@ displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
 	echo ""
 fi
 
-## - Installation du lecteur multimedia VLC.
+## 20: Installation du lecteur multimedia VLC.
 if [[ $GUI == *"VLC"* ]]; then
 displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
@@ -854,7 +864,7 @@ displayTitle "VLC" "Installation du lecteur multimedia VLC."
 	echo ""
 fi
 
-## - Installe ADB, outil pour téléphones sous Android.
+## 21: Installe ADB, outil pour téléphones sous Android.
 if [[ $GUI == *"ADB"* ]]; then
 displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
@@ -865,7 +875,7 @@ displayTitle "ADB" "Installe ADB, outil pour téléphones sous Android."
 	echo ""
 fi
 
-## - Remplace l'explorateur par défaut pour Nautilus.
+## 22: Remplace l'explorateur par défaut pour Nautilus.
 if [[ $GUI == *"Nautilus"* ]]; then
 displayTitle "Nautilus" "Remplace l'explorateur par défaut pour Nautilus."
 	echo ""
@@ -877,7 +887,7 @@ displayTitle "Nautilus" "Remplace l'explorateur par défaut pour Nautilus."
 	echo ""
 fi
 
-## - Installe AdobeAIR, outil moteur logiciel d'Adobe.
+## 23: Installe AdobeAIR, outil moteur logiciel d'Adobe.
 if [[ $GUI == *"AdobeAIR"* ]]; then
 displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
@@ -914,7 +924,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
 fi
 
-## - Installe le controller avancé audio.
+## 24: Installe le controller avancé audio.
 if [[ $GUI == *"PavuControl"* ]]; then
 displayTitle "PavuControl" "Installe le controller avancé audio."
 	echo ""
@@ -925,10 +935,10 @@ displayTitle "PavuControl" "Installe le controller avancé audio."
 	echo ""
 fi
 
-## - Installe l'application pour regarder la télévision. (arch: 64bits seulement)
+## 25: Installe l'application pour regarder la télévision. (arch: 64bits seulement)
 if [[ $GUI == *"Molotov"* ]]; then
 displayTitle "Molotov" "Installe l'application pour regarder la télévision."
-	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.4.2/molotov"
+	APP_URL="https://desktop-auto-upgrade.s3.amazonaws.com/linux/1.8.0/molotov"
 	APP_IMG="https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/icones/molotov-icone.jpg"
 	APP_PATH=/usr/share/molotov
 	echo ""
@@ -963,18 +973,6 @@ Categories=AudioVideo;
 EOF
 	echo ""
 	echo "> Installation Molotov terminé"
-	echo ""
-fi
-
-## - Installe le clavier AZERTY
-if [[ $GUI == *"Clavier FR sur TTY"* ]]; then
-displayTitle "Clavier FR sur TTY" "Permet de d'activer le clavier francais sur les TTY console."
-	echo ""
-	CHECK_SERVICE apt-get
-	TEST_SUDO; sudo apt install -y console-setup console-data; ERROR
-	#TEST_SUDO; sudo dpkg-reconfigure console-setup; ERROR
-	echo ""
-	echo "> Configuration Clavier FR terminé"
 	echo ""
 fi
 
