@@ -32,7 +32,7 @@ D'autres fonctionnalités vont apparaître au fur a mesure que les retours se fe
 ## Comment l'utiliser ponctuellement : 
 Ouvrez un terminal, et : 
 ```
-bash <(wget -O- https://frama.link/deepin-tools)
+bash -c "$(wget -qO- https://frama.link/deepin-tools)"
 ```
 
 ## Comment l'installer pour l'avoir toujours de côté :
