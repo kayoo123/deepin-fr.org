@@ -32,7 +32,7 @@ D'autres fonctionnalités vont apparaître au fur a mesure que les retours se fe
 ## Comment l'utiliser ponctuellement : 
 Ouvrez un terminal, et : 
 ```
-bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
+bash <(wget -O- https://frama.link/deepin-tools)
 ```
 
 ## Comment l'installer pour l'avoir toujours de côté :
