@@ -446,8 +446,8 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR # Supression des dépendances inutilisées
 	echo ""
 	echo -e "${blanc}-- Supression des configurations logiciels désinstallées:${fin}"
-	dpkg -l | grep ^rc | awk '{print \$2}'; ERROR
-	dpkg -l | grep ^rc | awk '{print \$2}' |xargs sudo dpkg -P &> /dev/null
+	dpkg -l | grep ^rc | awk '{print $2}'; ERROR
+	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
 	echo ""
 	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
