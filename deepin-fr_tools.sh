@@ -492,7 +492,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la RAM:${fin}"
 	TEST_SUDO; sudo -v
-	TEST_SUDO; displayCommand "sudo sysctl -w vm.drop_caches=3 &> /dev/null"; ERROR
+	TEST_SUDO; sudo sysctl -w vm.drop_caches=3 &> /dev/null; ERROR
 	displayCommand "free -h"
 	echo ""
 echo ""
