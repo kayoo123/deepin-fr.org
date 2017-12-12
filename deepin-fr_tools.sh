@@ -418,7 +418,7 @@ displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des d
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; displayCommand "sudo apt update"; ERROR
+	TEST_SUDO; displayCommand "sudo apt update"
 	echo ""
 	echo -e "${blanc}-- Mise a jour de vos paquets:${fin}"
 	TEST_SUDO; displayCommand "sudo apt -y dist-upgrade"; ERROR
@@ -440,7 +440,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
-	TEST_SUDO; displayCommand "sudo apt update"; ERROR # cache
+	TEST_SUDO; displayCommand "sudo apt update" # cache
 	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoclean"; ERROR # Suppression des archives périmées
 	TEST_SUDO; displayCommand "sudo apt -y --force-yes clean"; ERROR # Supressions des paquets en cache
 	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR # Supression des dépendances inutilisées
