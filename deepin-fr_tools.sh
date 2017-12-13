@@ -809,6 +809,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
 	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410; ERROR
 	TEST_SUDO; sudo apt-get update 
 	TEST_SUDO; sudo apt-get install -y --allow-unauthenticated google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee; ERROR
 	echo "- GOOGLE-CHROME (Navigateur)"
