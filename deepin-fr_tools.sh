@@ -3,7 +3,7 @@
 # DESC : Boite-a-outils Deepin-FR
 # Vers : 6.2
 # Date : 07/12/2017
-# Auth : Kayoo (http://forum.deepin-fr.org/)
+# Auth : Kayoo (https://deepin-fr.org/u/kayoo)
 #
 # Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
 # Information : https://github.com/kayoo123/deepin-fr.org
@@ -106,7 +106,7 @@ function ERROR {
 	displayError "/!\\ Une erreur a été détecté !"
     	echo ""
     	echo "Une erreur est intervenu dans le script, merci de le signaler directement sur notre forum :"
-    	echo -e "=> ${blanc}http://forum.deepin-fr.org${fin}"
+    	echo -e "=> ${blanc}https://deepin-fr.org${fin}"
 	zenity --error --width=400 --title="Une erreur a été détecté !" --text "Nous sommes au regret de vous informer qu'une erreur est intervenu dans le script. \nMerci de le signaler directement sur notre forum." &> /dev/null
     	echo ""
     	pkill -9 zenity
@@ -190,7 +190,7 @@ echo "version: $VERSION"
 if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}mode: DEV${fin}"; fi
 echo ""
 echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
-echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}http://deepin-fr.org${fin}"
+echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}https://deepin-fr.org${fin}"
 echo ""
 echo "- Noyaux: $(uname -r)"
 echo "- OS : $(source /etc/lsb-release; echo $DISTRIB_DESCRIPTION)"
