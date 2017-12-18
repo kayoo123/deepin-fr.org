@@ -14,7 +14,6 @@ sleep 1
 #                                       			       
 # ██████╗ ███████╗███████╗██████╗ ██╗███╗   ██╗      ███████╗██████╗   
 # ██╔══██╗██╔════╝██╔════╝██╔══██╗██║████╗  ██║      ██╔════╝██╔══██╗  
-# ██║  ██║█████╗  █████╗  ██████╔╝██║██╔██╗ ██║█████╗█████╗  ██████╔╝  
 # ██║  ██║██╔══╝  ██╔══╝  ██╔═══╝ ██║██║╚██╗██║╚════╝██╔══╝  ██╔══██╗  
 # ██████╔╝███████╗███████╗██║     ██║██║ ╚████║      ██║     ██║  ██║  
 # ╚═════╝ ╚══════╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═══╝      ╚═╝     ╚═╝  ╚═╝  
@@ -195,7 +194,7 @@ echo ""
 echo "- Noyaux: $(uname -r)"
 echo "- OS : $(source /etc/lsb-release; echo $DISTRIB_DESCRIPTION)"
 echo "- Arch : $(uname -m)"
-echo "- Depot: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq)"
+echo "- Miroir: $(cat /etc/apt/sources.list |grep deb |grep -v ^#| awk '{ print $3 }'| uniq)"
 echo ""
 
 # Zenity MENU
@@ -229,11 +228,11 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Dépot deepin-fr" "Remplace le dépot de votre systeme par notre depot FRANCE." \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
-	FALSE "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage." \
+	FALSE "Mise-à-jour Systeme" "Met a jour le systeme, avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
 	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
-	FALSE "Verr.Num au boot" "Activation de la touche \"Verouillage Numérique\" au démarrage."\
+	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
@@ -249,10 +248,10 @@ GUI=$(zenity --list --checklist \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre." \
+	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la licence n'est pas libre." \
 	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
-	FALSE "LibreOffice" "Installation du la suite bureatique LibreOffice." \
+	FALSE "LibreOffice" "Installation de la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
@@ -278,7 +277,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
 	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
-	FALSE "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
+	FALSE "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
 	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
 	--separator=', ' 2>/dev/null) \
@@ -296,7 +295,7 @@ GUI=$(zenity --list --checklist \
 	--column=Actions \
 	--column=Description \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
-	FALSE "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format." \
+	FALSE "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers au bon format." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -325,8 +324,8 @@ displayTitle "Installation Deepin-tools" "Installation et mise-à-jour de l'outi
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Deepin-tools
-Name[fr_FR.UTF-8]=Deepin-tools
+Name="Deepin Tools"
+Name[fr_FR.UTF-8]="Deepin Tools"
 Comment="Outils aide deepin-fr.org"
 Path=/usr/share/deepin-tools
 Exec=/usr/share/deepin-tools/deepin-fr_tools.sh
@@ -352,7 +351,7 @@ EOF
     echo "alias deepin-tools=/usr/share/deepin-tools/deepin-fr_tools.sh " >> $ENV_USER
     echo "alias deepin-tools-dev=\"bash <(wget --dns-cache=off https://raw.githubusercontent.com/kayoo123/deepin-fr.org/dev/deepin-fr_tools.sh -O -)\" " >> $ENV_USER
 	echo "> Alias pour le terminal généré avec succès."
-	echo "> Acessible depuis la commande \"deepin-tools\""
+	echo "> Accessible depuis la commande \"deepin-tools\""
 echo ""
 echo -e "=> L'outil \"deepin-tools\" a été installé avec ${vert}SUCCES${fin}."    
 fi
@@ -411,10 +410,10 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## 5: Met a jour du systeme avec correction des dépendances et nettoyage.
+## 5: Met a jour le systeme, avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
 export DEBIAN_FRONTEND=noninteractive  
-displayTitle "Mise-à-jour Systeme" "Met a jour du systeme avec correction des dépendances et nettoyage."
+displayTitle "Mise-à-jour Systeme" "Met a jour le systeme, avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
@@ -606,9 +605,9 @@ echo ""
 echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## 10: Assistant permettant d'afficher par taille les repertoires et fichiers de sa home.
-if [[ $GUI == *"Visualiser son repertoire perso"* ]]; then
-displayTitle "Visualiser son repertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
+## 10: Assistant permettant d'afficher par taille les répertoires et fichiers de sa home.
+if [[ $GUI == *"Visualiser son répertoire perso"* ]]; then
+displayTitle "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
 	echo ""
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
@@ -628,9 +627,9 @@ echo ""
 echo -e "=> L'assistant de visualisation s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## 11: Telechargement de 10 wallpapers au bon format.
+## 11: Téléchargement de 10 wallpapers au bon format.
 if [[ $GUI == *"Fond écran InterfaceLIFT.com"* ]]; then
-displayTitle "Fond écran InterfaceLIFT.com" "Telechargement de 10 wallpapers au bon format."
+displayTitle "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers au bon format."
 	RESOLUTION=$(xrandr --verbose|grep "*current" |awk '{ print $1 }' |head -1)
 	DIR=$HOME/Images/Wallpapers
 	URL_WALLPAPER=http://interfacelift.com/wallpaper/downloads/random/hdtv/$RESOLUTION/
@@ -772,9 +771,9 @@ displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
 	sleep 3
 fi
 
-## 16: Supprime tous les logiciels dont la license n'est pas libre.
+## 16: Supprime tous les logiciels dont la licence n'est pas libre.
 if [[ $GUI == *"Supprimer logiciels propriétaires"* ]]; then
-displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la license n'est pas libre."
+displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la licence n'est pas libre."
 	echo ""
 	echo "Nous vous proposons de supprimer les logiciels suivants :"
 	echo "- GOOGLE-CHROME (Navigateur)"
@@ -842,9 +841,9 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 	fi
 fi
 
-## 19: Installation du la suite bureatique LibreOffice.
+## 19: Installation de la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
-displayTitle "LibreOffice" "Installation du la suite bureatique LibreOffice."
+displayTitle "LibreOffice" "Installation de la suite bureatique LibreOffice."
 	echo ""
 	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr; ERROR
