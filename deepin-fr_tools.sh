@@ -324,8 +324,8 @@ displayTitle "Installation Deepin-tools" "Installation et mise-à-jour de l'outi
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name='Deepin Tools'
-Name[fr_FR.UTF-8]='Deepin Tools'
+Name=Deepin Tools
+Name[fr_FR.UTF-8]=Deepin Tools
 Comment="Outils aide deepin-fr.org"
 Path=/usr/share/deepin-tools
 Exec=/usr/share/deepin-tools/deepin-fr_tools.sh
