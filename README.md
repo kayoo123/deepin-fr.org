@@ -2,10 +2,10 @@
 Plateforme de scripts pour la communauté "Deepin-fr.org".
 
 Vous trouverez ici, les sources nécessaires à l'utilisation de l'outil "Deepin-tools".
-Ces scripts sont produits dans le cadre d'une assistance sur http://deepin-fr.org
+Ces scripts sont produits dans le cadre d'une assistance sur https://deepin-fr.org
 
 Pour toute question, n'hésitez pas :
-- Kayoo (http://forum.deepin-fr.org/index.php?p=/profile/6/kayoo)
+- Kayoo (https://deepin-fr.org/u/Kayoo)
 
 
 ## Faisons une petite présentation de l'outil : Deepin-tools
@@ -32,7 +32,7 @@ D'autres fonctionnalités vont apparaître au fur a mesure que les retours se fe
 ## Comment l'utiliser ponctuellement : 
 Ouvrez un terminal, et : 
 ```
-bash -c "$(wget -qO- https://frama.link/deepin-tools)"
+bash -c "$(wget -qO- https://deepin-fr.org/deepin-tools)"
 ```
 
 ## Comment l'installer pour l'avoir toujours de côté :
