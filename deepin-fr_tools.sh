@@ -251,6 +251,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "Supprimer logiciels propriétaires" "Supprime tous les logiciels dont la licence n'est pas libre." \
 	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
+	FALSE "Thunderbird" "Installation du client Mail." \
 	FALSE "LibreOffice" "Installation de la suite bureatique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
@@ -839,6 +840,17 @@ displayTitle "Firefox" "Installation du navigateur Firefox."
 		echo "> Installation Firefox terminé"
 		echo ""
 	fi
+fi
+
+## Installation du client Mail.
+if [[ $GUI == *"Thunderbird"* ]]; then
+displayTitle "Thunderbird" "Installation du client Mail."
+	echo ""
+	CHECK_SERVICE apt-get
+	TEST_SUDO; sudo apt-get install -y thunderbird thunderbird-locale-fr; ERROR
+	echo ""
+	echo "> Installation Thunderbird terminé"
+	echo ""
 fi
 
 ## 19: Installation de la suite bureatique LibreOffice.
