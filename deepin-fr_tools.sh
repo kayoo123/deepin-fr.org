@@ -217,6 +217,8 @@ Il se compose en multiples catégories :
 Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
 
 # Zenity SYSTEME
+#	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
+#	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
 if [[ $CHOICE == "Systeme" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
@@ -230,8 +232,6 @@ GUI=$(zenity --list --checklist \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
 	FALSE "Mise-à-jour Systeme" "Met a jour le systeme, avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
-#	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
-#	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."\
 	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
 	--separator=', ' 2>/dev/null) \
