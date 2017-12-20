@@ -5,8 +5,8 @@
 # Date : 07/12/2017
 # Auth : Kayoo (https://deepin-fr.org/u/kayoo)
 #
-# Utilisation : bash <(wget https://raw.githubusercontent.com/kayoo123/deepin-fr.org/master/deepin-fr_tools.sh -O -)
-# Information : https://github.com/kayoo123/deepin-fr.org
+# Utilisation : bash -c "$(wget -qO- https://deepin-fr.org/deepin-tools)"
+# Information : https://deepin-fr.org/d/62-deepin-tools ou https://github.com/kayoo123/deepin-fr.org
 ###############
 sleep 1
 # set -xv
@@ -324,8 +324,8 @@ displayTitle "Installation Deepin-tools" "Installation et mise-à-jour de l'outi
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name="Deepin Tools"
-Name[fr_FR.UTF-8]="Deepin Tools"
+Name='Deepin Tools'
+Name[fr_FR.UTF-8]='Deepin Tools'
 Comment="Outils aide deepin-fr.org"
 Path=/usr/share/deepin-tools
 Exec=/usr/share/deepin-tools/deepin-fr_tools.sh
