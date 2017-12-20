@@ -10,7 +10,8 @@ Pour toute question, n'hésitez pas :
 
 ## Faisons une petite présentation de l'outil : Deepin-tools
 Comme une image vaut toujours mieux qu'un long discours, voici la bête : 
-![alt tag](https://deepin-fr.org/assets/files/2017-12-05/1512515876-0-l9luw37oj943.png)
+![img1]
+(https://deepin-fr.org/assets/files/2017-12-05/1512515876-0-l9luw37oj943.png)
 
 Comme vous le voyez, un simple choix permet d'automatiser certaines taches, comme par exemple : 
 - Gestion du dépôt 
@@ -45,7 +46,8 @@ C'est tout bête a vrai dire.... alors, suivez le guide :
 Félicitations, vous avez terminé ! 
 
 À présent, vous trouverez depuis votre “**lanceur**”, l'application “**deepin-tools**” 
-![alt tag](https://deepin-fr.org/assets/files/2017-12-05/1512516442-0-tlmmpsfixsud.gif)
+![img2]
+(https://deepin-fr.org/assets/files/2017-12-05/1512516442-0-tlmmpsfixsud.gif)
 
 Si vous êtes du genre a utiliser souvent le terminal, un alias est mise-à-votre disposition :
 ```
