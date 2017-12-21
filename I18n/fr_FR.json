@@ -1,0 +1,22 @@
+#
+# Fichier JSON pour prise en cahrge de la langue FRANCAISE
+#
+{
+"HOMEPAGE": {
+    "TITLE": "DEEPIN-TOOLS",
+    "VERSION": "version",
+    "CONTENT": "blabla",
+    "KERNEL": "Noyaux",
+    "MENU": {
+        "SYSTEM": "Systeme",
+        "CHOICE_1": { 
+            "ACTION": "Dépot deepin-fr",
+            "DESCRIPTION": "Remplace le dépot de votre systeme par notre depot FRANCE."
+        },
+        "CHOICE_2": { 
+            "ACTION": "Dépot original",
+            "DESCRIPTION": "Remplace votre dépot par l'officiel (serveur en Chine)."
+        }
+    }
+}
+}
