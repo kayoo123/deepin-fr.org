@@ -1001,22 +1001,24 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	echo ""
 	VARS=$(zenity --list --radiolist \
 		--text="Que souhaitez-vous faire ?" \
+		--height 230 \
+		--width 300 \
 		--column ""\
-		--column ""\
+		--column "Periodicité:"\
 		TRUE "Desactivation du changement périodique."\
 		FALSE "Changement toutes les 5 minutes."\
 		FALSE "Changement toutes les 30 minutes."\
 		FALSE "Changement toutes les heures."\
 		FALSE "Changement toutes les 6 heures."\
-		&>/dev/null)
+		--separator=', ' 2>/dev/null ||exit 1) 
 	echo ""
-	echo ">> $VARS"
+	echo ">> ${VARS}"
 	echo ""
-	[[ "$VARS" = "Changement toutes les 5 minutes." ]] && FREQ_M='*/5'
-	[[ "$VARS" = "Changement toutes les 30 minutes." ]] && FREQ_M='*/30'
-	[[ "$VARS" = "Changement toutes les heures." ]] && FREQ_M='0'
-	[[ "$VARS" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
-	if [[ "$VARS" = "Desactivation du changement périodique." ]]; then 
+	[[ "${VARS}" = "Changement toutes les 5 minutes." ]] && FREQ_M='*/5'
+	[[ "${VARS}" = "Changement toutes les 30 minutes." ]] && FREQ_M='*/30'
+	[[ "${VARS}" = "Changement toutes les heures." ]] && FREQ_M='0'
+	[[ "${VARS}" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
+	if [[ "${VARS}" = "Desactivation du changement périodique." ]]; then 
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
 	else 
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
@@ -1027,6 +1029,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	echo "Configuration terminé"
 	sleep 1		
 fi
+
 
 
 ## [FIN] fenetre de chargement...
