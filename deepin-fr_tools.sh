@@ -735,13 +735,20 @@ displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 		echo -e "${blanc}-- Envoie du rapport en ligne :${fin}"
 		echo ""
 		TEST_BIN pastebinit; ERROR
+		TEST_BIN xclip; ERROR
 		echo Le lien va être généré...Merci de le conserver:
 		echo ""
-		pastebinit -P -i $FILE_AUDIT; ERROR
+		URL=$(pastebinit -P -i $FILE_AUDIT); ERROR
 		rm -f $FILE_AUDIT; ERROR
+		echo "==="
+		echo $URL
+		echo "==="
+		echo $URL |xclip -i
+		echo $URL |xclip -selection c
 		echo ""
 		echo " - Votre fichier n'est accessible qu'à partir du lien ci-dessus."
 		echo " - Votre fichier restera disponible pendant 7 jours."
+		zenity --info --width=400 --title="Rapport en ligne" --text "Le lien $URL a été copié dans votre presse-papier, vous pouvez coller ce lien dans votre navigateur et/ou nous transmettre l'URL directement." &> /dev/null
 		echo ""
 		sleep 3
 echo ""
@@ -753,6 +760,7 @@ echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
 echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
+
 
 ## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
