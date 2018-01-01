@@ -1046,6 +1046,17 @@ pkill zenity; sleep 1; pkill -9 zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
-zenity --info --width=400 --title="Et voilà !" --text "C'est a présent terminé. \nToutes les tâches ont été effectuées avec succès !" &> /dev/null 
+if zenity --question --title="Et voilà !" --text "C'est a présent terminé. \nToutes les tâches ont été effectuées avec succès ! Souhaitez-vous relancer l'outil ?" &> /dev/null; then
+		echo ""
+		echo ">> Et nous voilà repartis pour un tour..."
+		echo ""
+		rmdir /home/jeremi/deepin-fr_tools.sh.lock &>/dev/null
+		/usr/share/deepin-tools/deepin-fr_tools.sh
+else
+  		echo ""
+		echo ">> FIN"
+		echo ""
+		notify-send -i dialog-ok "Merci" "Merci d'avoir utilisé deepin-tools. A très bientôt..." -t 5000
+fi
 )
 exit 0
