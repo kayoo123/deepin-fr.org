@@ -1009,6 +1009,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	echo ""
 	sleep 1
 	VARS=$(zenity --list --radiolist \
+		--title="Changement fond écran automatique" \
 		--text="Que souhaitez-vous faire ?" \
 		--height 230 \
 		--width 300 \
@@ -1029,7 +1030,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	[[ "${VARS}" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
 	if [[ "${VARS}" = "Desactivation du changement périodique." ]]; then 
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
-	else 
+	elif [ ! -z "${VARS}" ]
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
 		(crontab -l 2>/dev/null; echo "$FREQ_M $FREQ_H * * * $ENV $CMD ##deepin-tools_random-wallpaper") | crontab -
 	fi
@@ -1038,7 +1039,6 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	echo "Configuration terminé"
 	sleep 1		
 fi
-
 
 
 ## [FIN] fenetre de chargement...
