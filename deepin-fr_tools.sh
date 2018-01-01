@@ -1007,6 +1007,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	echo ""
 	echo -e "${blanc}-- Que souhaitez-vous faire ? :${fin}"
 	echo ""
+	sleep 1
 	VARS=$(zenity --list --radiolist \
 		--text="Que souhaitez-vous faire ?" \
 		--height 230 \
