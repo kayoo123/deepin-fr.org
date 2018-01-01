@@ -202,7 +202,7 @@ CHOICE=$(zenity --entry \
 		--title="DEEPIN-TOOLS" \
 		--text="\
 Plateforme de scripts pour la communauté \"Deepin-fr.org\".
-Ces scripts sont produits dans le cadre d\'une assistance sur http://deepin-fr.org
+Ces scripts sont produits dans le cadre d\'une assistance sur https://deepin-fr.org
 Prérequis :
 - Utiliser DeepinOS v15.5
 - Avoir une connexion internet
