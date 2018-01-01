@@ -96,7 +96,7 @@ function LOCK() {
               echo ''
               exit 1
         fi
-        trap 'rmdir "$LOCKDIR"' 0
+        trap 'rmdir "$LOCKDIR" 2>/dev/null' 0
 }
 
 ## Vérifie que la commande précédente s'éxécute sans erreur 
