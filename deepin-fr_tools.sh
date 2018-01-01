@@ -1030,7 +1030,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer de changer 
 	[[ "${VARS}" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
 	if [[ "${VARS}" = "Desactivation du changement périodique." ]]; then 
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
-	elif [ ! -z "${VARS}" ]
+	elif [[ ! -z "${VARS}" ]]; then
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
 		(crontab -l 2>/dev/null; echo "$FREQ_M $FREQ_H * * * $ENV $CMD ##deepin-tools_random-wallpaper") | crontab -
 	fi
