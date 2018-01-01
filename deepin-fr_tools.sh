@@ -188,7 +188,7 @@ echo -e "${bleu}  ╚═════╝ ╚══════╝╚════�
 echo "version: $VERSION"
 if [ "$MODE_DEV" == "1" ]; then echo -e "${jaune}mode: DEV${fin}"; fi
 echo ""
-echo "Nous vous proposons a travers ce script de realiser des opérations liées à votre distribution DEEPIN."
+echo "Nous vous proposons à travers ce script de réaliser des opérations liées à votre distribution DEEPIN."
 echo -e "Ce script est produit dans le cadre d'une assistance sur ${blanc}https://deepin-fr.org${fin}"
 echo ""
 echo "- Noyaux: $(uname -r)"
@@ -209,12 +209,12 @@ Prérequis :
 
 Il se compose en multiples catégories : 
 
-- Systeme:  \tPermet de gérer votre depot, mettre-a-jour et nettoyer votre distribution...
-- Packages: \tPermet d\'un simple clic d\'installer et de gerer vos paquets favoris.
+- Systeme:  \tPermet de gérer votre dépôt, mettre-à-jour et nettoyer votre distribution...
+- Packages: \tPermet d\'un simple clic d\'installer et de gérer vos paquets favoris.
 - Outils:   \tEnsemble d\'outils permettant d\'ajouter des fonctionnalités.
 - Extra:    \tActions bonus.
 
-Veuillez selectionner la categorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
+Veuillez sélectionner la catégorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
 
 # Zenity SYSTEME
 #	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
@@ -224,16 +224,16 @@ GUI=$(zenity --list --checklist \
 	--height 400 \
 	--width 700 \
 	--title="DEEPIN-TOOLS > SYSTEME" \
-	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--text "Sélectionner une ou plusieurs action(s) à exécuter." \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Dépot deepin-fr" "Remplace le dépot de votre systeme par notre depot FRANCE." \
+	FALSE "Dépot deepin-fr" "Remplace le dépot de votre système par notre dépôt FRANCE." \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
-	FALSE "Mise-à-jour Systeme" "Met a jour le systeme, avec correction des dépendances et nettoyage." \
-	FALSE "Nettoyage de printemps" "Nettoie votre systeme en profondeur." \
+	FALSE "Mise-à-jour Systeme" "Met à jour le systeme, avec correction des dépendances et nettoyage." \
+	FALSE "Nettoyage de printemps" "Nettoie votre système en profondeur." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."\
-	FALSE "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux." \
+	FALSE "Désactivation IPv6" "Permet de désactiver l'IPv6 sur toutes les interfaces réseaux." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -244,7 +244,7 @@ GUI=$(zenity --list --checklist \
 	--height 400 \
 	--width 700 \
 	--title="DEEPIN-TOOLS > PACKAGES" \
-	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--text "Sélectionner une ou plusieurs action(s) à exécuter." \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
@@ -257,7 +257,7 @@ GUI=$(zenity --list --checklist \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
-	FALSE "PavuControl" "Installe le controller avancé audio." \
+	FALSE "PavuControl" "Installe le controleur avancé audio." \
 	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
@@ -269,7 +269,7 @@ GUI=$(zenity --list --checklist \
 	--height 400 \
 	--width 700 \
 	--title="DEEPIN-TOOLS > OUTILS" \
-	--text "Sélectionner une ou plusieurs action(s) à éxécuter." \
+	--text "Sélectionner une ou plusieurs action(s) à exécuter." \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
@@ -278,9 +278,9 @@ GUI=$(zenity --list --checklist \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
 	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
-	FALSE "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home." \
+	FALSE "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les répertoires et fichiers du répertoire personnel." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
-	FALSE "Sauvegarde journaux systeme" "Récupere les logs journaliers." \
+	FALSE "Sauvegarde journaux systeme" "Récupère les logs journaliers." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -396,9 +396,9 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## 4: Remplace le dépot de votre systeme par notre depot FRANCE.
+## 4: Remplace le dépot de votre système par notre depot FRANCE.
 if [[ $GUI == *"Dépot deepin-fr"* ]]; then
-displayTitle "Dépot deepin-fr" "Remplace le dépot de votre systeme par notre depot FRANCE."
+displayTitle "Dépot deepin-fr" "Remplace le dépot de votre système par notre dépôt FRANCE."
 	echo ""
 	echo "Activation du dépot deepin-fr (FRANCE)"
 	echo "Veuillez patienter..."
@@ -415,7 +415,7 @@ fi
 ## 5: Met a jour le systeme, avec correction des dépendances et nettoyage.
 if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
 export DEBIAN_FRONTEND=noninteractive  
-displayTitle "Mise-à-jour Systeme" "Met a jour le systeme, avec correction des dépendances et nettoyage."
+displayTitle "Mise-à-jour Systeme" "Met à jour le systeme, avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
@@ -435,9 +435,9 @@ echo ""
 echo -e "=> Votre systeme a été mise-à-jour avec ${vert}SUCCES${fin}."
 fi
 
-## 6: Nettoie votre systeme en profondeur.
+## 6: Nettoie votre système en profondeur.
 if [[ $GUI == *"Nettoyage de printemps"* ]]; then
-displayTitle "Nettoyage de printemps" "Nettoie votre systeme en profondeur."
+displayTitle "Nettoyage de printemps" "Nettoie votre système en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de vos paquets archivés:${fin}"
 	CHECK_SERVICE apt-get
@@ -607,9 +607,9 @@ echo ""
 echo -e "=> Le renommage de fichiers s'est terminé avec ${vert}SUCCES${fin}."
 fi
 
-## 10: Assistant permettant d'afficher par taille les répertoires et fichiers de sa home.
+## 10: Assistant permettant d'afficher par taille les répertoires et fichiers du répertoire personnel.
 if [[ $GUI == *"Visualiser son répertoire perso"* ]]; then
-displayTitle "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers de sa home."
+displayTitle "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers du répertoire personnel."
 	echo ""
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
@@ -748,7 +748,7 @@ fi
 
 ## 15: Récupere les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
-displayTitle "Sauvegarde journaux systeme" "Récupere les logs journaliers."
+displayTitle "Sauvegarde journaux systeme" "Récupère les logs journaliers."
 	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
 	echo ""
 	echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
@@ -936,9 +936,9 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
 fi
 
-## 24: Installe le controller avancé audio.
+## 24: Installe le controleur avancé audio.
 if [[ $GUI == *"PavuControl"* ]]; then
-displayTitle "PavuControl" "Installe le controller avancé audio."
+displayTitle "PavuControl" "Installe le controleur avancé audio."
 	echo ""
 	CHECK_SERVICE apt-get
 	TEST_SUDO; sudo apt-get install -y pavucontrol; ERROR
