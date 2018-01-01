@@ -1,8 +1,8 @@
 #!/bin/bash 
 #
 # DESC : Boite-a-outils Deepin-FR
-# Vers : 6.2
-# Date : 07/12/2017
+# Vers : 6.3
+# Date : 01/01/2018
 # Auth : Kayoo (https://deepin-fr.org/u/kayoo)
 #
 # Utilisation : bash -c "$(wget -qO- https://deepin-fr.org/deepin-tools)"
@@ -21,7 +21,7 @@ sleep 1
 #######################################################################
 
 ## VERSION
-VERSION=6.2
+VERSION=6.3
 MODE_DEV=0
 
 ## COULEUR 
@@ -297,6 +297,7 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
 	FALSE "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers au bon format." \
+	FALSE "Changement fond écran automatique" "Permet de changer de changer votre fond écran périodiquement dans la journée." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -986,6 +987,47 @@ EOF
 	echo "> Installation Molotov terminé"
 	echo ""
 fi
+
+
+## Permet de changer de changer votre fond écran périodiquement dans la journée.
+if [[ $GUI == *"Changement fond écran automatique"* ]]; then
+displayTitle "Changement fond écran automatique" "Permet de changer de changer votre fond écran périodiquement dans la journée."
+	ENV='PID=$(pgrep dde-session-dae); export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-) ; GSETTINGS_BACKEND=dconf'
+	CMD='gsettings set org.gnome.desktop.background picture-uri $(readlink -f $HOME/Images/Wallpapers/* |shuf -n 1)'
+	FREQ_M='*'
+	FREQ_H='*'
+	echo ""
+	echo -e "${blanc}-- Que souhaitez-vous faire ? :${fin}"
+	echo ""
+	VARS=$(zenity --list --radiolist \
+		--text="Que souhaitez-vous faire ?" \
+		--column ""\
+		--column ""\
+		TRUE "Desactivation du changement périodique."\
+		FALSE "Changement toutes les 5 minutes."\
+		FALSE "Changement toutes les 30 minutes."\
+		FALSE "Changement toutes les heures."\
+		FALSE "Changement toutes les 6 heures."\
+		&>/dev/null)
+	echo ""
+	echo ">> $VARS"
+	echo ""
+	[[ "$VARS" = "Changement toutes les 5 minutes." ]] && FREQ_M='*/5'
+	[[ "$VARS" = "Changement toutes les 30 minutes." ]] && FREQ_M='*/30'
+	[[ "$VARS" = "Changement toutes les heures." ]] && FREQ_M='0'
+	[[ "$VARS" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
+	if [[ "$VARS" = "Desactivation du changement périodique." ]]; then 
+		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
+	else 
+		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
+		(crontab -l 2>/dev/null; echo "$FREQ_M $FREQ_H * * * $ENV $CMD ##deepin-tools_random-wallpaper") | crontab -
+	fi
+	echo ""
+	notify-send -i package "Notice:" "Configuration terminé." -t 10000
+	echo "Configuration terminé"
+	sleep 1		
+fi
+
 
 ## [FIN] fenetre de chargement...
 pkill zenity; sleep 1; pkill -9 zenity
