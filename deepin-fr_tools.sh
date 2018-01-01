@@ -603,9 +603,9 @@ displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide 
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
 	TEST_BIN pyrenamer; ERROR
-	TEST_SUDO; displayCommand "sudo rm -f /usr/share/applications/XRCed.desktop &> /dev/null"
-	TEST_SUDO; displayCommand "sudo rm -f /usr/share/applications/PyCrust.desktop &> /dev/null"
-	TEST_SUDO; displayCommand "sudo rm -f /usr/share/applications/pyrenamer.desktop &> /dev/null"
+	TEST_SUDO; sudo rm -f /usr/share/applications/XRCed.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/PyCrust.desktop &> /dev/null
+	TEST_SUDO; sudo rm -f /usr/share/applications/pyrenamer.desktop &> /dev/null
 	echo ""
 	echo -e "${blanc}-- Lancement de l'assistant:${fin}"
 	echo ""
