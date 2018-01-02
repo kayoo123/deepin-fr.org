@@ -1058,7 +1058,7 @@ if zenity --question --title="Et voilà !" --text "C'est à présent terminé. \
 		echo ""
 		echo ">> Et nous voilà repartis pour un tour..."
 		echo ""
-		rmdir /home/jeremi/deepin-fr_tools.sh.lock &>/dev/null
+		rmdir "$LOCKDIR" &>/dev/null
 		/usr/share/deepin-tools/deepin-fr_tools.sh
 else
   		echo ""
