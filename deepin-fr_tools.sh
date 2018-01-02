@@ -91,7 +91,7 @@ function LOCK() {
         LOCKDIR="$HOME/$(basename $0).lock"
         if ! mkdir $LOCKDIR 2>/dev/null; then
               displayError "Un script \"$(basename $0)\" est actuellement en cours..."
-              echo "Si ce n'est pas le cas, verifier/supprimer la presence du repertoire de \".lock\""
+              echo "Si ce n'est pas le cas, vérifier/supprimer la presence du répertoire de \".lock\""
               echo "=> rmdir $LOCKDIR"
               echo ''
               exit 1
@@ -214,12 +214,12 @@ Il se compose en multiples catégories :
 - Outils:   \tEnsemble d\'outils permettant d\'ajouter des fonctionnalités.
 - Extra:    \tActions bonus.
 
-Veuillez sélectionner la catégorie de votre choix:" Systeme Packages Outils Extra 2>/dev/null ||exit 1)
+Veuillez sélectionner la catégorie de votre choix:" Système Packages Outils Extra 2>/dev/null ||exit 1)
 
 # Zenity SYSTEME
 #	FALSE "Désactiver sons démarrage" "Permet de rendre silencieux l'ouverture de session." \
 #	FALSE "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session." \
-if [[ $CHOICE == "Systeme" ]]; then
+if [[ $CHOICE == "Système" ]]; then
 GUI=$(zenity --list --checklist \
 	--height 400 \
 	--width 700 \
@@ -252,12 +252,12 @@ GUI=$(zenity --list --checklist \
 	FALSE "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut." \
 	FALSE "Firefox" "Installation du navigateur Firefox." \
 	FALSE "Thunderbird" "Installation du client Mail." \
-	FALSE "LibreOffice" "Installation de la suite bureatique LibreOffice." \
+	FALSE "LibreOffice" "Installation de la suite bureautique LibreOffice." \
 	FALSE "VLC" "Installation du lecteur multimedia VLC." \
 	FALSE "ADB" "Installe ADB, outil pour téléphones sous Android." \
 	FALSE "Nautilus" "Remplace l'explorateur par défaut pour Nautilus." \
 	FALSE "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe." \
-	FALSE "PavuControl" "Installe le controleur avancé audio." \
+	FALSE "PavuControl" "Installe le contrôleur avancé audio." \
 	FALSE "Molotov" "Installe l'application pour regarder la télévision." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
@@ -277,10 +277,10 @@ GUI=$(zenity --list --checklist \
 	FALSE "Suppression Deepin-tools" "Suppression de l'outil deepin-tools...U_U" \
 	FALSE "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci." \
 	FALSE "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier." \
-	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot." \
+	FALSE "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichiers par lot." \
 	FALSE "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les répertoires et fichiers du répertoire personnel." \
 	FALSE "Génération d'un rapport" "Réalise un audit de la machine." \
-	FALSE "Sauvegarde journaux systeme" "Récupère les logs journaliers." \
+	FALSE "Sauvegarde journaux système" "Récupère les logs journaliers." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -297,7 +297,7 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
 	FALSE "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers au bon format." \
-	FALSE "Changement fond écran automatique" "Permet de changer de changer votre fond écran périodiquement dans la journée." \
+	FALSE "Changement fond écran automatique" "Permet de changer votre fond écran périodiquement dans la journée." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -598,7 +598,7 @@ fi
 
 ## 10: Permet de lancer un outil d'aide au renommage de fichier par lot.
 if [[ $GUI == *"Renommer en masse des fichiers"* ]]; then
-displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichier par lot."
+displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichiers par lot."
 	echo ""
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
@@ -763,11 +763,11 @@ fi
 
 
 ## 15: Récupere les logs journaliers.
-if [[ $GUI == *"Sauvegarde journaux systeme"* ]]; then
-displayTitle "Sauvegarde journaux systeme" "Récupère les logs journaliers."
+if [[ $GUI == *"Sauvegarde journaux système"* ]]; then
+displayTitle "Sauvegarde journaux système" "Récupère les logs journaliers."
 	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
 	echo ""
-	echo "Nous allons sauvegarder tous les journaux systeme à la date d'aujourd'hui."
+	echo "Nous allons sauvegarder tous les journaux système à la date d'aujourd'hui."
 	echo " -  $(date +'%A %d %B')"; ERROR
 	sleep 2
 	echo ""
@@ -872,7 +872,7 @@ fi
 
 ## 19: Installation de la suite bureatique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
-displayTitle "LibreOffice" "Installation de la suite bureatique LibreOffice."
+displayTitle "LibreOffice" "Installation de la suite bureautique LibreOffice."
 	echo ""
 	CHECK_SERVICE apt-get
 	TEST_SUDO; displayCommand "sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr"; ERROR
@@ -954,7 +954,7 @@ fi
 
 ## 24: Installe le controleur avancé audio.
 if [[ $GUI == *"PavuControl"* ]]; then
-displayTitle "PavuControl" "Installe le controleur avancé audio."
+displayTitle "PavuControl" "Installe le contrôleur avancé audio."
 	echo ""
 	CHECK_SERVICE apt-get
 	TEST_SUDO; displayCommand "sudo apt-get install -y pavucontrol"; ERROR
@@ -1005,9 +1005,9 @@ EOF
 fi
 
 
-## Permet de changer de changer votre fond écran périodiquement dans la journée.
+## Permet de changer votre fond écran périodiquement dans la journée.
 if [[ $GUI == *"Changement fond écran automatique"* ]]; then
-displayTitle "Changement fond écran automatique" "Permet de changer de changer votre fond écran périodiquement dans la journée."
+displayTitle "Changement fond écran automatique" "Permet de changer votre fond écran périodiquement dans la journée."
 	ENV='PID=$(pgrep dde-session-dae); export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-) ; GSETTINGS_BACKEND=dconf'
 	CMD='gsettings set org.gnome.desktop.background picture-uri $(readlink -f $HOME/Images/Wallpapers/* |shuf -n 1)'
 	FREQ_M='*'
