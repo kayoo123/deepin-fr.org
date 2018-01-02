@@ -230,7 +230,7 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Dépot deepin-fr" "Remplace le dépot de votre système par notre dépôt FRANCE." \
 	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
-	FALSE "Mise-à-jour Systeme" "Met à jour le systeme, avec correction des dépendances et nettoyage." \
+	FALSE "Mise-à-jour Système" "Met à jour le systeme, avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre système en profondeur." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."\
 	FALSE "Désactivation IPv6" "Permet de désactiver l'IPv6 sur toutes les interfaces réseaux." \
@@ -418,10 +418,10 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## 5: Met à jour le systeme, avec correction des dépendances et nettoyage.
-if [[ $GUI == *"Mise-à-jour Systeme"* ]]; then
+## 5: Met à jour le système, avec correction des dépendances et nettoyage.
+if [[ $GUI == *"Mise-à-jour Système"* ]]; then
 export DEBIAN_FRONTEND=noninteractive  
-displayTitle "Mise-à-jour Systeme" "Met à jour le systeme, avec correction des dépendances et nettoyage."
+displayTitle "Mise-à-jour Système" "Met à jour le système, avec correction des dépendances et nettoyage."
 	echo ""
 	echo -e "${blanc}-- Mise a jour de votre cache:${fin}"
 	CHECK_SERVICE apt-get
@@ -694,8 +694,8 @@ echo -e "Les sons systemes de session ont été activés avec ${vert}SUCCES${fin
 fi
 
 ## 14: Permet de désactiver l'IP v6 sur toutes les interfaces réseaux.
-if [[ $GUI == *"Desactivation IPv6"* ]]; then
-displayTitle "Desactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
+if [[ $GUI == *"Désactivation IPv6"* ]]; then
+displayTitle "Désactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les interfaces réseaux."
 	FILECONF_DISABLE_IPV6=/etc/sysctl.d/98-disable_ipv6.conf
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo env FILECONF_DISABLE_IPV6=$FILECONF_DISABLE_IPV6 sh -c 'echo "## Genere par deepin-tools:" > $FILECONF_DISABLE_IPV6'
