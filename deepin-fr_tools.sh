@@ -91,7 +91,7 @@ function LOCK() {
         LOCKDIR="$HOME/$(basename $0).lock"
         if ! mkdir $LOCKDIR 2>/dev/null; then
               displayError "Un script \"$(basename $0)\" est actuellement en cours..."
-              echo "Si ce n'est pas le cas, vérifier/supprimer la presence du répertoire de \".lock\""
+              echo "Si ce n'est pas le cas, vérifier/supprimer la présence du répertoire de \".lock\""
               echo "=> rmdir $LOCKDIR"
               echo ''
               exit 1
