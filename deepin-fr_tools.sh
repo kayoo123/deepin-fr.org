@@ -708,7 +708,7 @@ displayTitle "Désactivation IPv6" "Permet de désactiver l'IP v6 sur toutes les
 	TEST_SUDO; displayCommand "sudo sysctl -p $FILECONF_DISABLE_IPV6"
 	sleep 1
 echo ""
-echo -e " Vous venez de desactiver la configuration IPv6 avec ${vert}SUCCES${fin}."
+echo -e " Vous venez de désactiver la configuration IPv6 avec ${vert}SUCCES${fin}."
 fi
 
 ## 14: Réalise un audit de la machine.
