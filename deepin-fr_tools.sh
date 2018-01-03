@@ -209,7 +209,7 @@ Prérequis :
 
 Il se compose en multiples catégories : 
 
-- Systeme:  \tPermet de gérer votre dépôt, mettre-à-jour et nettoyer votre distribution...
+- Système:  \tPermet de gérer votre dépôt, mettre-à-jour et nettoyer votre distribution...
 - Packages: \tPermet d\'un simple clic d\'installer et de gérer vos paquets favoris.
 - Outils:   \tEnsemble d\'outils permettant d\'ajouter des fonctionnalités.
 - Extra:    \tActions bonus.
@@ -228,8 +228,8 @@ GUI=$(zenity --list --checklist \
 	--column=Cochez \
 	--column=Actions \
 	--column=Description \
-	FALSE "Dépot deepin-fr" "Remplace le dépot de votre système par notre dépôt FRANCE." \
-	FALSE "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)." \
+	FALSE "Dépôt deepin-fr" "Remplace le dépôt de votre système par notre dépôt FRANCE." \
+	FALSE "Dépôt original" "Remplace votre dépôt par l'officiel (serveur en Chine)." \
 	FALSE "Mise-à-jour Système" "Met à jour le systeme, avec correction des dépendances et nettoyage." \
 	FALSE "Nettoyage de printemps" "Nettoie votre système en profondeur." \
 	FALSE "Verr.Num au boot" "Activation de la touche \"Verrouillage Numérique\" au démarrage."\
@@ -384,9 +384,9 @@ echo ""
 echo -e "=> L'outil \"deepin-tools\" a été désinstallé avec ${vert}SUCCES${fin}. U_U"
 fi
 
-## 3: Remplace votre dépot par l'officiel (serveur en Chine)
-if [[ $GUI == *"Dépot original"* ]]; then
-displayTitle "Dépot original" "Remplace votre dépot par l'officiel (serveur en Chine)."
+## 3: Remplace votre dépôt par l'officiel (serveur en Chine)
+if [[ $GUI == *"dépôt original"* ]]; then
+displayTitle "dépôt original" "Remplace votre dépôt par l'officiel (serveur en Chine)."
 	echo ""
 	echo "Retour sur le dépot original (sans modification)"
 	echo "Veuillez patienter..."
@@ -401,9 +401,9 @@ echo ""
 echo -e "=> Le fichier de configuration du dépot a été modifié avec ${vert}SUCCES${fin}."
 fi
 
-## 4: Remplace le dépot de votre système par notre depot FRANCE.
-if [[ $GUI == *"Dépot deepin-fr"* ]]; then
-displayTitle "Dépot deepin-fr" "Remplace le dépot de votre système par notre dépôt FRANCE."
+## 4: Remplace le dépôt de votre système par notre dépôt FRANCE.
+if [[ $GUI == *"Dépôt deepin-fr"* ]]; then
+displayTitle "Dépôt deepin-fr" "Remplace le dépôt de votre système par notre dépôt FRANCE."
 	echo ""
 	echo "Activation du dépot deepin-fr (FRANCE)"
 	echo "Veuillez patienter..."
