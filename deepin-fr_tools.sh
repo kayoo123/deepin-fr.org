@@ -934,7 +934,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	else
 		echo ""
 		displayError "/!\\ Une erreur a été détecté !"
-		echo "> Imposible de récupérer l'architecture."
+		echo "> Impossible de récupérer l'architecture."
 		exit 1
 	fi
 	echo ""
@@ -952,7 +952,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo ""
 fi
 
-## 24: Installe le controleur avancé audio.
+## 24: Installe le contrôleur avancé audio.
 if [[ $GUI == *"PavuControl"* ]]; then
 displayTitle "PavuControl" "Installe le contrôleur avancé audio."
 	echo ""
@@ -1022,8 +1022,8 @@ displayTitle "Changement fond écran automatique" "Permet de changer votre fond 
 		--height 230 \
 		--width 300 \
 		--column ""\
-		--column "Periodicité:"\
-		TRUE "Desactivation du changement périodique."\
+		--column "Périodicité:"\
+		TRUE "Désactivation du changement périodique."\
 		FALSE "Changement toutes les 5 minutes."\
 		FALSE "Changement toutes les 30 minutes."\
 		FALSE "Changement toutes les heures."\
@@ -1036,7 +1036,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer votre fond 
 	[[ "${VARS}" = "Changement toutes les 30 minutes." ]] && FREQ_M='*/30'
 	[[ "${VARS}" = "Changement toutes les heures." ]] && FREQ_M='0'
 	[[ "${VARS}" = "Changement toutes les 6 heures." ]] && FREQ_M='0' && FREQ_H='*/6'
-	if [[ "${VARS}" = "Desactivation du changement périodique." ]]; then 
+	if [[ "${VARS}" = "Désactivation du changement périodique." ]]; then 
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
 	elif [[ ! -z "${VARS}" ]]; then
 		(crontab -l 2>/dev/null | grep -wv "deepin-tools_random-wallpaper") | crontab -
@@ -1049,7 +1049,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer votre fond 
 fi
 
 
-## [FIN] fenetre de chargement...
+## [FIN] fenêtre de chargement...
 pkill zenity; sleep 1; pkill -9 zenity
 
 # Fin
