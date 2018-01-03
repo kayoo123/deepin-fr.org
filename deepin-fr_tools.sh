@@ -449,21 +449,21 @@ displayTitle "Nettoyage de printemps" "Nettoie votre système en profondeur."
 	CHECK_SERVICE apt-get
 	TEST_SUDO; displayCommand "sudo apt update" # cache
 	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoclean"; ERROR # Suppression des archives périmées
-	TEST_SUDO; displayCommand "sudo apt -y --force-yes clean"; ERROR # Supressions des paquets en cache
-	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR # Supression des dépendances inutilisées
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes clean"; ERROR # Suppression des paquets en cache
+	TEST_SUDO; displayCommand "sudo apt -y --force-yes autoremove"; ERROR # Suppression des dépendances inutilisées
 	echo ""
-	echo -e "${blanc}-- Supression des configurations logiciels désinstallées:${fin}"
+	echo -e "${blanc}-- Suppression des configurations logiciels désinstallées:${fin}"
 	dpkg -l | grep ^rc | awk '{print $2}'; ERROR
 	dpkg -l | grep ^rc | awk '{print $2}' |xargs sudo dpkg -P &> /dev/null
 	echo ""
-	echo -e "${blanc}-- Supression des paquets orphelins:${fin}"
+	echo -e "${blanc}-- Suppression des paquets orphelins:${fin}"
 	TEST_BIN deborphan; ERROR
 	for i in `seq 1 4` ; do 
 		TEST_SUDO; sudo deborphan; ERROR
 		TEST_SUDO; dsudo dpkg --purge $(deborphan) &> /dev/null
 	done
 	echo ""
-	#echo -e "${blanc}-- Supression des anciens kernels:${fin}"
+	#echo -e "${blanc}-- Suppression des anciens kernels:${fin}"
 	#dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r); echo ""
 	#TEST_SUDO; dpkg -l linux-{image,headers}-* |awk '/^ii/{print $2}' |egrep '[0-9]+\.[0-9]+\.[0-9]+' |grep -v "deepin-common" |grep -v $(uname -r) |xargs sudo apt-get -y purge; ERROR
 	#echo "> Ancien kernels supprimées."
@@ -491,7 +491,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre système en profondeur."
 	echo ""
 	echo -e "${blanc}-- Nettoyage des fichiers de sauvegarde:${fin}"
 	displayCommand "find $HOME -name '*~' -exec rm {} \;"
-	echo "> Supression des fichiers d'ouverture temporaire."
+	echo "> Suppression des fichiers d'ouverture temporaire."
 	echo ""
 	echo -e "${blanc}-- Nettoyage de la corbeille:${fin}"
 	displayCommand "rm -Rf $HOME/.local/share/Trash/*"; ERROR
@@ -503,7 +503,7 @@ displayTitle "Nettoyage de printemps" "Nettoie votre système en profondeur."
 	displayCommand "free -h"
 	echo ""
 echo ""
-echo -e "=> Votre systeme a été nettoyé avec ${vert}SUCCES${fin}."
+echo -e "=> Votre système a été nettoyé avec ${vert}SUCCES${fin}."
 fi
 
 ## 7: Activation de la touche \"Verrouillage Numérique\" au démarrage.
@@ -537,8 +537,8 @@ displayTitle "Dictionnaire FR pour WPS" "Installation du dictionnaire de la suit
 	echo "> Archive décompressé."
 	echo ""
 echo ""
-echo -e "=> Le dictionnaire Francais a été téléchargé avec ${vert}SUCCES${fin}."
-echo "Il vous suffit de sélectionner dirrectement depuis la suite WPS-Office:"
+echo -e "=> Le dictionnaire Français a été téléchargé avec ${vert}SUCCES${fin}."
+echo "Il vous suffit de sélectionner directement depuis la suite WPS-Office:"
 echo "Outils > Options > Vérifier l'orthographe > Dictionnaire personnel > Ajouter"
 sleep 2
 fi
@@ -547,13 +547,13 @@ fi
 if [[ $GUI == *"Créer un raccourci"* ]]; then
 displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à la création de raccourci."
 	echo ""
-	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo -e "${blanc}-- Vérification du paquet:${fin}"
 	echo ""
 	dpkg -l |grep -w " gnome-panel " |grep ^ii 
 	if [ ! $? -eq 0 ]; then
 		CHECK_SERVICE apt-get
 		TEST_SUDO; displayCommand "sudo apt-get install -y --no-install-recommends gnome-panel"
-		echo "> Le paquet est a présent installé."
+		echo "> Le paquet est à présent installé."
 	else
 		echo "> Le paquet est déjà installé."
 	fi
@@ -563,7 +563,7 @@ displayTitle "Créer un raccourci" "Permet de lancer un assistant pour l'aide à
 	echo "> Configuration en cours..."
 	TEST_SUDO; displayCommand "sudo gnome-desktop-item-edit /usr/share/applications/ --create-new &>/dev/null"
 	if [ ! $? -eq 0 ]; then
-	zenity --info --width=400 --title="Raccourci créé avec succès." --text "Vous trouverez votre raccourci directement dans la liste d'application de votre lanceur.\n Rubrique: \"Autres\"." &> /dev/null
+	zenity --info --width=400 --title="Raccourci créé avec succès." --text "Vous trouverez votre raccourci directement dans la liste d'applications de votre lanceur.\n Rubrique: \"Autres\"." &> /dev/null
 echo ""
 echo -e "=> Le raccourci a été créé avec ${vert}SUCCES${fin}."	
 	fi
@@ -573,7 +573,7 @@ fi
 if [[ $GUI == *"Gérer un partage"* ]]; then
 displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion de partage de dossier."
 	echo ""
-	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo -e "${blanc}-- Vérification du paquet:${fin}"
 	echo ""
 	dpkg -l |grep -w " system-config-samba " |grep ^ii 
 	if [ ! $? -eq 0 ]; then
@@ -583,7 +583,7 @@ displayTitle "Gérer un partage" "Permet de lancer un assistant pour la gestion 
 		TEST_SUDO; displayCommand "sudo gdebi --n /tmp/system-config-samba_1.2.63-0ubuntu6_all.deb"
 		TEST_SUDO; displayCommand "sudo touch /etc/libuser.conf"
 		TEST_SUDO; displayCommand "sudo rm -f /usr/share/applications/system-config-samba.desktop &> /dev/null"
-		echo "> Le paquet est a présent installé."
+		echo "> Le paquet est à présent installé."
 	else
 		echo "> Le paquet est déjà installé."
 	fi
@@ -600,7 +600,7 @@ fi
 if [[ $GUI == *"Renommer en masse des fichiers"* ]]; then
 displayTitle "Renommer en masse des fichiers" "Permet de lancer un outil d'aide au renommage de fichiers par lot."
 	echo ""
-	echo -e "${blanc}-- Vérification du paquage:${fin}"
+	echo -e "${blanc}-- Vérification du paquet:${fin}"
 	echo ""
 	TEST_BIN pyrenamer; ERROR
 	TEST_SUDO; sudo rm -f /usr/share/applications/XRCed.desktop &> /dev/null
@@ -616,7 +616,7 @@ fi
 
 ## 10: Assistant permettant d'afficher par taille les répertoires et fichiers du répertoire personnel.
 if [[ $GUI == *"Visualiser son répertoire perso"* ]]; then
-displayTitle "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les repertoires et fichiers du répertoire personnel."
+displayTitle "Visualiser son répertoire perso" "Assistant permettant d'afficher par taille les répertoires et fichiers du répertoire personnel."
 	echo ""
 	echo -e "${blanc}-- Vérification du paquage:${fin}"
 	echo ""
@@ -646,9 +646,9 @@ displayTitle "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers 
 	echo "Nous allons télécharger 10 fonds d'écran aléatoires."
 	echo ""
 	echo ""
-	echo -e "${blanc}-- Detection de vos écrans:${fin}"
-	sleep 1; echo -e "Nous avons détecté une resolution pour votre ecran de : ${blanc}$RESOLUTION${fin}"
-	if zenity --question --text="Nous avons détecté une resolution pour votre ecran de : $RESOLUTION.\nConfirmez-vous cette résolution ?" &>/dev/null; then
+	echo -e "${blanc}-- Détection de vos écrans:${fin}"
+	sleep 1; echo -e "Nous avons détecté une résolution pour votre écran de : ${blanc}$RESOLUTION${fin}"
+	if zenity --question --text="Nous avons détecté une résolution pour votre écran de : $RESOLUTION.\nConfirmez-vous cette résolution ?" &>/dev/null; then
 		echo ""
 		echo ">> OK"
 		echo ""
@@ -662,7 +662,7 @@ displayTitle "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers 
 		echo "> Récupération des fonds d'écran terminé"
 		zenity --info --width=400 --title="Fond écrans téléchargés avec succès." --text "Vous trouverez vos fonds d'écran directement dans votre répertoire \"Images\".\n Ils sont déjà disponible par simple clic-droit sur votre bureau." &> /dev/null
 echo ""
-echo -e "=> Les nouveaux fond d'écrans ont été telechargés avec ${vert}SUCCES${fin}."
+echo -e "=> Les nouveaux fond d'écrans ont été téléchargés avec ${vert}SUCCES${fin}."
 fi
 fi
 
@@ -679,9 +679,9 @@ echo ""
 echo -e "Les sons systemes de session ont été désactivés avec ${vert}SUCCES${fin}."
 fi
 
-## 13: Permet de rendre réactiver les sons lors de l'ouverture de session.
+## 13: Permet de réactiver les sons lors de l'ouverture de session.
 if [[ $GUI == *"Activation sons démarrage"* ]]; then
-displayTitle "Activation sons démarrage" "Permet de rendre réactiver les sons lors de l'ouverture de session."
+displayTitle "Activation sons démarrage" "Permet de réactiver les sons lors de l'ouverture de session."
 	DIR_SOUND_SYS=/usr/share/sounds/deepin/stereo
 	echo ""
 	echo -e "${blanc}-- Activer les sons au démarrage de la session:${fin}"
@@ -716,7 +716,7 @@ if [[ $GUI == *"Génération d'un rapport"* ]]; then
 displayTitle "Génération d'un rapport" "Réalise un audit de la machine."
 	FILE_AUDIT=/tmp/hardinfo.txt
 	echo ""
-	echo "Nous allons générer et mettre a disposition un audit complet de votre systeme."
+	echo "Nous allons générer et mettre à disposition un audit complet de votre système."
 	echo ""
 	echo ""
 	echo -e "${blanc}-- Génération de l'audit SYSTEME:${fin}"
@@ -757,12 +757,12 @@ echo -e "=> Le rapport a été envoyé avec ${vert}SUCCES${fin}."
 		echo ""
 		echo ">> LOCAL"
 		echo ""
-echo "Le rapport de votre systeme est disponible localement sur : $FILE_AUDIT"
+echo "Le rapport de votre système est disponible localement sur : $FILE_AUDIT"
 	fi
 fi
 
 
-## 15: Récupere les logs journaliers.
+## 15: Récupère les logs journaliers.
 if [[ $GUI == *"Sauvegarde journaux système"* ]]; then
 displayTitle "Sauvegarde journaux système" "Récupère les logs journaliers."
 	FILE_LOG=$HOME/deepin-tool-logs-$(date +%Y%m%d).tgz
@@ -801,15 +801,15 @@ displayTitle "Supprimer logiciels propriétaires" "Supprime tous les logiciels d
 	echo "- SPOTIFY (Plateforme Streaming Audio)"
 	echo "- CHMSEE (Liseuse d'eBook)"
 	echo ""
-	if zenity --question --text="Nous vous proposons de supprimer les logiciels suivants : \n- GOOGLE-CHROME (Navigateur)\n- WPS-OFFICE (Suite Bureautique)\n- SKYPE (Outil de VOIP)\n- STEAM (Plateforme Gaming)\n- SPOTIFY (Plateforme Streaming Audio)\n- CHMSEE (Liseuse d'eBook)\n\nEtes-vous sur de continuer ?" &>/dev/null; then
+	if zenity --question --text="Nous vous proposons de supprimer les logiciels suivants : \n- GOOGLE-CHROME (Navigateur)\n- WPS-OFFICE (Suite Bureautique)\n- SKYPE (Outil de VOIP)\n- STEAM (Plateforme Gaming)\n- SPOTIFY (Plateforme Streaming Audio)\n- CHMSEE (Liseuse d'eBook)\n\nÊtes-vous sur de continuer ?" &>/dev/null; then
 		echo ""
-		echo -e "${blanc}-- Supression complete:${fin}"
+		echo -e "${blanc}-- Suppression complete:${fin}"
 		echo ""
 		CHECK_SERVICE apt-get
 		TEST_SUDO; displayCommand "sudo apt-get autoremove -y google-chrome-stable wps-office ttf-wps-fonts skype skype-bin steam spotify-client chmsee"; ERROR
 		TEST_SUDO; displayCommand "sudo rm -f /etc/apt/sources.list.d/spotify.list"; ERROR
 		echo ""
-		echo -e "=> Vous venez de finaliser la supression des logiciels propriétaires avec ${vert}SUCCES${fin}."
+		echo -e "=> Vous venez de finaliser la suppression des logiciels propriétaires avec ${vert}SUCCES${fin}."
 	else 
 		echo ""
 		echo "Opération annulé"
@@ -821,7 +821,7 @@ fi
 if [[ $GUI == *"Installer logiciels propriétaires"* ]]; then
 displayTitle "Installer logiciels propriétaires" "Installation des logiciels propriétaires par défaut."
 	echo ""
-	echo -e "${blanc}-- Reinstallation complete:${fin}"
+	echo -e "${blanc}-- Réinstallation complète:${fin}"
 	echo ""
 	TEST_SUDO; sudo -v
 	TEST_SUDO; sudo sh -c 'echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list'
@@ -836,7 +836,7 @@ displayTitle "Installer logiciels propriétaires" "Installation des logiciels pr
 	echo "- SPOTIFY (Plateforme Streaming Audio)"
 	echo "- CHMSEE (Liseuse d'eBook)"
 	echo ""
-	echo -e "=> Vous venez de finaliser la reinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
+	echo -e "=> Vous venez de finaliser la réinstallation des logiciels propriétaires avec ${vert}SUCCES${fin}."
 fi
 
 ## 18: Installation du navigateur Firefox.
@@ -870,7 +870,7 @@ displayTitle "Thunderbird" "Installation du client Mail."
 	echo ""
 fi
 
-## 19: Installation de la suite bureatique LibreOffice.
+## 19: Installation de la suite bureautique LibreOffice.
 if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation de la suite bureautique LibreOffice."
 	echo ""
