@@ -297,7 +297,7 @@ GUI=$(zenity --list --checklist \
 	--column=Description \
 	FALSE "Dictionnaire FR pour WPS" "Installation du dictionnaire FR de la suite WPS-Office." \
 	FALSE "Fond écran InterfaceLIFT.com" "Téléchargement de 10 wallpapers au bon format." \
-	FALSE "Changement fond écran automatique" "Permet de changer votre fond écran périodiquement dans la journée." \
+	FALSE "Changement fond d'écran automatique" "Permet de changer votre fond d'écran périodiquement dans la journée." \
 	--separator=', ' 2>/dev/null) \
 	||exit 1
 fi
@@ -1005,9 +1005,9 @@ EOF
 fi
 
 
-## Permet de changer votre fond écran périodiquement dans la journée.
-if [[ $GUI == *"Changement fond écran automatique"* ]]; then
-displayTitle "Changement fond écran automatique" "Permet de changer votre fond écran périodiquement dans la journée."
+## Permet de changer votre fond d'écran périodiquement dans la journée.
+if [[ $GUI == *"Changement fond d'écran automatique"* ]]; then
+displayTitle "Changement fond d'écran automatique" "Permet de changer votre fond d'écran périodiquement dans la journée."
 	ENV='PID=$(pgrep dde-session-dae); export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-) ; GSETTINGS_BACKEND=dconf'
 	CMD='gsettings set org.gnome.desktop.background picture-uri $(readlink -f $HOME/Images/Wallpapers/* |shuf -n 1)'
 	FREQ_M='*'
@@ -1017,7 +1017,7 @@ displayTitle "Changement fond écran automatique" "Permet de changer votre fond 
 	echo ""
 	sleep 1
 	VARS=$(zenity --list --radiolist \
-		--title="Changement fond écran automatique" \
+		--title="Changement fond d'écran automatique" \
 		--text="Que souhaitez-vous faire ?" \
 		--height 230 \
 		--width 300 \
@@ -1054,7 +1054,7 @@ pkill zenity; sleep 1; pkill -9 zenity
 
 # Fin
 notify-send -i dialog-ok "Et voilà !" "Toutes les tâches ont été effectuées avec succès!" -t 5000 
-if zenity --question --title="Et voilà !" --text "C'est à présent terminé. \nToutes les tâches ont été effectuées avec succès ! Souhaitez-vous relancer l'outil ?" &> /dev/null; then
+if zenity --question --title="Et voilà !" --text "C'est à présent terminé. \nToutes les tâches ont été effectuées avec succès ! \n\nSouhaitez-vous relancer l'outil ?" &> /dev/null; then
 		echo ""
 		echo ">> Et nous voilà repartis pour un tour..."
 		echo ""
