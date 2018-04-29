@@ -929,8 +929,8 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	elif [[ "$(uname -m)" = "i386" ]] || [[ "$(uname -m)" = "i686" ]]; then
 		CHECK_SERVICE apt-get
 		TEST_SUDO; displayCommand "sudo apt-get install -y install libnss3-1d libxt6 libnspr4-0d libgtk2.0-0 libstdc++6 lib32nss-mdns libxml2 libxslt1.1 libcanberra-gtk-module gtk2-engines-murrine libgnome-keyring0 libxaw7 lib32nss-mdns libnspr4-0d gdebi"
-		TEST_SUDO; displayCommand "sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0"; ERROR
-		TEST_SUDO; displayCommand "sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0"; ERROR
+		TEST_SUDO; displayCommand "sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0"
+		TEST_SUDO; displayCommand "sudo ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0"
 	else
 		echo ""
 		displayError "/!\\ Une erreur a été détecté !"
@@ -943,7 +943,7 @@ displayTitle "AdobeAIR" "Installe AdobeAIR, outil moteur logiciel d'Adobe."
 	echo -e "${blanc}-- Installation AdobeAIR:${fin}"
 	echo ""
 	displayCommand "wget -P /tmp http://airdownload.adobe.com/air/lin/download/2.6/adobeair.deb"; ERROR
-	displayCommand "TEST_SUDO; sudo gdebi --n /tmp/adobeair.deb"; ERROR
+	TEST_SUDO; displayCommand "sudo gdebi --n /tmp/adobeair.deb"; ERROR
 	displayCommand "rm -f /tmp/adobeair.deb"
 	TEST_SUDO; displayCommand "sudo unlink /usr/lib/libgnome-keyring.so.0"; ERROR
 	TEST_SUDO; displayCommand "sudo unlink /usr/lib/libgnome-keyring.so.0.2.0"; ERROR
