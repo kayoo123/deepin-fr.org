@@ -875,7 +875,7 @@ if [[ $GUI == *"LibreOffice"* ]]; then
 displayTitle "LibreOffice" "Installation de la suite bureautique LibreOffice."
 	echo ""
 	CHECK_SERVICE apt-get
-	TEST_SUDO; displayCommand "sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr"; ERROR
+	TEST_SUDO; displayCommand "sudo apt-get install -y libreoffice libreoffice-help-fr libreoffice-l10n-fr hunspell-fr libreoffice-gtk3"; ERROR
 	echo ""
 	echo "> Installation LibreOffice terminé"
 	echo ""
